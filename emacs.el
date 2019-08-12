@@ -234,41 +234,53 @@ There are two things you can do about this warning:
 ;; See cedet/common/cedet.info for configuration details.
 ;; IMPORTANT: Tou must place this *before* any CEDET component
 ;; gets activated by another package (Gnus, auth-source, ...).
-(load-file "/home/acorbe/workspace/cedet/cedet-devel-load.el")
+(setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/workspace/cedet/cedet-devel-load.el")
+;;   "the path of the cedet loadable .el file. Change if needed."
+(message (concat "your CEDET path is" CEDET_PATH_cedet_dev_load_el))
 
-;; Add further minor-modes to be enabled by semantic-mode.
-;; See doc-string of `semantic-default-submodes' for other things
-;; you can use here.
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode)
-;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
-;; (setq semantic-complete-inline-analyzer-displayor-class
-;;       'semantic-displayor-tooltip)
+(if (file-exists-p CEDET_PATH_cedet_dev_load_el)
+    (progn
+      (message "your CEDET path exists. Loading...")
+      (load-file CEDET_PATH_cedet_dev_load_el)
+
+      ;; Add further minor-modes to be enabled by semantic-mode.
+      ;; See doc-string of `semantic-default-submodes' for other things
+      ;; you can use here.
+      ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
+      ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode)
+      ;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
+      ;; (setq semantic-complete-inline-analyzer-displayor-class
+      ;;       'semantic-displayor-tooltip)
+
+
+      (if (fboundp 'semantic-load-enable-code-helpers)
+	  ;; checks whether semantic-load-enable-code-helpers from CEDET exists, if yes it loads it
+	  (progn
+	    (message "cedet:semantic-load-enable-code-helpers found. enabling")
+	    (semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion
+	    )
+	(message "cedet:semantic-load-enable-code-helpers NOT FOUND.")
+	)
+      
+      (if (boundp 'global-srecode-minor-mode)
+	  ;; checks whether global-srecode-minor-mode from CEDET exists
+	  (progn
+	    (message "cedet:global-srecode-minor-mode found. enabling")
+	    (global-srecode-minor-mode 1)            ; Enable template insertion menu     
+	    )
+	(message "cedet:global-srecode-minor-mode NOT FOUND.")
+	)
+      )
+  (progn 
+   (message "your CEDET path does not exist. Download it from: http://cedet.sourceforge.net/setup.shtml and make it.")
+   )
+  )
 
 ;; Enable Semantic
 (semantic-mode 1)
 ;; Enable EDE (Project Management) features - This adds a menu named: "Developement"
 ;; (global-ede-mode 1)
 ;;
-(if (fboundp 'semantic-load-enable-code-helpers)
-    ;; checks whether semantic-load-enable-code-helpers from CEDET exists, if yes it loads it
-    (progn
-      (message "cedet:semantic-load-enable-code-helpers found. enabling")
-      (semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion
-     )
-  (message "cedet:semantic-load-enable-code-helpers NOT FOUND.")
-  )
-
-(if (boundp 'global-srecode-minor-mode)
-    ;; checks whether global-srecode-minor-mode from CEDET exists
-    (progn
-      (message "cedet:global-srecode-minor-mode found. enabling")
-      (global-srecode-minor-mode 1)            ; Enable template insertion menu     
-      )
-  (message "cedet:global-srecode-minor-mode NOT FOUND.")
-  )
-
-
 
 (require 'company)
 
