@@ -322,6 +322,9 @@ There are two things you can do about this warning:
 (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 
 
+;; when opening a file prevents double window
+(add-hook 'window-setup-hook #'delete-other-windows)
+
 ;; keys customization
 
 ;; customizing occur
