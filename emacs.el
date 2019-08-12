@@ -184,10 +184,27 @@ There are two things you can do about this warning:
 (treemacs)
 ;; (ido-mode)
 (helm-mode 1)
-;;(helm-autoresize-mode 1)
+;; (helm-autoresize-mode 1)
+
 (put 'downcase-region 'disabled nil)
-(setq helm-display-function #'helm-display-buffer-in-own-frame)
-(setq helm-display-buffer-height 20)
+
+
+;; (setq helm-display-function #'helm-display-buffer-popup-frame)
+;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
+
+;; in own frame best settings
+(setq helm-display-function 'helm-display-buffer-in-own-frame
+        helm-display-buffer-reuse-frame t
+        helm-use-undecorated-frame-option t)
+
+;; custom version attempt
+;; (setq helm-display-function
+;;       (lambda (buf)
+;;         (split-window-horizontally)
+;;         (other-window 1)
+;;         (switch-to-buffer buf)))
+
+(setq helm-display-buffer-height 15)
 (setq helm-actions-inherit-frame-settings t)
 
 
@@ -290,6 +307,7 @@ There are two things you can do about this warning:
   )
 
 (add-hook 'c++-mode-hook #'custom-company-cpp-mode)
+(add-hook 'c-mode-hook #'custom-company-cpp-mode)
 
 
 ;; autopair
@@ -344,7 +362,7 @@ There are two things you can do about this warning:
 ;; helm
 (global-set-key (kbd "M-x") #'helm-M-x)
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
 
 ;; treemacs appear/disappears with F8
 (global-set-key (kbd "<f8>") 'treemacs)
