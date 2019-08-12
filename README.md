@@ -23,3 +23,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + gnuplot-mode, yaml-mode, markdown-mode
 + auctex, latex-preview
 + undo-tree
+
+## Screenshots
+
+![gui_mode](img/img_example_gui.png)
