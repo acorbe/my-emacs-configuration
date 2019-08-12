@@ -11,7 +11,11 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + Finalize by:
     + <kbd>M-x all-the-icons-install-fonts</kbd>
     + <kbd>M-x company-tabnine-install-binary</kbd>
-    
++ For elpy to work properly:
+  + `pip install jedi rope autopep8 yapf black flake8`
+`
+
+
 ## Comes with
 + treemacs + icons + centaur tabs
 + doom modeline
