@@ -343,6 +343,9 @@ There are two things you can do about this warning:
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
 ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
 
+;; treemacs appear/disappears with F8
+(global-set-key (kbd "<f8>") 'treemacs)
+
 
 
 
