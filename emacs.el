@@ -60,6 +60,9 @@ There are two things you can do about this warning:
 				   yaml-mode
 				   elpy
 				   highlight-parentheses
+				   magit
+				   ;; company-box
+				   ein
 				   )) 
 
 ; activate all the packages (in particular autoloads)
@@ -87,6 +90,9 @@ There are two things you can do about this warning:
 
 (require 'company-tabnine)
 (add-to-list 'company-backends #'company-tabnine)
+(add-to-list 'company-backends #'ein:company-backend)
+
+(setq ein:completion-backend #'ein:use-company-backend)
 
 ;; GENERAL COMPANY CONFIG
 
@@ -95,6 +101,10 @@ There are two things you can do about this warning:
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
+
+;; (require 'company-box)
+;; (add-hook 'company-mode-hook 'company-box-mode)
+
 
 ;; Use the tab-and-go frontend.
 ;; Allows TAB to select and complete at the same time.
@@ -182,7 +192,7 @@ There are two things you can do about this warning:
 
 ;; some default modes
 (treemacs)
-;; (ido-mode)
+(ido-mode)
 (helm-mode 1)
 ;; (helm-autoresize-mode 1)
 
