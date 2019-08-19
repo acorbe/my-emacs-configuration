@@ -339,6 +339,10 @@ There are two things you can do about this warning:
 ;; shell -- opens shell in the same buffer
 (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 
+;; doc-view comes with auto-revert-mode
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+
 
 ;; when opening a file prevents double window
 (add-hook 'window-setup-hook #'delete-other-windows)
@@ -362,11 +366,14 @@ There are two things you can do about this warning:
 ;; helm
 (global-set-key (kbd "M-x") #'helm-M-x)
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
 
 ;; treemacs appear/disappears with F8
 (global-set-key (kbd "<f8>") 'treemacs)
+(global-set-key (kbd "S-<f8>") 'centaur-tabs-mode)
 
+;; ace window shortcut
+(global-set-key (kbd "M-p") 'ace-window)
 
 
 
