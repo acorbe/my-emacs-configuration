@@ -353,9 +353,20 @@ There are two things you can do about this warning:
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 
+(require 'cl)
+;; when opening a file prevents double window - ignore errors should no file be opened and so no further window to close
+(setq target_no_win_for_killing 2)
+(if (eq (treemacs-current-visibility) 'visible)
+    (incf target_no_win_for_killing)
+  )
 
-;; when opening a file prevents double window
-(add-hook 'window-setup-hook #'delete-other-windows)
+(if (eq
+     (length (window-list))
+     target_no_win_for_killing
+     )
+    (add-hook 'window-setup-hook #'delete-other-windows)
+  )
+
 
 ;; keys customization
 
