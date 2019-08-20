@@ -319,6 +319,9 @@ There are two things you can do about this warning:
 (add-hook 'c++-mode-hook #'custom-company-cpp-mode)
 (add-hook 'c-mode-hook #'custom-company-cpp-mode)
 
+;; adding company mode to emacs lisp
+(add-hook 'emacs-lisp-mode-hook #'company-mode)
+
 
 ;; autopair
 (require 'autopair)
