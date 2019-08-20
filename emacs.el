@@ -360,6 +360,9 @@ There are two things you can do about this warning:
 ;; doc-view comes with auto-revert-mode
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
+;; increases doc-view-resolution to match higher screen resolution
+(setq doc-view-resolution 192)
+
 
 ;; when opening a file prevents double window - ignore errors should no file be opened and so no further window to close
 (defun delete-other-window-if-one-buffer-open ()
