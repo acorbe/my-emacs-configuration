@@ -355,18 +355,29 @@ There are two things you can do about this warning:
 
 (require 'cl)
 ;; when opening a file prevents double window - ignore errors should no file be opened and so no further window to close
-(setq target_no_win_for_killing 2)
-(if (eq (treemacs-current-visibility) 'visible)
-    (incf target_no_win_for_killing)
+(defun delete-other-window-if-one-buffer-open ()
+  ;; deletes other window (supposedly buffer/messages) if a window with content is opened
+  ;; check the length of window list, comapares it with a target, based on that decides whether to kill or not.
+  (setq target_no_win_for_killing 2)
+  (if (eq (treemacs-current-visibility) 'visible)
+      (progn
+	(message "treemacs is visible")
+	(incf target_no_win_for_killing)	
+	)
+    )
+  (if (eq
+       (length (window-list))
+       target_no_win_for_killing
+       )
+      (delete-other-windows)
+    )
   )
+;; (delete-other-window-if-one-buffer-open)
 
-(if (eq
-     (length (window-list))
-     target_no_win_for_killing
-     )
-    (add-hook 'window-setup-hook #'delete-other-windows)
-  )
+(add-hook 'window-setup-hook #'delete-other-window-if-one-buffer-open)
 
+
+;; (add-hook 'window-setup-hook #'delete-other-windows)
 
 ;; keys customization
 
