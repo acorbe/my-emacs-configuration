@@ -63,6 +63,7 @@ There are two things you can do about this warning:
 				   magit
 				   ;; company-box
 				   ein
+				   ;; framemove
 				   )) 
 
 ; activate all the packages (in particular autoloads)
@@ -84,8 +85,9 @@ There are two things you can do about this warning:
 ;; M-x company-tabnine-install-binary
 
 
-(require 'company)
+(require 'cl)
 
+(require 'company)
 
 
 (require 'company-tabnine)
@@ -189,6 +191,9 @@ There are two things you can do about this warning:
 ;; windmove
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
+
+;; did not manage to get it to work
+;; (setq framemove-hook-into-windmove t)
 
 ;; some default modes
 (treemacs)
@@ -356,7 +361,6 @@ There are two things you can do about this warning:
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 
-(require 'cl)
 ;; when opening a file prevents double window - ignore errors should no file be opened and so no further window to close
 (defun delete-other-window-if-one-buffer-open ()
   ;; deletes other window (supposedly buffer/messages) if a window with content is opened
