@@ -414,6 +414,7 @@ There are two things you can do about this warning:
 ;; ace window shortcut
 (global-set-key (kbd "M-p") 'ace-window)
 
+(global-set-key (kbd "C-=") #'next-multiframe-window)
 
 
 
