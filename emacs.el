@@ -99,7 +99,7 @@ There are two things you can do about this warning:
 ;; GENERAL COMPANY CONFIG
 
 ;; Trigger completion immediately.
-(setq company-idle-delay 0)
+(setq company-idle-delay 0.2)
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
@@ -118,27 +118,9 @@ There are two things you can do about this warning:
 
 
 
-;; config of centaur-tabls
-(use-package centaur-tabs
-  :demand
-  :config
-  (centaur-tabs-mode t)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
-(centaur-tabs-headline-match)
-(setq centaur-tabs-style "bar")
-(setq centaur-tabs-set-icons t)
-;;(setq centaur-tabs-gray-out-icons 'buffer)
-(setq centaur-tabs-set-bar 'left)
-(setq centaur-tabs-set-modified-marker t)
-
-
 
 ;; remove welcome screen
 (setq inhibit-startup-screen t)
-
-
 
 
 ;; dired
@@ -158,10 +140,36 @@ There are two things you can do about this warning:
 ;;     (enable-theme 'solarized) 
 ;;   (enable-theme 'wheatgrass))
 
+
+;; behavior with or without GUI (display-graphic-p)
+(defun behavior-with-graphic ()
+  ;; config of centaur-tabls
+  (use-package centaur-tabs
+    :demand
+    :config
+    (centaur-tabs-mode t)
+    :bind
+    ("C-<prior>" . centaur-tabs-backward)
+    ("C-<next>" . centaur-tabs-forward))
+  (centaur-tabs-headline-match)
+  (setq centaur-tabs-style "bar")
+  (setq centaur-tabs-set-icons t)
+  ;;(setq centaur-tabs-gray-out-icons 'buffer)
+  (setq centaur-tabs-set-bar 'left)
+  (setq centaur-tabs-set-modified-marker t)  
+  (load-theme 'doom-opera-light t) 
+  )
+
+(defun behavior-without-graphic ()
+  (load-theme 'tsdh-light)
+  )
+
+
 ;; tweaks the theme in dependence on whether terminal or not.
 (if (display-graphic-p) 
-    (load-theme 'doom-opera-light t) 
-  (load-theme 'tsdh-light))
+    (behavior-with-graphic)
+  (behavior-without-graphic)
+  )
 
 
 ;; Enable flashing mode-line on errors
