@@ -215,6 +215,9 @@ There are two things you can do about this warning:
 ;; (setq helm-display-function #'helm-display-buffer-popup-frame)
 ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
 
+;; helm fuzzy matching for M-x
+(setq helm-M-x-fuzzy-match t)
+
 ;; in own frame best settings
 (setq helm-display-function 'helm-display-buffer-in-own-frame
         helm-display-buffer-reuse-frame t
