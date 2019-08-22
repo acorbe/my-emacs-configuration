@@ -79,8 +79,6 @@ There are two things you can do about this warning:
   (unless (package-installed-p package)
     (package-install package)))
 
-
-
 ;; SOME INSTALLATION STEPS:
 ;; all the icons: M-x all-the-icons-install-fonts
 ;; M-x company-tabnine-install-binary
@@ -89,8 +87,6 @@ There are two things you can do about this warning:
 (require 'cl)
 
 (require 'company)
-
-
 (require 'company-tabnine)
 (add-to-list 'company-backends #'company-tabnine)
 (add-to-list 'company-backends #'ein:company-backend)
@@ -134,21 +130,18 @@ There are two things you can do about this warning:
 
 
 
-(defun my-enable-doom-theme ()
+(defun my-behavior-enable-doom-theme ()
   (require 'doom-themes)
-
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
   ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
   ;; may have their own settings.
-  ;; (load-theme 'doom-opera-light t)
-  
+  ;; (load-theme 'doom-opera-light t)  
   (load-theme 'doom-opera-light t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
@@ -157,7 +150,7 @@ There are two things you can do about this warning:
   (doom-themes-org-config)
   )
 
-(defun my-enable-centaur-tabs ()
+(defun my-behavior-enable-centaur-tabs ()
   ;; config of centaur-tabls
   (use-package centaur-tabs
     :demand
@@ -176,23 +169,22 @@ There are two things you can do about this warning:
   )
 
 ;; behavior with or without GUI (display-graphic-p)
-(defun behavior-with-graphic ()
-  (my-enable-centaur-tabs)  
-  (my-enable-doom-theme)
+(defun my-behavior-with-graphic ()
+  (my-behavior-enable-centaur-tabs)  
+  (my-behavior-enable-doom-theme)
   (treemacs)
   )
 
-(defun behavior-without-graphic ()
+(defun my-behavior-without-graphic ()
   (load-theme 'zenburn)
   )
 
 
 ;; tweaks the theme in dependence on whether terminal or not.
 (if (display-graphic-p) 
-    (behavior-with-graphic)
-  (behavior-without-graphic)
+    (my-behavior-with-graphic)
+  (my-behavior-without-graphic)
   )
-
 
 
 
@@ -304,7 +296,6 @@ There are two things you can do about this warning:
       ;; (setq semantic-complete-inline-analyzer-displayor-class
       ;;       'semantic-displayor-tooltip)
 
-
       (if (fboundp 'semantic-load-enable-code-helpers)
 	  ;; checks whether semantic-load-enable-code-helpers from CEDET exists, if yes it loads it
 	  (progn
@@ -336,13 +327,13 @@ There are two things you can do about this warning:
 
 (require 'company)
 
-(defun custom-company-cpp-mode ()
+(defun my-behavior-custom-company-cpp-mode ()
   (company-mode 1)
   (company-semantic 1)
   )
 
-(add-hook 'c++-mode-hook #'custom-company-cpp-mode)
-(add-hook 'c-mode-hook #'custom-company-cpp-mode)
+(add-hook 'c++-mode-hook #'my-behavior-custom-company-cpp-mode)
+(add-hook 'c-mode-hook #'my-behavior-custom-company-cpp-mode)
 
 ;; adding company mode to emacs lisp
 (add-hook 'emacs-lisp-mode-hook #'company-mode)
