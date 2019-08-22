@@ -366,6 +366,11 @@ There are two things you can do about this warning:
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 
+;; gscholar-bibtex
+(setq gscholar-bibtex-default-source "Google Scholar")
+
+
+
 ;; shell -- opens shell in the same buffer
 (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 
