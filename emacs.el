@@ -100,7 +100,7 @@ There are two things you can do about this warning:
 ;; GENERAL COMPANY CONFIG
 
 ;; Trigger completion immediately.
-(setq company-idle-delay 0.2)
+(setq company-idle-delay 0.5)
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
@@ -127,23 +127,37 @@ There are two things you can do about this warning:
 ;; dired
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
-(require 'doom-themes)
-
-;; Global settings (defaults)
-(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-      doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
-;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-;; may have their own settings.
-;; (load-theme 'doom-opera-light t)
 
 ;; (if (display-graphic-p) 
 ;;     (enable-theme 'solarized) 
 ;;   (enable-theme 'wheatgrass))
 
 
-;; behavior with or without GUI (display-graphic-p)
-(defun behavior-with-graphic ()
+
+(defun my-enable-doom-theme ()
+  (require 'doom-themes)
+
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+  ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+  ;; may have their own settings.
+  ;; (load-theme 'doom-opera-light t)
+  
+  (load-theme 'doom-opera-light t)
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
+  )
+
+(defun my-enable-centaur-tabs ()
   ;; config of centaur-tabls
   (use-package centaur-tabs
     :demand
@@ -157,8 +171,15 @@ There are two things you can do about this warning:
   (setq centaur-tabs-set-icons t)
   ;;(setq centaur-tabs-gray-out-icons 'buffer)
   (setq centaur-tabs-set-bar 'left)
-  (setq centaur-tabs-set-modified-marker t)  
-  (load-theme 'doom-opera-light t) 
+  (setq centaur-tabs-set-modified-marker t)
+  
+  )
+
+;; behavior with or without GUI (display-graphic-p)
+(defun behavior-with-graphic ()
+  (my-enable-centaur-tabs)  
+  (my-enable-doom-theme)
+  (treemacs)
   )
 
 (defun behavior-without-graphic ()
@@ -173,16 +194,6 @@ There are two things you can do about this warning:
   )
 
 
-;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
-
-;; Enable custom neotree theme (all-the-icons must be installed!)
-(doom-themes-neotree-config)
-;; or for treemacs users
-(doom-themes-treemacs-config)
-
-;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config)
 
 
 ;; doom-modeline
@@ -205,7 +216,7 @@ There are two things you can do about this warning:
 ;; (setq framemove-hook-into-windmove t)
 
 ;; some default modes
-(treemacs)
+
 (ido-mode)
 (helm-mode 1)
 ;; (helm-autoresize-mode 1)
@@ -378,10 +389,13 @@ There are two things you can do about this warning:
   ;; deletes other window (supposedly buffer/messages) if a window with content is opened
   ;; check the length of window list, comapares it with a target, based on that decides whether to kill or not.
   (setq target_no_win_for_killing 2)
-  (if (eq (treemacs-current-visibility) 'visible)
-      (progn
-	(message "treemacs is visible")
-	(incf target_no_win_for_killing)	
+  (if (fboundp 'treemacs-current-visibility)
+      (if
+	  (eq (treemacs-current-visibility) 'visible)
+	  (progn
+	    (message "treemacs is visible")
+	    (incf target_no_win_for_killing)	
+	    )
 	)
     )
   (if (eq
