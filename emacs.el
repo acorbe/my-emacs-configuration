@@ -210,7 +210,7 @@ There are two things you can do about this warning:
 
 ;; some default modes
 
-(ido-mode)
+(ido-mode 1)
 (helm-mode 1)
 ;; (helm-autoresize-mode 1)
 
@@ -240,7 +240,7 @@ There are two things you can do about this warning:
 
 
 ;; winner
-(winner-mode)
+(winner-mode 1)
 
 ;; highlight-parentheses
 (require 'highlight-parentheses)
@@ -346,7 +346,7 @@ There are two things you can do about this warning:
 ;;   (autopair-global-mode) ;; enable autopair in all buffers
 
 ;; going for electric-pair
-(electric-pair-mode)
+(electric-pair-mode 1)
 
 ;; elpy
 (elpy-enable)
