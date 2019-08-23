@@ -342,8 +342,11 @@ There are two things you can do about this warning:
 
 
 ;; autopair
-(require 'autopair)
-  (autopair-global-mode) ;; enable autopair in all buffers
+;; (require 'autopair)
+;;   (autopair-global-mode) ;; enable autopair in all buffers
+
+;; going for electric-pair
+(electric-pair-mode)
 
 ;; elpy
 (elpy-enable)
