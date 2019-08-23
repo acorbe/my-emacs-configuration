@@ -444,7 +444,8 @@ There are two things you can do about this warning:
 (global-set-key (kbd "C-=") #'next-multiframe-window)
 (global-set-key (kbd "C-M-=") #'previous-multiframe-window)
 
-
+;; easy access to shell
+(global-set-key (kbd "C-x t") 'shell)
 
 
 
