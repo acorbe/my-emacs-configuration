@@ -329,8 +329,6 @@ There are two things you can do about this warning:
 ;; (global-ede-mode 1)
 ;;
 
-(require 'company)
-
 (defun my-behavior-custom-company-cpp-mode ()
   (company-mode 1)
   (company-semantic 1)
@@ -441,7 +439,7 @@ There are two things you can do about this warning:
 (global-set-key (kbd "M-p") 'ace-window)
 
 (global-set-key (kbd "C-=") #'next-multiframe-window)
-
+(global-set-key (kbd "C-M-=") #'previous-multiframe-window)
 
 
 

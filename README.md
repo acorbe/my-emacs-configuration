@@ -17,16 +17,25 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 
 
 ## Comes with
-+ treemacs + icons + centaur tabs
-+ doom modeline
-+ default themes: gui/display-graphic: `doom-opera-light`, terminal: `tsdh-light`
++ IDE: treemacs, icons, centaur tabs (all enabled by default in display-graphic)
++ default themes: gui/display-graphic: `doom-opera-light`, terminal: `zenburn`
++ modeline: doom 
 + company, company-tabnine
-+ elpy
-+ helm (enabled)
-+ autopair, undo-tree, highlight-parentheses
-+ gnuplot-mode, yaml-mode, markdown-mode
-+ auctex, latex-preview
-+ undo-tree
++ helm, with fuzzy matching for `helm-M-x` 
++ Editing: autopair, undo-tree, highlight-parentheses
++ Python: elpy, ein, company enabled
++ Latex: auctex, latex-preview-pane, gscholar-bibtex
++ Other modes: gnuplot-mode, yaml-mode, markdown-mode
+
+## Some keybindings
++ <kbd>M-x</kbd>: `helm-m-x`
++ <kbd>C-o</kbd>: `occur`
++ <kbd>f5</kbd>: `compile` (looking for a `Makefile` in the current folder or layers up)
++ <kbd>f7</kbd>/<kbd>C-f7</kbd>: `winner-undo`/`winner-redo`
++ <kbd>f8</kbd>: `treemacs`
++ <kbd>S-f8</kbd>: `centaur-tabs`
++ <kbd>C-=</kbd>/<kbd>C-M-=</kbd>: `previous-multiframe-window` (cycles between both frames and windows)
+
 
 ## Screenshots
 
