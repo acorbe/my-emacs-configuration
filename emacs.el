@@ -27,7 +27,7 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default)))
+    ("a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default)))
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
@@ -65,6 +65,7 @@ There are two things you can do about this warning:
 				   ein
 				   ;; framemove
 				   gscholar-bibtex
+				   zenburn-theme
 				   )) 
 
 ; activate all the packages (in particular autoloads)
@@ -79,8 +80,6 @@ There are two things you can do about this warning:
   (unless (package-installed-p package)
     (package-install package)))
 
-
-
 ;; SOME INSTALLATION STEPS:
 ;; all the icons: M-x all-the-icons-install-fonts
 ;; M-x company-tabnine-install-binary
@@ -89,8 +88,6 @@ There are two things you can do about this warning:
 (require 'cl)
 
 (require 'company)
-
-
 (require 'company-tabnine)
 (add-to-list 'company-backends #'company-tabnine)
 (add-to-list 'company-backends #'ein:company-backend)
@@ -100,7 +97,7 @@ There are two things you can do about this warning:
 ;; GENERAL COMPANY CONFIG
 
 ;; Trigger completion immediately.
-(setq company-idle-delay 0.2)
+(setq company-idle-delay 0.5)
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
@@ -127,23 +124,34 @@ There are two things you can do about this warning:
 ;; dired
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
-(require 'doom-themes)
-
-;; Global settings (defaults)
-(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-      doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
-;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-;; may have their own settings.
-;; (load-theme 'doom-opera-light t)
 
 ;; (if (display-graphic-p) 
 ;;     (enable-theme 'solarized) 
 ;;   (enable-theme 'wheatgrass))
 
 
-;; behavior with or without GUI (display-graphic-p)
-(defun behavior-with-graphic ()
+
+(defun my-behavior-enable-doom-theme ()
+  (require 'doom-themes)
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+  ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+  ;; may have their own settings.
+  ;; (load-theme 'doom-opera-light t)  
+  (load-theme 'doom-opera-light t)
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
+  )
+
+(defun my-behavior-enable-centaur-tabs ()
   ;; config of centaur-tabls
   (use-package centaur-tabs
     :demand
@@ -157,32 +165,28 @@ There are two things you can do about this warning:
   (setq centaur-tabs-set-icons t)
   ;;(setq centaur-tabs-gray-out-icons 'buffer)
   (setq centaur-tabs-set-bar 'left)
-  (setq centaur-tabs-set-modified-marker t)  
-  (load-theme 'doom-opera-light t) 
+  (setq centaur-tabs-set-modified-marker t)
+  
   )
 
-(defun behavior-without-graphic ()
-  (load-theme 'tsdh-light)
+;; behavior with or without GUI (display-graphic-p)
+(defun my-behavior-with-graphic ()
+  (my-behavior-enable-centaur-tabs)  
+  (my-behavior-enable-doom-theme)
+  (treemacs)
+  )
+
+(defun my-behavior-without-graphic ()
+  (load-theme 'zenburn)
   )
 
 
 ;; tweaks the theme in dependence on whether terminal or not.
 (if (display-graphic-p) 
-    (behavior-with-graphic)
-  (behavior-without-graphic)
+    (my-behavior-with-graphic)
+  (my-behavior-without-graphic)
   )
 
-
-;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
-
-;; Enable custom neotree theme (all-the-icons must be installed!)
-(doom-themes-neotree-config)
-;; or for treemacs users
-(doom-themes-treemacs-config)
-
-;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config)
 
 
 ;; doom-modeline
@@ -205,7 +209,7 @@ There are two things you can do about this warning:
 ;; (setq framemove-hook-into-windmove t)
 
 ;; some default modes
-(treemacs)
+
 (ido-mode)
 (helm-mode 1)
 ;; (helm-autoresize-mode 1)
@@ -296,7 +300,6 @@ There are two things you can do about this warning:
       ;; (setq semantic-complete-inline-analyzer-displayor-class
       ;;       'semantic-displayor-tooltip)
 
-
       (if (fboundp 'semantic-load-enable-code-helpers)
 	  ;; checks whether semantic-load-enable-code-helpers from CEDET exists, if yes it loads it
 	  (progn
@@ -328,13 +331,13 @@ There are two things you can do about this warning:
 
 (require 'company)
 
-(defun custom-company-cpp-mode ()
+(defun my-behavior-custom-company-cpp-mode ()
   (company-mode 1)
   (company-semantic 1)
   )
 
-(add-hook 'c++-mode-hook #'custom-company-cpp-mode)
-(add-hook 'c-mode-hook #'custom-company-cpp-mode)
+(add-hook 'c++-mode-hook #'my-behavior-custom-company-cpp-mode)
+(add-hook 'c-mode-hook #'my-behavior-custom-company-cpp-mode)
 
 ;; adding company mode to emacs lisp
 (add-hook 'emacs-lisp-mode-hook #'company-mode)
@@ -386,10 +389,13 @@ There are two things you can do about this warning:
   ;; deletes other window (supposedly buffer/messages) if a window with content is opened
   ;; check the length of window list, comapares it with a target, based on that decides whether to kill or not.
   (setq target_no_win_for_killing 2)
-  (if (eq (treemacs-current-visibility) 'visible)
-      (progn
-	(message "treemacs is visible")
-	(incf target_no_win_for_killing)	
+  (if (fboundp 'treemacs-current-visibility)
+      (if
+	  (eq (treemacs-current-visibility) 'visible)
+	  (progn
+	    (message "treemacs is visible")
+	    (incf target_no_win_for_killing)	
+	    )
 	)
     )
   (if (eq
