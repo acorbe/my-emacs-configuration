@@ -97,7 +97,7 @@ There are two things you can do about this warning:
 ;; GENERAL COMPANY CONFIG
 
 ;; Trigger completion immediately.
-(setq company-idle-delay 0.5)
+(setq company-idle-delay 0.3)
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
@@ -446,6 +446,8 @@ There are two things you can do about this warning:
 
 ;; easy access to shell
 (global-set-key (kbd "C-x t") 'shell)
+
+
 
 
 
