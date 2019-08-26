@@ -1,6 +1,6 @@
 # my-emacs-configuration
 
-This is my current emacs configuration, updated as it goes. Essential in my daily work as reasearcher/developer :). 
+This is my current emacs configuration, updated as it goes. I use emacs for nearly everything in my  work as a [reasearcher, which entail a lot of software development :).](http://corbetta.phys.tue.nl) 
 
 Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook.org/index.php/2019/02/install-gnu-emacs-26-1-ubuntu-18-04-16-04-18-10/),  [macos](https://emacs.stackexchange.com/questions/37240/how-install-emacs-26-or-whatever-latest-ver-on-mac)).
 
@@ -24,6 +24,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + helm, with fuzzy matching for `helm-M-x` 
 + Editing: autopair, undo-tree, highlight-parentheses
 + Python: elpy, ein, company enabled
++ CEDET support, cmake, cmake-font-lock
 + Latex: auctex, latex-preview-pane, gscholar-bibtex
 + Other modes: gnuplot-mode, yaml-mode, markdown-mode
 
