@@ -66,6 +66,7 @@ There are two things you can do about this warning:
 				   ;; framemove
 				   gscholar-bibtex
 				   zenburn-theme
+				   cmake-mode cmake-font-lock
 				   )) 
 
 ; activate all the packages (in particular autoloads)
@@ -336,6 +337,12 @@ There are two things you can do about this warning:
 
 (add-hook 'c++-mode-hook #'my-behavior-custom-company-cpp-mode)
 (add-hook 'c-mode-hook #'my-behavior-custom-company-cpp-mode)
+
+
+;;cmake
+(autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+(add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+
 
 ;; adding company mode to emacs lisp
 (add-hook 'emacs-lisp-mode-hook #'company-mode)
