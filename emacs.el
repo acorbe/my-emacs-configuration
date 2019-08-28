@@ -358,6 +358,19 @@ There are two things you can do about this warning:
 ;; elpy
 (elpy-enable)
 
+;; removes python native completion warnings
+;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+(with-eval-after-load 'python
+  (defun python-shell-completion-native-try ()
+    "Return non-nil if can trigger native completion."
+    (let ((python-shell-completion-native-enable t)
+          (python-shell-completion-native-output-timeout
+           python-shell-completion-native-try-output-timeout))
+      (python-shell-completion-native-get-completions
+       (get-buffer-process (current-buffer))
+       nil "_"))))
+
+
 ;; compile hacks -- makefile in current dir or upstaris. To be improved
 (defun get-above-makefile ()
   (let ((dir (locate-dominating-file "." "Makefile")))
