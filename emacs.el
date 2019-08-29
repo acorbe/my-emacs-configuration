@@ -461,9 +461,13 @@ There are two things you can do about this warning:
 ;; ace window shortcut
 (global-set-key (kbd "M-p") 'ace-window)
 
-(global-set-key (kbd "C-=") #'next-multiframe-window)
-(global-set-key (kbd "C-M-=") #'previous-multiframe-window)
-(global-set-key (kbd "C-`") 'other-frame)
+;; (global-set-key (kbd "C-=") #'next-multiframe-window)
+;; (global-set-key (kbd "C-M-=") #'previous-multiframe-window)
+;; changes frame and back
+(global-set-key (kbd "C-=") 'other-frame)
+(global-set-key (kbd "C-M-=")
+		( lambda () (interactive) (other-frame -1) )
+		)
 
 
 ;; easy access to shell
