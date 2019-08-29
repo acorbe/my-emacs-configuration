@@ -67,6 +67,7 @@ There are two things you can do about this warning:
 				   gscholar-bibtex
 				   zenburn-theme
 				   cmake-mode cmake-font-lock
+				   swiper ivy counsel
 				   )) 
 
 ; activate all the packages (in particular autoloads)
@@ -189,6 +190,33 @@ There are two things you can do about this warning:
   )
 
 
+(use-package swiper
+  :ensure t
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    ;; enable this if you want `swiper' to use it
+    ;; (setq search-default-mode #'char-fold-to-regexp)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+    (global-set-key (kbd "<f1> l") 'counsel-find-library)
+    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+    ;; (global-set-key (kbd "C-c g") 'counsel-git)
+    ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+    ;; (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-x l") 'counsel-locate)
+    ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+   ))
+
 
 ;; doom-modeline
 (use-package doom-modeline
@@ -211,7 +239,7 @@ There are two things you can do about this warning:
 
 ;; some default modes
 
-(ido-mode 1)
+;; (ido-mode 1)
 (helm-mode 1)
 ;; (helm-autoresize-mode 1)
 
