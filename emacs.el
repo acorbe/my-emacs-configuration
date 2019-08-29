@@ -211,7 +211,7 @@ There are two things you can do about this warning:
 
 ;; some default modes
 
-(ido-mode t)
+(ido-mode 1)
 (helm-mode 1)
 ;; (helm-autoresize-mode 1)
 
