@@ -240,32 +240,40 @@ There are two things you can do about this warning:
 ;; some default modes
 
 ;; (ido-mode 1)
-(helm-mode 1)
-;; (helm-autoresize-mode 1)
+(use-package helm
+  :ensure t
+  :config
+  (progn
+    (helm-mode 1)
+    ;; (helm-autoresize-mode 1)
+    ;; (setq helm-display-function #'helm-display-buffer-popup-frame)
+    ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
+
+    ;; helm fuzzy matching for M-x
+    (setq helm-M-x-fuzzy-match t)
+
+    ;; in own frame best settings
+    (setq helm-display-function 'helm-display-buffer-in-own-frame
+	  helm-display-buffer-reuse-frame t
+	  helm-use-undecorated-frame-option t)
+
+    ;; custom version attempt
+    ;; (setq helm-display-function
+    ;;       (lambda (buf)
+    ;;         (split-window-horizontally)
+    ;;         (other-window 1)
+    ;;         (switch-to-buffer buf)))
+    
+    (setq helm-display-buffer-height 15)
+    (setq helm-actions-inherit-frame-settings t)
+    ;; helm
+    (global-set-key (kbd "M-x") #'helm-M-x)
+    (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+    )
+  )
 
 (put 'downcase-region 'disabled nil)
 
-
-;; (setq helm-display-function #'helm-display-buffer-popup-frame)
-;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
-
-;; helm fuzzy matching for M-x
-(setq helm-M-x-fuzzy-match t)
-
-;; in own frame best settings
-(setq helm-display-function 'helm-display-buffer-in-own-frame
-        helm-display-buffer-reuse-frame t
-        helm-use-undecorated-frame-option t)
-
-;; custom version attempt
-;; (setq helm-display-function
-;;       (lambda (buf)
-;;         (split-window-horizontally)
-;;         (other-window 1)
-;;         (switch-to-buffer buf)))
-
-(setq helm-display-buffer-height 15)
-(setq helm-actions-inherit-frame-settings t)
 
 
 ;; winner
@@ -477,9 +485,6 @@ There are two things you can do about this warning:
 (global-set-key (kbd "<f7>") 'winner-undo)
 (global-set-key (kbd "C-<f7>") 'winner-redo)
 
-;; helm
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
 ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
 
 ;; treemacs appear/disappears with F8
