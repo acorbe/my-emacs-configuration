@@ -223,6 +223,13 @@ There are two things you can do about this warning:
     (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
    ))
 
+;; avy
+(use-package avy
+  :ensure t
+  :config
+  (global-set-key (kbd "C-:") 'avy-goto-char-timer)
+  )		       
+
 
 ;; doom-modeline
 (use-package doom-modeline
