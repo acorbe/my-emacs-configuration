@@ -435,6 +435,34 @@ There are two things you can do about this warning:
        nil "_"))))
 
 
+
+;; (defun toggle-boolean ()
+;;   "Toggle any booleans found on the current line."
+;;   (interactive)
+;;   (let ((booleans (ht ("true" "false")
+;;                       ("false" "true")
+;;                       ("True" "False")
+;;                       ("False" "True"))))
+;;     (save-excursion
+;;       (save-restriction
+;;         (call-interactively 'select-current-line)
+;;         (call-interactively 'narrow-to-region)
+;;         (setq toggle-boolean-re (-reduce (lambda (memo item) (format "%s\\|%s" memo item)) (ht-keys booleans)))
+;;         (goto-char (point-min))
+;;         (re-search-forward toggle-boolean-re nil t))
+;;       (let* ((thing2 (thing-at-point 'word))
+;;              (bounds (bounds-of-thing-at-point 'word))
+;;              (pos1 (car bounds))
+;;              (pos2 (cdr bounds)))
+;;         (setq replacement (ht-get booleans thing2 nil))
+;;         (when replacement
+;;           (delete-region pos1 pos2)
+;;           (insert replacement))))))
+
+
+;; (global-set-key (kbd "C-c !") 'toggle-boolean)
+
+
 ;; compile hacks -- makefile in current dir or upstaris. To be improved
 (defun get-above-makefile ()
   (let ((dir (locate-dominating-file "." "Makefile")))
