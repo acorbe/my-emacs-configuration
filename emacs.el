@@ -125,9 +125,10 @@ There are two things you can do about this warning:
 ;; dired
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
-;; ivy icons
+;; ivy icons -- don't like the spacing, so disabled.
 (use-package all-the-icons-ivy
   :ensure t
+  :disabled t
   :config
   (all-the-icons-ivy-setup))
 
@@ -400,7 +401,19 @@ There are two things you can do about this warning:
 (electric-pair-mode 1)
 
 ;; elpy
-(elpy-enable)
+;; (elpy-enable)
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
+;; anyway loaded by elpy.
+(use-package yasnippet
+  :ensure t
+  :config
+  (progn
+    (yas-global-mode 1)))
+
 
 ;; removes python native completion warnings
 ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
