@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -67,8 +67,7 @@ There are two things you can do about this warning:
 				   gscholar-bibtex
 				   zenburn-theme
 				   cmake-mode cmake-font-lock
-				   swiper ivy counsel
-				   )) 
+				   swiper ivy counsel				   )) 
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -223,8 +222,6 @@ There are two things you can do about this warning:
       :ensure t
       :hook (after-init . doom-modeline-mode))
 
-(require 'helm-config)
-
 
 ;; disables the traditional toolbar
 (tool-bar-mode -1) 
@@ -240,6 +237,7 @@ There are two things you can do about this warning:
 ;; some default modes
 
 ;; (ido-mode 1)
+;; (require 'helm-config)
 (use-package helm
   :ensure t
   :config
@@ -425,6 +423,16 @@ There are two things you can do about this warning:
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
+
+;; aim -- pdf tools installs itself, including pdf-tools-install, if needed. Only on linux.
+(use-package pdf-tools
+  :if (memq window-system '(x))
+  :ensure t
+  ;; :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install :no-query)
+  )
+
 
 ;; gscholar-bibtex
 (setq gscholar-bibtex-default-source "Google Scholar")
