@@ -292,7 +292,7 @@ There are two things you can do about this warning:
 (winner-mode 1)
 
 ;; highlight-parentheses
-(use-package 'highlight-parentheses
+(use-package highlight-parentheses
   :ensure t
   :config
   (global-highlight-parentheses-mode 1)
