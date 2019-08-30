@@ -227,7 +227,7 @@ There are two things you can do about this warning:
 (use-package avy
   :ensure t
   :config
-  (global-set-key (kbd "C-:") 'avy-goto-char-timer)
+  (global-set-key (kbd "C-:") 'avy-goto-char-2) ;;-timer 
   )		       
 
 
