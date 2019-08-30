@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -414,12 +414,20 @@ There are two things you can do about this warning:
   :init
   (elpy-enable))
 
+(use-package yasnippet-snippets         ; Collection of snippets
+  :ensure t)
+
 ;; anyway loaded by elpy.
 (use-package yasnippet
   :ensure t
   :config
   (progn
-    (yas-global-mode 1)))
+    (yas-global-mode 1)
+    ;; (with-eval-after-load 'yasnippet
+    ;;   (validate-setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+    ))
+
+
 
 
 ;; removes python native completion warnings
