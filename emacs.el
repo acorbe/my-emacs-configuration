@@ -125,6 +125,12 @@ There are two things you can do about this warning:
 ;; dired
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
+;; ivy icons
+(use-package all-the-icons-ivy
+  :ensure t
+  :config
+  (all-the-icons-ivy-setup))
+
 
 ;; (if (display-graphic-p) 
 ;;     (enable-theme 'solarized) 
@@ -278,8 +284,11 @@ There are two things you can do about this warning:
 (winner-mode 1)
 
 ;; highlight-parentheses
-(require 'highlight-parentheses)
-(global-highlight-parentheses-mode 1)
+(use-package 'highlight-parentheses
+  :ensure t
+  :config
+  (global-highlight-parentheses-mode 1)
+  )
 
 
 ;; tramp
@@ -287,7 +296,6 @@ There are two things you can do about this warning:
 
 
 ;; autocloses the compilation window after successful compilation
-(setq compilation-finish-functions 'compile-autoclose)
 (defun compile-autoclose (buffer string)
   (cond ((string-match "finished" string)
 	 (bury-buffer "*compilation*")
@@ -295,6 +303,8 @@ There are two things you can do about this warning:
 	 (message "Build successful."))
 	(t
 	 (message "Compilation exited abnormally: %s" string))))
+(setq compilation-finish-functions 'compile-autoclose)
+
 
 
 ;; undo tree
