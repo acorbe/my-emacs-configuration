@@ -89,8 +89,8 @@ There are two things you can do about this warning:
 (require 'cl)
 
 (require 'company)
-(require 'company-tabnine)
-(add-to-list 'company-backends #'company-tabnine)
+;; (require 'company-tabnine)
+;; (add-to-list 'company-backends #'company-tabnine)
 (add-to-list 'company-backends #'ein:company-backend)
 
 (setq ein:completion-backend #'ein:use-company-backend)
