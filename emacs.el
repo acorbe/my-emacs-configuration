@@ -2,6 +2,8 @@
 ;; eval: (emacs-lisp-mode)
 ;; End:
 
+(defconst *start-time* (current-time)) ;; record start time to time .emacs load time
+
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -435,7 +437,8 @@ There are two things you can do about this warning:
     ;;   (validate-setq yas-snippet-dirs '(yasnippet-snippets-dir)))
     ))
 
-
+(use-package hydra
+  :ensure t)
 
 
 ;; removes python native completion warnings
@@ -591,7 +594,15 @@ There are two things you can do about this warning:
 ;; easy access to shell
 (global-set-key (kbd "C-x t") 'shell)
 
+;; window dimensions
+(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-<down>") 'shrink-window)
+(global-set-key (kbd "S-C-<up>") 'enlarge-window)
 
 
 
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+(message ".emacs loaded in %s seconds" (mapconcat 'int-to-string (rest (time-since *start-time*)) "."))
