@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -227,7 +227,7 @@ There are two things you can do about this warning:
 (use-package avy
   :ensure t
   :config
-  (global-set-key (kbd "C-;") 'avy-goto-char-2) ;;-timer 
+  (global-set-key (kbd "M-1") 'avy-goto-char-2) ;;-timer 
   )		       
 
 
@@ -239,6 +239,10 @@ There are two things you can do about this warning:
 
 ;; disables the traditional toolbar
 (tool-bar-mode -1) 
+
+;; howdoi
+(use-package howdoi
+  :ensure t)
 
 
 ;; windmove
@@ -496,7 +500,10 @@ There are two things you can do about this warning:
   :ensure t
   ;; :magic ("%PDF" . pdf-view-mode)
   :config
-  (pdf-tools-install :no-query)
+  (progn
+    (pdf-tools-install :no-query)
+    (add-hook 'pdf-view-mode-hook 'auto-revert-mode)
+    )  
   )
 
 
@@ -549,11 +556,11 @@ There are two things you can do about this warning:
 (global-set-key (kbd "C-o") 'occur)
 
 ;; compile hotkey
-;; (global-set-key [(C-f5)] 'compile)
-;; (global-set-key [(f5)] 'recompile)
+(global-set-key [(C-f5)] 'compile)
+(global-set-key [(f5)] 'recompile)
 ;; bind compiling with get-above-makefile to f5
-(global-set-key [f5] (lambda () (interactive) (compile (format
-	   "make -f %s" (get-above-makefile)))))
+;; (global-set-key [f5] (lambda () (interactive) (compile (format
+;; 	   "make -f %s" (get-above-makefile)))))
 
 ;; winner
 (global-set-key (kbd "<f7>") 'winner-undo)
