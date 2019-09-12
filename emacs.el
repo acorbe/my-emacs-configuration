@@ -152,7 +152,8 @@ There are two things you can do about this warning:
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
+  ;; (doom-themes-neotree-config)
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
   ;; or for treemacs users
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
@@ -234,7 +235,10 @@ There are two things you can do about this warning:
 ;; doom-modeline
 (use-package doom-modeline
       :ensure t
-      :hook (after-init . doom-modeline-mode))
+      :hook (after-init . doom-modeline-mode)
+      :config
+      (progn
+	(setq doom-modeline-height 25)))
 
 
 ;; disables the traditional toolbar
