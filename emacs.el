@@ -34,7 +34,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -103,7 +103,7 @@ There are two things you can do about this warning:
 (setq company-idle-delay 0.3)
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
-(setq company-show-numbers t)
+(setq company-show-numbers 1)
 
 ;; (require 'company-box)
 ;; (add-hook 'company-mode-hook 'company-box-mode)
@@ -220,7 +220,7 @@ There are two things you can do about this warning:
     (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
     ;; (global-set-key (kbd "C-c g") 'counsel-git)
     ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
-    ;; (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
     (global-set-key (kbd "C-x l") 'counsel-locate)
     ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
@@ -233,6 +233,14 @@ There are two things you can do about this warning:
   (global-set-key (kbd "M-'") 'avy-goto-char-2) ;;-timer 
   )		       
 
+;;ag
+(use-package ag
+  :ensure t)
+
+;; magit
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)))
 
 ;; doom-modeline
 (use-package doom-modeline
