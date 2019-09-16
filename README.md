@@ -35,7 +35,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + <kbd>C-o</kbd>: `occur`
 + <kbd>f5</kbd>: `compile` 
 + <kbd>f7</kbd>/<kbd>C-f7</kbd>: `winner-undo`/`winner-redo`
-+ <kbd>C-S-<arrows></kbd>: resize window
++ <kbd>C-S-arrows</kbd>: resize window
 + <kbd>C-x t</kbd>: opens or moves to terminal
 + <kbd>M-'</kbd>: `avy-goto-char-2`
 + <kbd>f8</kbd>: `treemacs`
