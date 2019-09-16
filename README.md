@@ -6,7 +6,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 
 ## Installation
 
-+ Just replace your `~/.emacs` file with the file in this repo. Make sure your `~/.emacs.d` is empty. 
++ run `link_this_config.sh` or replace your `~/.emacs` file with the file in this repo (in this case, make sure your `~/.emacs.d` is empty). 
 + All the packages will install by themselves. :)
 + Finalize by:
     + <kbd>M-x all-the-icons-install-fonts</kbd>
