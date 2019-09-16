@@ -583,6 +583,13 @@ There are two things you can do about this warning:
     (global-set-key (kbd "<C-M-return>") 'shell-pop)
     ))
 
+(use-package gnuplot-mode
+  :ensure t
+  :config
+  (progn
+    (add-to-list 'auto-mode-alist '("\\.gnu\\'" . gnuplot-mode))
+    ))
+
 ;; https://emacs.stackexchange.com/a/21154/8641
 (defun my-switch-to-buffer (buffer)
   "Display BUFFER in the selected window.
