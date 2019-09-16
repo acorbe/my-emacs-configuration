@@ -1,3 +1,4 @@
+
 ;; Local Variables:
 ;; eval: (emacs-lisp-mode)
 ;; End:
@@ -34,7 +35,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -448,6 +449,8 @@ There are two things you can do about this warning:
 (use-package hydra
   :ensure t)
 
+(use-package rainbow-mode
+  :ensure t)
 
 ;; removes python native completion warnings
 ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
@@ -461,6 +464,10 @@ There are two things you can do about this warning:
        (get-buffer-process (current-buffer))
        nil "_"))))
 
+
+;; this compromises the correct working!!
+;; (when (executable-find "ipython")
+;;   (setq python-shell-interpreter "ipython"))
 
 
 ;; (defun toggle-boolean ()
@@ -562,6 +569,45 @@ There are two things you can do about this warning:
 
 (add-hook 'window-setup-hook #'delete-other-window-if-one-buffer-open)
 
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (progn
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    ))
+
+(use-package shell-pop
+  :ensure t
+  :config
+  (progn
+    (global-set-key (kbd "<C-M-return>") 'shell-pop)
+    ))
+
+;; https://emacs.stackexchange.com/a/21154/8641
+(defun my-switch-to-buffer (buffer)
+  "Display BUFFER in the selected window.
+If BUFFER is displayed in an existing window, select that window instead."
+  (interactive
+   (list (get-buffer (read-buffer
+                      "Switch to buffer: "
+                      (other-buffer (current-buffer)
+				    )
+		      ))))
+  (if-let ((win (get-buffer-window buffer)))
+      (select-window win)
+    (switch-to-buffer buffer)
+    ))
+
+(defun my-open-shell-if-closed-else-my-switch-there ()
+  "todo"
+  (interactive)
+   (if (get-buffer "*shell*")
+       (my-switch-to-buffer "*shell*")
+     (shell)
+     )   
+  )
+
+
 
 ;; (add-hook 'window-setup-hook #'delete-other-windows)
 
@@ -600,7 +646,8 @@ There are two things you can do about this warning:
 
 
 ;; easy access to shell
-(global-set-key (kbd "C-x t") 'shell)
+;; (global-set-key (kbd "C-x t") 'shell)
+(global-set-key (kbd "C-x t") 'my-open-shell-if-closed-else-my-switch-there)
 
 ;; window dimensions
 (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
