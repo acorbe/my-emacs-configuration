@@ -526,7 +526,7 @@ There are two things you can do about this warning:
   :if (memq window-system '(x))
   :ensure t
   ;; :magic ("%PDF" . pdf-view-mode)
-  :config
+  :init
   (progn
     (pdf-tools-install :no-query)
     (add-hook 'pdf-view-mode-hook 'auto-revert-mode)
@@ -576,7 +576,8 @@ There are two things you can do about this warning:
 
 (use-package rainbow-delimiters
   :ensure t
-  :config
+  :defer t
+  :init
   (progn
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
     ))
@@ -591,12 +592,14 @@ There are two things you can do about this warning:
 (use-package gnuplot-mode
   :defer t
   :ensure t
-  :config
+  :init
   (progn
     (add-to-list 'auto-mode-alist '("\\.gnu\\'" . gnuplot-mode))
     ))
 
 (use-package dired-rainbow
+  :ensure t
+  :defer t
   :config
   (progn
     (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
