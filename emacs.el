@@ -131,6 +131,7 @@ There are two things you can do about this warning:
 ;; ivy icons -- don't like the spacing, so disabled.
 (use-package all-the-icons-ivy
   :ensure t
+  :defer t
   :disabled t
   :config
   (all-the-icons-ivy-setup))
@@ -236,6 +237,7 @@ There are two things you can do about this warning:
 
 ;;ag
 (use-package ag
+  :defer t
   :ensure t)
 
 ;; magit
@@ -429,16 +431,17 @@ There are two things you can do about this warning:
 ;; elpy
 ;; (elpy-enable)
 (use-package elpy
+  :defer t
   :ensure t
   :init
   (elpy-enable))
 
-(use-package yasnippet-snippets         ; Collection of snippets
+(use-package yasnippet-snippets         ; Collection of snippets  
   :ensure t)
 
 ;; anyway loaded by elpy.
 (use-package yasnippet
-  :ensure t
+  :ensure t  
   :config
   (progn
     (yas-global-mode 1)
@@ -447,6 +450,7 @@ There are two things you can do about this warning:
     ))
 
 (use-package hydra
+  :defer t
   :ensure t)
 
 (use-package rainbow-mode
@@ -518,6 +522,7 @@ There are two things you can do about this warning:
 
 ;; aim -- pdf tools installs itself, including pdf-tools-install, if needed. Only on linux.
 (use-package pdf-tools
+  :defer t
   :if (memq window-system '(x))
   :ensure t
   ;; :magic ("%PDF" . pdf-view-mode)
@@ -584,6 +589,7 @@ There are two things you can do about this warning:
     ))
 
 (use-package gnuplot-mode
+  :defer t
   :ensure t
   :config
   (progn
