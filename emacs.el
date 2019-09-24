@@ -429,12 +429,17 @@ There are two things you can do about this warning:
 (electric-pair-mode 1)
 
 ;; elpy
-;; (elpy-enable)
-(use-package elpy
-  ;;:defer t
-  :ensure t
+;; (use-package elpy
+;;   :ensure t
+;;   :init
+;;   (elpy-enable))
+
+;; trying deferred elpy
+;; https://emacs.stackexchange.com/a/50757/8641
+(use-package elpy :ensure t
+  :defer t
   :init
-  (elpy-enable))
+  (advice-add 'python-mode :before 'elpy-enable))
 
 (use-package yasnippet-snippets         ; Collection of snippets  
   :ensure t)
