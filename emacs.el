@@ -431,7 +431,7 @@ There are two things you can do about this warning:
 ;; elpy
 ;; (elpy-enable)
 (use-package elpy
-  :defer t
+  ;;:defer t
   :ensure t
   :init
   (elpy-enable))
@@ -521,8 +521,7 @@ There are two things you can do about this warning:
 (setq reftex-plug-into-AUCTeX t)
 
 ;; aim -- pdf tools installs itself, including pdf-tools-install, if needed. Only on linux.
-(use-package pdf-tools
-  :defer t
+(use-package pdf-tools  
   :if (memq window-system '(x))
   :ensure t
   ;; :magic ("%PDF" . pdf-view-mode)
@@ -590,7 +589,7 @@ There are two things you can do about this warning:
     ))
 
 (use-package gnuplot-mode
-  :defer t
+  ;; :defer t
   :ensure t
   :init
   (progn
@@ -599,7 +598,7 @@ There are two things you can do about this warning:
 
 (use-package dired-rainbow
   :ensure t
-  :defer t
+  :disable t
   :config
   (progn
     (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
