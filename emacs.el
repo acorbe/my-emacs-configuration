@@ -603,7 +603,7 @@ There are two things you can do about this warning:
 
 (use-package dired-rainbow
   :ensure t
-  :disable t
+  :disabled t
   :config
   (progn
     (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
