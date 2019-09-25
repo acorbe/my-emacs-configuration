@@ -266,7 +266,10 @@ There are two things you can do about this warning:
 (use-package avy
   :ensure t
   :config
-  (global-set-key (kbd "M-'") 'avy-goto-char-2) ;;-timer 
+  (progn
+    (global-set-key (kbd "C-M-'") 'avy-goto-char-2)
+    (setq avy-all-windows 'all-frames)
+    ) ;;-timer  
   )		       
 
 ;;ag
