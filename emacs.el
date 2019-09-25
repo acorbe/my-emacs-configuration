@@ -35,7 +35,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -236,8 +236,7 @@ There are two things you can do about this warning:
   )		       
 
 ;;ag
-(use-package ag
-  :defer t
+(use-package ag  
   :ensure t)
 
 ;; magit
@@ -627,6 +626,9 @@ There are two things you can do about this warning:
     (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
     (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")
     )) 
+
+(use-package esup
+  :ensure t)
 
 
 ;; https://emacs.stackexchange.com/a/21154/8641
