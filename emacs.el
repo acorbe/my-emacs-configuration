@@ -35,7 +35,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -46,31 +46,37 @@ There are two things you can do about this warning:
 
 ;; deals internally with package list
 
-(setq package-list '(doom-modeline doom-themes
-				   all-the-icons-gnus
-				   all-the-icons-dired
-				   all-the-icons-ivy
-				   treemacs-icons-dired
-				   treemacs centaur-tabs use-package company-tabnine
-				   company
-				   helm
-				   undo-tree
-				   autopair
-				   gnuplot-mode
-				   markdown-mode
-				   auctex
-				   latex-preview-pane
-				   yaml-mode
-				   elpy
-				   highlight-parentheses
-				   magit
-				   ;; company-box
-				   ein
-				   ;; framemove
-				   gscholar-bibtex
-				   zenburn-theme
-				   cmake-mode cmake-font-lock
-				   swiper ivy counsel				   )) 
+(setq package-list '(
+		     ;; doom-modeline - moved below
+		     ;; doom-themes
+		     use-package
+		     all-the-icons-gnus
+		     ;; all-the-icons-dired ;; moved below
+		     ;; all-the-icons-ivy ;; moved below
+		     treemacs-icons-dired
+		     treemacs centaur-tabs
+		     ;; company-tabnine ;; removed
+		     ;; company ;; moved below
+		     ;; helm ;; moved below
+		     ;; undo-tree ;; moved below
+		     ;; autopair ;; removed
+		     ;; gnuplot-mode ;; moved below
+		     markdown-mode
+		     auctex
+		     latex-preview-pane
+		     ;; yaml-mode ;; moved below
+		     ;; elpy ;; moved below
+		     ;; highlight-parentheses ;; moved below
+		     ;; magit ;; moved below
+		     ;; company-box
+		     ein
+		     ;; framemove
+		     gscholar-bibtex
+		     ;; zenburn-theme ;; moved below
+		     cmake-mode cmake-font-lock
+		     ;; swiper ;; moved below
+		     ivy counsel
+		     )) 
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -91,32 +97,39 @@ There are two things you can do about this warning:
 
 (require 'cl)
 
-(require 'company)
+
+(use-package company
+  :ensure t
+  :config
+  (progn
+    (add-to-list 'company-backends #'ein:company-backend)
+    (setq ein:completion-backend #'ein:use-company-backend)
+
+    ;; adding company mode to emacs lisp
+    (add-hook 'emacs-lisp-mode-hook #'company-mode)
+    
+    ;; GENERAL COMPANY CONFIG
+
+    ;; Trigger completion immediately.
+    (setq company-idle-delay 0.3)
+
+    ;; Number the candidates (use M-1, M-2 etc to select completions).
+    (setq company-show-numbers 1)
+
+    ;; (require 'company-box)
+    ;; (add-hook 'company-mode-hook 'company-box-mode)
+    ;; Use the tab-and-go frontend.
+    ;; Allows TAB to select and complete at the same time.
+    (company-tng-configure-default)
+    (setq company-frontends
+	  '(company-tng-frontend
+	    company-pseudo-tooltip-frontend
+	    company-echo-metadata-frontend))
+
+    )
+  )
 ;; (require 'company-tabnine)
 ;; (add-to-list 'company-backends #'company-tabnine)
-(add-to-list 'company-backends #'ein:company-backend)
-
-(setq ein:completion-backend #'ein:use-company-backend)
-
-;; GENERAL COMPANY CONFIG
-
-;; Trigger completion immediately.
-(setq company-idle-delay 0.3)
-
-;; Number the candidates (use M-1, M-2 etc to select completions).
-(setq company-show-numbers 1)
-
-;; (require 'company-box)
-;; (add-hook 'company-mode-hook 'company-box-mode)
-
-
-;; Use the tab-and-go frontend.
-;; Allows TAB to select and complete at the same time.
-(company-tng-configure-default)
-(setq company-frontends
-      '(company-tng-frontend
-        company-pseudo-tooltip-frontend
-        company-echo-metadata-frontend))
 
 
 
@@ -126,7 +139,16 @@ There are two things you can do about this warning:
 
 
 ;; dired
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(use-package all-the-icons-dired
+  :ensure t
+  ;; :defer t
+  ;;:hook dired-mode
+  :config
+  (progn
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    )
+  )
+;; (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 ;; ivy icons -- don't like the spacing, so disabled.
 (use-package all-the-icons-ivy
@@ -144,30 +166,36 @@ There are two things you can do about this warning:
 
 
 (defun my-behavior-enable-doom-theme ()
-  (require 'doom-themes)
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (use-package doom-themes
+    :config
+    (progn 
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-  ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-  ;; may have their own settings.
-  ;; (load-theme 'doom-opera-light t)  
-  (load-theme 'doom-opera-light t)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;; (doom-themes-neotree-config)
-  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  ;; or for treemacs users
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
+      ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+      ;; may have their own settings.
+      ;; (load-theme 'doom-opera-light t)  
+      (load-theme 'doom-opera-light t)
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      ;; (doom-themes-neotree-config)
+      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      ;; or for treemacs users
+      (doom-themes-treemacs-config)
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config)
+      )
+    )
   )
+
 
 (defun my-behavior-enable-centaur-tabs ()
   ;; config of centaur-tabls
   (use-package centaur-tabs
-    :demand
+    :ensure t
+    :demand    
     :config
     (centaur-tabs-mode t)
     :bind
@@ -190,7 +218,13 @@ There are two things you can do about this warning:
   )
 
 (defun my-behavior-without-graphic ()
-  (load-theme 'zenburn)
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (progn
+      (load-theme 'zenburn)
+      )
+    )  
   )
 
 
@@ -336,9 +370,27 @@ There are two things you can do about this warning:
 
 
 ;; undo tree
-(global-undo-tree-mode t)
-(setq undo-tree-visualizer-relative-timestamps t)
-(setq undo-tree-visualizer-timestamps t)
+
+(use-package undo-tree
+  :ensure t
+  :config
+  (progn
+    (global-undo-tree-mode t)
+    (setq undo-tree-visualizer-relative-timestamps t)
+    (setq undo-tree-visualizer-timestamps t)
+   )
+  )
+
+(use-package yaml-mode
+  :ensure t
+  :defer t
+  :mode (
+	 "\\.yaml\\'"
+	 "\\.yml\\'"
+	 )
+  )
+
+
 ;; (use-package undo-tree
 ;;           :defer t
 ;;           :ensure t
@@ -416,8 +468,6 @@ There are two things you can do about this warning:
 (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
 
 
-;; adding company mode to emacs lisp
-(add-hook 'emacs-lisp-mode-hook #'company-mode)
 
 
 ;; autopair
@@ -595,6 +645,7 @@ There are two things you can do about this warning:
 (use-package gnuplot-mode
   ;; :defer t
   :ensure t
+  :mode ("\\.gnu\\'")
   :init
   (progn
     (add-to-list 'auto-mode-alist '("\\.gnu\\'" . gnuplot-mode))
