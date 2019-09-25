@@ -267,7 +267,7 @@ There are two things you can do about this warning:
   :ensure t
   :config
   (progn
-    (global-set-key (kbd "C-M-'") 'avy-goto-char-2)
+    (global-set-key (kbd "C-\"") 'avy-goto-char-2)
     (setq avy-all-windows 'all-frames)
     ) ;;-timer  
   )		       
