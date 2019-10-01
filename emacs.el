@@ -280,7 +280,7 @@ There are two things you can do about this warning:
       '((swiper          . nil)
         (complete-symbol . ivy-posframe-display-at-point)
         (counsel-M-x     . ivy-posframe-display-at-point)
-        (t               . ivy-posframe-display)))
+        (t               . nil)))
     (ivy-posframe-mode 1)    
     )
   )
