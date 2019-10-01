@@ -2,6 +2,7 @@
 ;; Local Variables:
 ;; eval: (emacs-lisp-mode)
 ;; End:
+;;; Code:
 
 (defconst *start-time* (current-time)) ;; record start time to time .emacs load time
 
@@ -35,7 +36,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -61,7 +62,7 @@ There are two things you can do about this warning:
 		     ;; undo-tree ;; moved below
 		     ;; autopair ;; removed
 		     ;; gnuplot-mode ;; moved below
-		     markdown-mode
+		     ;; markdown-mode ;; moved below
 		     auctex
 		     latex-preview-pane
 		     ;; yaml-mode ;; moved below
@@ -81,7 +82,7 @@ There are two things you can do about this warning:
 ; activate all the packages (in particular autoloads)
 (package-initialize)
 
-; fetch the list of packages available 
+; fetch the list of packages available
 (unless package-archive-contents
   (package-refresh-contents))
 
@@ -248,7 +249,7 @@ There are two things you can do about this warning:
     (global-set-key "\C-s" 'swiper)
     (global-set-key (kbd "C-c C-r") 'ivy-resume)
     (global-set-key (kbd "<f6>") 'ivy-resume)
-    ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     (global-set-key (kbd "<f1> f") 'counsel-describe-function)
     (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
@@ -261,7 +262,28 @@ There are two things you can do about this warning:
     (global-set-key (kbd "C-x l") 'counsel-locate)
     ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-   ))
+    ))
+
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+
+(use-package ivy-posframe
+  :ensure t
+  :config
+  (progn
+    ;; Different command can use different display function.
+    (setq ivy-posframe-display-functions-alist
+      '((swiper          . nil)
+        (complete-symbol . ivy-posframe-display-at-point)
+        (counsel-M-x     . ivy-posframe-display-at-point)
+        (t               . ivy-posframe-display)))
+    (ivy-posframe-mode 1)    
+    )
+  )
 
 ;; avy
 (use-package avy
@@ -312,9 +334,10 @@ There are two things you can do about this warning:
 ;; (require 'helm-config)
 (use-package helm
   :ensure t
+  :defer t
   :config
   (progn
-    (helm-mode 1)
+    (helm-mode 0)
     ;; (helm-autoresize-mode 1)
     ;; (setq helm-display-function #'helm-display-buffer-popup-frame)
     ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
@@ -392,6 +415,12 @@ There are two things you can do about this warning:
 	 "\\.yaml\\'"
 	 "\\.yml\\'"
 	 )
+  )
+
+(use-package markdown-mode
+  :ensure t
+  :defer t
+  :mode ("\\.md\\'" "\\.MD\\'")
   )
 
 
@@ -712,7 +741,7 @@ If BUFFER is displayed in an existing window, select that window instead."
     ))
 
 (defun my-open-shell-if-closed-else-my-switch-there ()
-  "todo"
+  "Tries to move to an open shell or moves there"
   (interactive)
    (if (get-buffer "*shell*")
        (my-switch-to-buffer "*shell*")
