@@ -18,11 +18,10 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 
 ## Comes with
 + IDE: treemacs, icons, centaur tabs (all enabled by default in display-graphic)
-+ default themes: gui/display-graphic: `doom-opera-light`, terminal: `zenburn`
++ default themes: gui/display-graphic: `doom-one`, terminal: `zenburn`
 + modeline: doom 
 + company, company-tabnine
-+ helm, with fuzzy matching for `helm-M-x` 
-+ swiper for anything else than <kbd>M-x</kbd>
++ swiper for anything + avy-posframe 
 + avy
 + Editing: autopair, undo-tree, highlight-parentheses
 + Python: elpy, ein, company enabled
@@ -31,7 +30,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + Other modes: gnuplot-mode, yaml-mode, markdown-mode
 
 ## Some keybindings
-+ <kbd>M-x</kbd>: `helm-m-x`
++ <kbd>M-x</kbd>: `swiper-m-x`
 + <kbd>C-o</kbd>: `occur`
 + <kbd>f5</kbd>: `compile` 
 + <kbd>f7</kbd>/<kbd>C-f7</kbd>: `winner-undo`/`winner-redo`
