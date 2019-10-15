@@ -23,7 +23,7 @@ There are two things you can do about this warning:
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
-(package-initialize)
+;; (package-initialize)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -661,8 +661,8 @@ There are two things you can do about this warning:
 (add-hook 'window-setup-hook #'delete-other-window-if-one-buffer-open)
 
 (use-package rainbow-delimiters
-  :ensure t
-  :defer t
+  :ensure t  
+  ;; :defer t
   :init
   (progn
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
