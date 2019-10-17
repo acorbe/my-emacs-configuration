@@ -3,7 +3,6 @@
 ;; eval: (emacs-lisp-mode)
 ;; End:
 ;;; Code:
-
 (defconst *start-time* (current-time)) ;; record start time to time .emacs load time
 
 (require 'package)
@@ -106,8 +105,10 @@ There are two things you can do about this warning:
 (require 'cl)
 
 
+
 (use-package company
   :ensure t
+  ;; :hook (prog-mode latex-mode)
   :config
   (progn
     (add-to-list 'company-backends #'ein:company-backend)
@@ -142,15 +143,23 @@ There are two things you can do about this warning:
 
 
 (use-package treemacs
-  :ensure t)
+  :ensure t
+  :bind
+  (:map global-map
+        ([f8] . treemacs)
+	)
+  )
 
 
 (use-package treemacs-icons-dired
   :after treemacs dired
   :ensure t
-  :config (treemacs-icons-dired-mode))
+  
+  ;; :config (treemacs-icons-dired-mode) ;; this conflicts with normal icons
+  )
 
 (use-package all-the-icons-gnus
+  :disabled t
   :ensure t)
 
 ;; remove welcome screen
@@ -163,15 +172,15 @@ There are two things you can do about this warning:
 
 ;; dired
 (use-package all-the-icons-dired
-  :ensure t
+  :ensure t  
   ;; :defer t
-  ;;:hook dired-mode
-  :config
-  (progn
-    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-    )
+  :hook (dired-mode . all-the-icons-dired-mode)
+  ;; :config
+  ;; (progn
+  ;;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  ;;   )
   )
-;; (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+
 
 ;; ivy icons -- don't like the spacing, so disabled.
 (use-package all-the-icons-ivy
@@ -219,19 +228,23 @@ There are two things you can do about this warning:
   ;; config of centaur-tabls
   (use-package centaur-tabs
     :ensure t
-    :demand    
+    :demand
+    :bind (
+	   ("C-<prior>" . centaur-tabs-backward)
+	   ("C-<next>" . centaur-tabs-forward)
+	   )
+
     :config
-    (centaur-tabs-mode t)
-    :bind
-    ("C-<prior>" . centaur-tabs-backward)
-    ("C-<next>" . centaur-tabs-forward))
-  (centaur-tabs-headline-match)
-  (setq centaur-tabs-style "bar")
-  (setq centaur-tabs-set-icons t)
-  ;;(setq centaur-tabs-gray-out-icons 'buffer)
-  (setq centaur-tabs-set-bar 'left)
-  (setq centaur-tabs-set-modified-marker t)
-  
+    (progn   
+      (centaur-tabs-mode t)
+      (centaur-tabs-headline-match)
+      (setq centaur-tabs-style "bar")
+      (setq centaur-tabs-set-icons t)
+      ;;(setq centaur-tabs-gray-out-icons 'buffer)
+      (setq centaur-tabs-set-bar 'left)
+      (setq centaur-tabs-set-modified-marker t)
+      )  
+    )
   )
 
 ;; behavior with or without GUI (display-graphic-p)
@@ -469,56 +482,56 @@ There are two things you can do about this warning:
 ;; gets activated by another package (Gnus, auth-source, ...).
 ;; (setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/workspace/cedet/cedet-devel-load.el")
 
-(setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/ce.el")
-;;   "the path of the cedet loadable .el file. Change if needed."
-(message (concat "your CEDET path is" CEDET_PATH_cedet_dev_load_el))
+;; (setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/ce.el")
+;; ;;   "the path of the cedet loadable .el file. Change if needed."
+;; (message (concat "your CEDET path is" CEDET_PATH_cedet_dev_load_el))
 
-(if (file-exists-p CEDET_PATH_cedet_dev_load_el)
-    (progn
-      (message "your CEDET path exists. Loading...")
-      (load-file CEDET_PATH_cedet_dev_load_el)
+;; (if (eq 0 1) ;; (file-exists-p CEDET_PATH_cedet_dev_load_el)
+;;     (progn
+;;       (message "your CEDET path exists. Loading...")
+;;       (load-file CEDET_PATH_cedet_dev_load_el)
 
-      ;; Add further minor-modes to be enabled by semantic-mode.
-      ;; See doc-string of `semantic-default-submodes' for other things
-      ;; you can use here.
-      ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
-      ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode)
-      ;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
-      ;; (setq semantic-complete-inline-analyzer-displayor-class
-      ;;       'semantic-displayor-tooltip)
+;;       ;; Add further minor-modes to be enabled by semantic-mode.
+;;       ;; See doc-string of `semantic-default-submodes' for other things
+;;       ;; you can use here.
+;;       ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
+;;       ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode)
+;;       ;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
+;;       ;; (setq semantic-complete-inline-analyzer-displayor-class
+;;       ;;       'semantic-displayor-tooltip)
 
-      (if (fboundp 'semantic-load-enable-code-helpers)
-	  ;; checks whether semantic-load-enable-code-helpers from CEDET exists, if yes it loads it
-	  (progn
-	    (message "cedet:semantic-load-enable-code-helpers found. enabling")
-	    (semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion
-	    )
-	(message "cedet:semantic-load-enable-code-helpers NOT FOUND.")
-	)
+;;       (if (fboundp 'semantic-load-enable-code-helpers)
+;; 	  ;; checks whether semantic-load-enable-code-helpers from CEDET exists, if yes it loads it
+;; 	  (progn
+;; 	    (message "cedet:semantic-load-enable-code-helpers found. enabling")
+;; 	    (semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion
+;; 	    )
+;; 	(message "cedet:semantic-load-enable-code-helpers NOT FOUND.")
+;; 	)
       
-      (if (boundp 'global-srecode-minor-mode)
-	  ;; checks whether global-srecode-minor-mode from CEDET exists
-	  (progn
-	    (message "cedet:global-srecode-minor-mode found. enabling")
-	    (global-srecode-minor-mode 1)            ; Enable template insertion menu     
-	    )
-	(message "cedet:global-srecode-minor-mode NOT FOUND.")
-	)
-      )
-  (progn 
-   (message "your CEDET path does not exist. Download it from: http://cedet.sourceforge.net/setup.shtml and make it.")
-   )
-  )
+;;       (if (boundp 'global-srecode-minor-mode)
+;; 	  ;; checks whether global-srecode-minor-mode from CEDET exists
+;; 	  (progn
+;; 	    (message "cedet:global-srecode-minor-mode found. enabling")
+;; 	    (global-srecode-minor-mode 1)            ; Enable template insertion menu     
+;; 	    )
+;; 	(message "cedet:global-srecode-minor-mode NOT FOUND.")
+;; 	)
+;;       )
+;;   (progn 
+;;    (message "your CEDET path does not exist. Download it from: http://cedet.sourceforge.net/setup.shtml and make it.")
+;;    )
+;;   )
 
-;; Enable Semantic
-(semantic-mode 1)
 ;; Enable EDE (Project Management) features - This adds a menu named: "Developement"
 ;; (global-ede-mode 1)
 ;;
 
 (defun my-behavior-custom-company-cpp-mode ()
-  (company-mode 1)
-  (company-semantic 1)
+  ;; (company-mode 1) ;; should be already enabled by prog-mode
+  ;; Enable Semantic
+  (semantic-mode 1)
+  ;; (company-semantic 1)
   )
 
 (add-hook 'c++-mode-hook #'my-behavior-custom-company-cpp-mode)
@@ -555,7 +568,8 @@ There are two things you can do about this warning:
 
 ;; anyway loaded by elpy.
 (use-package yasnippet
-  :ensure t  
+  :ensure t
+  :defer 10
   :config
   (progn
     (yas-global-mode 1)
@@ -646,9 +660,9 @@ There are two things you can do about this warning:
     ;; 	 )
     )
 (use-package gscholar-bibtex
-  :ensure t  
-  :config
-  ;; gscholar-bibtex
+  :ensure t
+  :hook latex-mode 
+  :config  
   (progn
     (setq gscholar-bibtex-default-source "Google Scholar")
     )
@@ -682,13 +696,17 @@ There are two things you can do about this warning:
 (use-package pdf-tools  
   :if (memq window-system '(x))
   :ensure t
-  ;; :magic ("%PDF" . pdf-view-mode)
-  :defer 2
-  :init
+  :magic ("%PDF" . pdf-view-mode)
+  :defer 
+  :config
   (progn
-    (pdf-tools-install :no-query)
+    (pdf-tools-install :no-query) ;; :no-query
     (add-hook 'pdf-view-mode-hook 'auto-revert-mode)
-    )  
+    )
+  ;; :mode (
+  ;; 	 "\\.PDF\\'"
+  ;; 	 "\\.pdf\\'"
+  ;; 	 )
   )
 
 
@@ -740,10 +758,12 @@ There are two things you can do about this warning:
 
 (use-package shell-pop
   :ensure t
-  :config
-  (progn
-    (global-set-key (kbd "<C-M-return>") 'shell-pop)
-    ))
+  :bind (("<C-M-return>" . shell-pop))
+  ;; :config
+  ;; (progn
+  ;;   (global-set-key (kbd "<C-M-return>") 'shell-pop)
+  ;;   )
+  )
 
 (use-package gnuplot-mode
   ;; :defer t
@@ -784,15 +804,28 @@ There are two things you can do about this warning:
 (use-package esup
   :ensure t)
 
+;; (use-package flycheck
+;;   :ensure t
+;;   :init (global-flycheck-mode))
+
 (use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
+  :demand t
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-mode))
+
+(use-package flycheck-inline
+  :demand t
+  :require flycheck 
+  :init
+  (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 
 
 (use-package polymode
+  :defer
   :ensure t)
 
 (use-package poly-markdown
+  :defer
   :ensure t)
 
 (use-package wttrin
@@ -846,7 +879,7 @@ If BUFFER is displayed in an existing window, select that window instead."
 ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
 
 ;; treemacs appear/disappears with F8
-(global-set-key (kbd "<f8>") 'treemacs)
+;; (global-set-key (kbd "<f8>") 'treemacs)
 (global-set-key (kbd "S-<f8>") 'centaur-tabs-mode)
 
 ;; ace window shortcut
