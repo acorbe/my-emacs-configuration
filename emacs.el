@@ -35,8 +35,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company
-	    ))))
+    (wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -183,12 +182,21 @@ There are two things you can do about this warning:
 
 
 ;; ivy icons -- don't like the spacing, so disabled.
-(use-package all-the-icons-ivy
+;; (use-package all-the-icons-ivy
+;;   :ensure t
+;;   :defer t
+;;   ;; :disabled t
+;;   :config
+;;   (all-the-icons-ivy-setup))
+
+(use-package ivy-rich
   :ensure t
-  :defer t
-  :disabled t
-  :config
-  (all-the-icons-ivy-setup))
+  :after (ivy)
+  :init
+  (setq ivy-rich-path-style 'abbrev
+        ivy-virtual-abbreviate 'full)
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  :config (ivy-rich-mode 1))
 
 
 ;; (if (display-graphic-p) 
