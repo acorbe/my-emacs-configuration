@@ -199,7 +199,8 @@ There are two things you can do about this warning:
 
 (defun my-behavior-enable-doom-theme ()
   (use-package doom-themes
-    :config
+    :defer
+    :init
     (progn 
       ;; Global settings (defaults)
       (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -228,12 +229,15 @@ There are two things you can do about this warning:
   ;; config of centaur-tabls
   (use-package centaur-tabs
     :ensure t
-    :demand
+    ;; :demand
     :bind (
+	   ;; (global-set-key (kbd "S-<f8>") 'centaur-tabs-mode)
 	   ("C-<prior>" . centaur-tabs-backward)
 	   ("C-<next>" . centaur-tabs-forward)
+	   ("S-<f8>" . centaur-tabs-mode)
 	   )
 
+    :hook (after-init . centaur-tabs-mode)
     :config
     (progn   
       (centaur-tabs-mode t)
@@ -374,6 +378,7 @@ There are two things you can do about this warning:
 ;; (require 'helm-config)
 (use-package helm
   :ensure t
+  :disabled
   :defer t
   :config
   (progn
@@ -569,7 +574,7 @@ There are two things you can do about this warning:
 ;; anyway loaded by elpy.
 (use-package yasnippet
   :ensure t
-  :defer 10
+  :defer 6
   :config
   (progn
     (yas-global-mode 1)
@@ -809,15 +814,17 @@ There are two things you can do about this warning:
 ;;   :init (global-flycheck-mode))
 
 (use-package flycheck
-  :demand t
-  :init
-  (add-hook 'prog-mode-hook 'flycheck-mode))
+  :ensure t
+  :hook ('prog-mode . flycheck-mode)
+  ;; :init
+  ;; (add-hook 'prog-mode-hook 'flycheck-mode)
+  )
 
-(use-package flycheck-inline
-  :demand t
-  :require flycheck 
-  :init
-  (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
+;; (use-package flycheck-inline
+;;   :demand t
+;;   :require flycheck 
+;;   :init
+;;   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 
 
 (use-package polymode
@@ -880,7 +887,7 @@ If BUFFER is displayed in an existing window, select that window instead."
 
 ;; treemacs appear/disappears with F8
 ;; (global-set-key (kbd "<f8>") 'treemacs)
-(global-set-key (kbd "S-<f8>") 'centaur-tabs-mode)
+;; (global-set-key (kbd "S-<f8>") 'centaur-tabs-mode)
 
 ;; ace window shortcut
 (global-set-key (kbd "M-p") 'ace-window)
