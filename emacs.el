@@ -36,7 +36,8 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company
+	    ))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -51,11 +52,12 @@ There are two things you can do about this warning:
 		     ;; doom-modeline - moved below
 		     ;; doom-themes
 		     use-package
-		     all-the-icons-gnus
+		     ;; all-the-icons-gnus
 		     ;; all-the-icons-dired ;; moved below
 		     ;; all-the-icons-ivy ;; moved below
-		     treemacs-icons-dired
-		     treemacs centaur-tabs
+		     ;; treemacs-icons-dired
+		     ;; treemacs
+		     ;; centaur-tabs
 		     ;; company-tabnine ;; removed
 		     ;; company ;; moved below
 		     ;; helm ;; moved below
@@ -63,21 +65,23 @@ There are two things you can do about this warning:
 		     ;; autopair ;; removed
 		     ;; gnuplot-mode ;; moved below
 		     ;; markdown-mode ;; moved below
-		     auctex
-		     latex-preview-pane
+		     ;; auctex ;; moved below
+		     ;; latex-preview-pane ;; disabled below
 		     ;; yaml-mode ;; moved below
 		     ;; elpy ;; moved below
 		     ;; highlight-parentheses ;; moved below
 		     ;; magit ;; moved below
 		     ;; company-box
-		     ein
+		     ;; ein
 		     ;; framemove
-		     gscholar-bibtex
+		     ;; gscholar-bibtex ;; set below
 		     ;; zenburn-theme ;; moved below
-		     cmake-mode cmake-font-lock
+		     ;; cmake-mode cmake-font-lock
 		     ;; swiper ;; moved below
-		     ivy counsel
+		     ;; ivy
+		     ;; counsel
 		     ))
+(defconst *start-time-after-half-block* (current-time)) 
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -90,6 +94,9 @@ There are two things you can do about this warning:
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
+
+
+(defconst *start-time-after-first-block* (current-time)) 
 
 ;; SOME INSTALLATION STEPS:
 ;; all the icons: M-x all-the-icons-install-fonts
@@ -134,9 +141,24 @@ There are two things you can do about this warning:
 
 
 
+(use-package treemacs
+  :ensure t)
+
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config (treemacs-icons-dired-mode))
+
+(use-package all-the-icons-gnus
+  :ensure t)
 
 ;; remove welcome screen
 (setq inhibit-startup-screen t)
+
+(use-package ein
+  :ensure t
+  :commands (ein:notebooklist-open))
 
 
 ;; dired
@@ -216,7 +238,7 @@ There are two things you can do about this warning:
 (defun my-behavior-with-graphic ()
   (my-behavior-enable-centaur-tabs)  
   (my-behavior-enable-doom-theme)
-  (treemacs)
+  ;;(treemacs)
   )
 
 (defun my-behavior-without-graphic ()
@@ -236,6 +258,11 @@ There are two things you can do about this warning:
   (my-behavior-without-graphic)
   )
 
+
+(use-package ivy
+  :ensure t)
+(use-package counsel
+  :ensure t)
 
 (use-package swiper
   :ensure t
@@ -440,7 +467,9 @@ There are two things you can do about this warning:
 ;; See cedet/common/cedet.info for configuration details.
 ;; IMPORTANT: Tou must place this *before* any CEDET component
 ;; gets activated by another package (Gnus, auth-source, ...).
-(setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/workspace/cedet/cedet-devel-load.el")
+;; (setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/workspace/cedet/cedet-devel-load.el")
+
+(setq CEDET_PATH_cedet_dev_load_el '"/home/acorbe/ce.el")
 ;;   "the path of the cedet loadable .el file. Change if needed."
 (message (concat "your CEDET path is" CEDET_PATH_cedet_dev_load_el))
 
@@ -496,9 +525,6 @@ There are two things you can do about this warning:
 (add-hook 'c-mode-hook #'my-behavior-custom-company-cpp-mode)
 
 
-;;cmake
-(autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
-(add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
 
 
 
@@ -523,7 +549,8 @@ There are two things you can do about this warning:
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 
-(use-package yasnippet-snippets         ; Collection of snippets  
+(use-package yasnippet-snippets         ; Collection of snippets
+  :defer 5
   :ensure t)
 
 ;; anyway loaded by elpy.
@@ -596,22 +623,67 @@ There are two things you can do about this warning:
 
 
 ;; auctex
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+(use-package tex-mode
+  :ensure auctex
+  ;; :defer t
+  :init
+  (progn
+    (setq TeX-auto-save t)
+    (setq TeX-parse-self t)
+    (setq-default TeX-master nil)
 
-(add-hook 'LaTeX-mode-hook 'visual-line-mode)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(setq reftex-plug-into-AUCTeX t)
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+    (setq reftex-plug-into-AUCTeX t)
+    )
+    ;; :mode (
+    ;; 	   "\\.tex\\'"
+    ;; 	   "\\.TEX\\'"
+    ;; 	   "\\.bib\\'"	 
+    ;; 	 )
+    )
+(use-package gscholar-bibtex
+  :ensure t  
+  :config
+  ;; gscholar-bibtex
+  (progn
+    (setq gscholar-bibtex-default-source "Google Scholar")
+    )
+  )
+
+(use-package latex-preview-pane
+  :ensure t
+  :disabled t)
+
+(use-package cmake-mode
+  :ensure t
+  :mode "CMakeLists.txt")
+
+(use-package cmake-font-lock
+  :ensure t
+  :hook cmake-mode
+  :init
+  (progn
+    (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+    )
+  )
+
+;;cmake
+
+
+
+
 
 ;; aim -- pdf tools installs itself, including pdf-tools-install, if needed. Only on linux.
 (use-package pdf-tools  
   :if (memq window-system '(x))
   :ensure t
   ;; :magic ("%PDF" . pdf-view-mode)
+  :defer 2
   :init
   (progn
     (pdf-tools-install :no-query)
@@ -620,8 +692,6 @@ There are two things you can do about this warning:
   )
 
 
-;; gscholar-bibtex
-(setq gscholar-bibtex-default-source "Google Scholar")
 
 
 
@@ -831,4 +901,9 @@ If BUFFER is displayed in an existing window, select that window instead."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-(message ".emacs loaded in %s seconds" (mapconcat 'int-to-string (rest (time-since *start-time*)) "."))
+(message ".emacs. load: %s s; half: %s s; first  %s s."
+	 (mapconcat 'int-to-string (rest (time-since *start-time*)) "." )
+	 (mapconcat 'int-to-string (rest (time-since *start-time-after-half-block*)) "." )
+	 (mapconcat 'int-to-string (rest (time-since *start-time-after-first-block*)) "." )
+	 )
+	 
