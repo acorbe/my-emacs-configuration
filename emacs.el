@@ -101,13 +101,17 @@ There are two things you can do about this warning:
 ;; M-x company-tabnine-install-binary
 
 
+;; Don’t compact font caches during GC.
+(setq inhibit-compacting-font-caches t)
+
 (require 'cl)
 
 
 
 (use-package company
   :ensure t
-  ;; :hook (prog-mode latex-mode)
+  :hook ((prog-mode . company-mode)
+	 (latex-mode . company-mode))
   :config
   (progn
     (add-to-list 'company-backends #'ein:company-backend)
@@ -261,7 +265,7 @@ There are two things you can do about this warning:
 
 ;; behavior with or without GUI (display-graphic-p)
 (defun my-behavior-with-graphic ()
-  (my-behavior-enable-centaur-tabs)  
+  ;; (my-behavior-enable-centaur-tabs)  
   (my-behavior-enable-doom-theme)
   ;;(treemacs)
   )
@@ -358,11 +362,13 @@ There are two things you can do about this warning:
 
 ;; doom-modeline
 (use-package doom-modeline
-      :ensure t
-      :hook (after-init . doom-modeline-mode)
-      :config
-      (progn
-	(setq doom-modeline-height 25)))
+  :ensure t
+  ;; :disabled
+  :hook (after-init . doom-modeline-mode)
+  ;;:defer 2
+  :config
+  (progn
+    (setq doom-modeline-height 25)))
 
 
 ;; disables the traditional toolbar
@@ -582,7 +588,7 @@ There are two things you can do about this warning:
 ;; anyway loaded by elpy.
 (use-package yasnippet
   :ensure t
-  :defer 6
+  :defer 3
   :config
   (progn
     (yas-global-mode 1)
