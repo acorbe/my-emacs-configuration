@@ -188,18 +188,40 @@ There are two things you can do about this warning:
 ;; ivy icons -- don't like the spacing, so disabled.
 ;; (use-package all-the-icons-ivy
 ;;   :ensure t
-;;   :defer t
-;;   ;; :disabled t
+;;   ;; :defer t
+;;   :disabled t
 ;;   :config
 ;;   (all-the-icons-ivy-setup))
+
+(defun ivy-rich-switch-buffer-icon (candidate)
+     (with-current-buffer
+   	  (get-buffer candidate)
+	(let ((icon (all-the-icons-icon-for-mode major-mode)))
+	  (if (symbolp icon)
+	      (all-the-icons-icon-for-mode 'fundamental-mode)
+	    icon))))
 
 (use-package ivy-rich
   :ensure t
   :after (ivy)
   :init
-  (setq ivy-rich-path-style 'abbrev
-        ivy-virtual-abbreviate 'full)
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  (progn 
+    (setq ivy-rich-path-style 'abbrev
+	  ivy-virtual-abbreviate 'full)
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+    (setq ivy-rich--display-transformers-list
+      '(ivy-switch-buffer
+        (:columns
+         ((ivy-rich-switch-buffer-icon :width 2)
+          (ivy-rich-candidate (:width 30))
+          (ivy-rich-switch-buffer-size (:width 7))
+          (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+          (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+          (ivy-rich-switch-buffer-project (:width 15 :face success))
+          (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+         :predicate
+         (lambda (cand) (get-buffer cand)))))
+    )
   :config (ivy-rich-mode 1))
 
 
@@ -218,6 +240,7 @@ There are two things you can do about this warning:
       (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
+      
       ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
       ;; may have their own settings.
       ;; (load-theme 'doom-opera-light t)  
@@ -841,13 +864,13 @@ There are two things you can do about this warning:
 ;;   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 
 
-(use-package polymode
-  :defer
-  :ensure t)
+;; (use-package polymode
+;;   :defer
+;;   :ensure t)
 
-(use-package poly-markdown
-  :defer
-  :ensure t)
+;; (use-package poly-markdown
+;;   :defer
+;;   :ensure t)
 
 (use-package wttrin
   :ensure t
