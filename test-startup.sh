@@ -14,3 +14,4 @@ ${EMACS:=emacs} -nw --batch \
                            (load-file user-init-file)
                            (run-hooks (quote after-init-hook)))'
 echo "Startup successful"
+
