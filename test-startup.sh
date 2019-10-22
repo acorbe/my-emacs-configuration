@@ -15,3 +15,4 @@ ${EMACS:=emacs} -nw --batch \
                            (run-hooks (quote after-init-hook)))'
 echo "Startup successful"
 
+
