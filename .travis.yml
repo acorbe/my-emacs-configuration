@@ -1,5 +1,7 @@
 language: nix
 
+## refs https://github.com/purcell/nix-emacs-ci/blob/master/travis-install
+
 os:
   - linux
   - osx
