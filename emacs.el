@@ -391,7 +391,14 @@ There are two things you can do about this warning:
   ;;:defer 2
   :config
   (progn
-    (setq doom-modeline-height 25)))
+    (setq doom-modeline-height 25)
+    ;; Whether display icons in mode-line or not.
+    (setq doom-modeline-icon (display-graphic-p))
+    ;; Whether display the icon for major mode. It respects `doom-modeline-icon'.
+    (setq doom-modeline-major-mode-icon t)
+    ;; If non-nil, a word count will be added to the selection-info modeline segment.
+    (setq doom-modeline-enable-word-count t)
+    ))
 
 
 ;; disables the traditional toolbar
@@ -506,17 +513,6 @@ There are two things you can do about this warning:
   )
 
 
-;; (use-package undo-tree
-;;           :defer t
-;;           :ensure t
-;;           :diminish undo-tree-mode
-;;           :idle
-;;           (progn
-;;             (global-undo-tree-mode)
-;;             (setq undo-tree-visualizer-timestamps t)
-;;                 (setq undo-tree-visualizer-diff t)))   
-
-
 ;; CEDET
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
@@ -599,7 +595,8 @@ There are two things you can do about this warning:
 
 ;; trying deferred elpy
 ;; https://emacs.stackexchange.com/a/50757/8641
-(use-package elpy :ensure t
+(use-package elpy
+  :ensure t
   :defer t
   :init
   (advice-add 'python-mode :before 'elpy-enable))
@@ -712,7 +709,11 @@ There are two things you can do about this warning:
 
 (use-package langtool
   :ensure t
-  :hook latex-mode)
+  :hook latex-mode
+  :init  
+  (setq langtool-language-tool-jar "/home/acorbe/Downloads/LanguageTool-4.7/languagetool-commandline.jar")  
+  (setq langtool-default-language "en-US")
+  )
 
 (use-package wc-mode
   :ensure t)
