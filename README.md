@@ -4,6 +4,9 @@ This is my current emacs configuration, updated as it goes. I use emacs for near
 
 Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook.org/index.php/2019/02/install-gnu-emacs-26-1-ubuntu-18-04-16-04-18-10/),  [macos](https://emacs.stackexchange.com/questions/37240/how-install-emacs-26-or-whatever-latest-ver-on-mac)).
 
+![tests](https://travis-ci.org/acorbe/my-emacs-configuration.svg?branch=master)
+
+
 ## Installation
 
 + run `link_this_config.sh` or replace your `~/.emacs` file with the file in this repo (in this case, make sure your `~/.emacs.d` is empty). 

@@ -203,7 +203,7 @@ There are two things you can do about this warning:
 
 (use-package ivy-rich
   :ensure t
-  :after (ivy)
+  :after (ivy counsel)
   :init
   (progn 
     (setq ivy-rich-path-style 'abbrev
