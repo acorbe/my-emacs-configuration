@@ -35,11 +35,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-<<<<<<< HEAD
-    (dockerfile-mode json-mode toml-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
-=======
-    (gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
->>>>>>> c61d3850aec278c965fe9e5e1d5bc281ab37d867
+    (tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -523,6 +519,15 @@ There are two things you can do about this warning:
          ("\\.tmpl\\'" . json-mode)
          ("\\.eslintrc\\'" . json-mode))
   :config (setq-default js-indent-level 2))
+
+(use-package json-navigator
+  :ensure t
+  )
+
+(use-package tree-mode
+  :ensure t
+  )
+
 
 (use-package toml-mode
   :ensure t
