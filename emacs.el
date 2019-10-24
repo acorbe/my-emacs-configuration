@@ -518,7 +518,7 @@ There are two things you can do about this warning:
   :mode (("\\.json\\'" . json-mode)
          ("\\.tmpl\\'" . json-mode)
          ("\\.eslintrc\\'" . json-mode))
-  :config (setq-default js-indent-level 2))
+  :config (setq-default js-indent-level 4))
 
 (use-package json-navigator
   :ensure t
