@@ -35,7 +35,11 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
+<<<<<<< HEAD
     (dockerfile-mode json-mode toml-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+=======
+    (gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+>>>>>>> c61d3850aec278c965fe9e5e1d5bc281ab37d867
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -203,7 +207,7 @@ There are two things you can do about this warning:
 
 (use-package ivy-rich
   :ensure t
-  :after (ivy)
+  :after (ivy counsel)
   :init
   (progn 
     (setq ivy-rich-path-style 'abbrev
@@ -233,6 +237,7 @@ There are two things you can do about this warning:
 
 (defun my-behavior-enable-doom-theme ()
   (use-package doom-themes
+    :ensure t
     :defer
     :init
     (progn 
@@ -630,9 +635,84 @@ There are two things you can do about this warning:
     ;;   (validate-setq yas-snippet-dirs '(yasnippet-snippets-dir)))
     ))
 
-(use-package hydra
-  :defer t
-  :ensure t)
+
+(defun hydra-move-splitter-left (arg)
+  "Move window splitter left."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (shrink-window-horizontally arg)
+    (enlarge-window-horizontally arg)))
+
+(defun hydra-move-splitter-right (arg)
+  "Move window splitter right."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (enlarge-window-horizontally arg)
+    (shrink-window-horizontally arg)))
+
+(defun hydra-move-splitter-up (arg)
+  "Move window splitter up."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (enlarge-window arg)
+    (shrink-window arg)))
+
+(defun hydra-move-splitter-down (arg)
+  "Move window splitter down."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (shrink-window arg)
+    (enlarge-window arg)))
+
+(use-package hydra  
+  :ensure t
+  :config
+  (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+  (defhydra hydra-splitter (global-map "C-M-s")
+    "splitter"
+    ("h" hydra-move-splitter-left)
+    ("j" hydra-move-splitter-down)
+    ("k" hydra-move-splitter-up)
+    ("l" hydra-move-splitter-right))
+  (defhydra hydra-buffer-menu (:color pink
+                             :hint nil)
+  "
+^Mark^             ^Unmark^           ^Actions^          ^Search
+^^^^^^^^-----------------------------------------------------------------
+_m_: mark          _u_: unmark        _x_: execute       _R_: re-isearch
+_s_: save          _U_: unmark up     _b_: bury          _I_: isearch
+_d_: delete        ^ ^                _g_: refresh       _O_: multi-occur
+_D_: delete up     ^ ^                _T_: files only: % -28`Buffer-menu-files-only
+_~_: modified
+"
+  ("m" Buffer-menu-mark)
+  ("u" Buffer-menu-unmark)
+  ("U" Buffer-menu-backup-unmark)
+  ("d" Buffer-menu-delete)
+  ("D" Buffer-menu-delete-backwards)
+  ("s" Buffer-menu-save)
+  ("~" Buffer-menu-not-modified)
+  ("x" Buffer-menu-execute)
+  ("b" Buffer-menu-bury)
+  ("g" revert-buffer)
+  ("T" Buffer-menu-toggle-files-only)
+  ("O" Buffer-menu-multi-occur :color blue)
+  ("I" Buffer-menu-isearch-buffers :color blue)
+  ("R" Buffer-menu-isearch-buffers-regexp :color blue)
+  ("c" nil "cancel")
+  ("v" Buffer-menu-select "select" :color blue)
+  ("o" Buffer-menu-other-window "other-window" :color blue)
+  ("q" quit-window "quit" :color blue))
+
+  (define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
+  )
 
 ;; (use-package rainbow-mode
 ;;   :ensure t)
@@ -720,6 +800,10 @@ There are two things you can do about this warning:
     (setq gscholar-bibtex-default-source "Google Scholar")
     )
   )
+
+(use-package latex-extra
+  :ensure t
+  :hook (LaTeX-mode . latex-extra-mode))
 
 (use-package langtool
   :ensure t
@@ -899,6 +983,19 @@ There are two things you can do about this warning:
   :ensure t
   :defer t)
 
+(use-package gitlab-ci-mode
+  :ensure t
+  :defer t
+  :mode
+  ("\\.gitlab-ci.yaml\\'"
+   "\\.gitlab-ci.yml\\'")
+  )
+
+(use-package gitlab-ci-mode-flycheck
+  :after flycheck gitlab-ci-mode
+  :init
+  (gitlab-ci-mode-flycheck-enable))
+
 ;; https://emacs.stackexchange.com/a/21154/8641
 (defun my-switch-to-buffer (buffer)
   "Display BUFFER in the selected window.
@@ -922,6 +1019,7 @@ If BUFFER is displayed in an existing window, select that window instead."
      (shell)
      )   
   )
+
 
 
 
