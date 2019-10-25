@@ -168,9 +168,12 @@ There are two things you can do about this warning:
 ;; remove welcome screen
 (setq inhibit-startup-screen t)
 
-(use-package ein
-  :ensure t
-  :commands (ein:notebooklist-open))
+(unless (version< emacs-version "25.3")
+  ;;only for emacs 25.3 and older
+  (use-package ein
+    :ensure t
+    :commands (ein:notebooklist-open))
+  )
 
 
 ;; dired
