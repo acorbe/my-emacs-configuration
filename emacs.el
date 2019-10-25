@@ -144,23 +144,23 @@ There are two things you can do about this warning:
 ;; (add-to-list 'company-backends #'company-tabnine)
 
 
-
-(use-package treemacs
-  :ensure t
-  :bind
-  (:map global-map
-        ([f8] . treemacs)
-	)
-  )
-
-
-(use-package treemacs-icons-dired
-  :after treemacs dired
-  :ensure t
+(unless (version< emacs-version "25.1")
+  ;; only from emacs 25.2 onwards
+  (use-package treemacs
+    :ensure t
+    :bind
+    (:map global-map
+	  ([f8] . treemacs)
+	  )
+    )
+  (use-package treemacs-icons-dired
+    :after treemacs dired
+    :ensure t
+    
+    ;; :config (treemacs-icons-dired-mode) ;; this conflicts with normal icons
+    )
+)
   
-  ;; :config (treemacs-icons-dired-mode) ;; this conflicts with normal icons
-  )
-
 (use-package all-the-icons-gnus
   :disabled t
   :ensure t)
