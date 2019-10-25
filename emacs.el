@@ -160,10 +160,7 @@ There are two things you can do about this warning:
     ;; :config (treemacs-icons-dired-mode) ;; this conflicts with normal icons
     )
 )
-  
-(use-package all-the-icons-gnus
-  :disabled t
-  :ensure t)
+
 
 ;; remove welcome screen
 (setq inhibit-startup-screen t)
@@ -175,16 +172,21 @@ There are two things you can do about this warning:
     :commands (ein:notebooklist-open))
   )
 
-
-;; dired
-(use-package all-the-icons-dired
-  :ensure t  
-  ;; :defer t
-  :hook (dired-mode . all-the-icons-dired-mode)
-  ;; :config
-  ;; (progn
-  ;;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-  ;;   )
+(unless (version< emacs-version "24.4")
+  ;; icons only for emacs >= 24.4
+  (use-package all-the-icons-gnus
+    :disabled t
+    :ensure t)
+  ;; dired
+  (use-package all-the-icons-dired
+    :ensure t  
+    ;; :defer t
+    :hook (dired-mode . all-the-icons-dired-mode)
+    ;; :config
+    ;; (progn
+    ;;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    ;;   )
+    )
   )
 
 
