@@ -991,11 +991,13 @@ _~_: modified
 ;;   :ensure t
 ;;   :init (global-flycheck-mode))
 
-(use-package flycheck
-  :ensure t
-  :hook ('prog-mode . flycheck-mode)
-  ;; :init
-  ;; (add-hook 'prog-mode-hook 'flycheck-mode)
+(unless (version< emacs-version "24.4")
+  (use-package flycheck
+    :ensure t
+    :hook ('prog-mode . flycheck-mode)
+    ;; :init
+    ;; (add-hook 'prog-mode-hook 'flycheck-mode)
+    )
   )
 
 ;; (use-package flycheck-inline
