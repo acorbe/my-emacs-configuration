@@ -204,29 +204,31 @@ There are two things you can do about this warning:
 	      (all-the-icons-icon-for-mode 'fundamental-mode)
 	    icon))))
 
-(use-package ivy-rich
-  :ensure t
-  :after (ivy counsel)
-  :init
-  (progn 
-    (setq ivy-rich-path-style 'abbrev
-	  ivy-virtual-abbreviate 'full)
-    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-    (setq ivy-rich--display-transformers-list
-      '(ivy-switch-buffer
-        (:columns
-         ((ivy-rich-switch-buffer-icon :width 2)
-          (ivy-rich-candidate (:width 30))
-          (ivy-rich-switch-buffer-size (:width 7))
-          (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-          (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-          (ivy-rich-switch-buffer-project (:width 15 :face success))
-          (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-         :predicate
-         (lambda (cand) (get-buffer cand)))))
-    )
-  :config (ivy-rich-mode 1))
 
+(unless (version< emacs-version "25.1")
+  (use-package ivy-rich
+    :ensure t
+    :after (ivy counsel)
+    :init
+    (progn 
+      (setq ivy-rich-path-style 'abbrev
+	    ivy-virtual-abbreviate 'full)
+      (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+      (setq ivy-rich--display-transformers-list
+	    '(ivy-switch-buffer
+	      (:columns
+	       ((ivy-rich-switch-buffer-icon :width 2)
+		(ivy-rich-candidate (:width 30))
+		(ivy-rich-switch-buffer-size (:width 7))
+		(ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+		(ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+		(ivy-rich-switch-buffer-project (:width 15 :face success))
+		(ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+	       :predicate
+	       (lambda (cand) (get-buffer cand)))))
+      )
+    :config (ivy-rich-mode 1))
+)
 
 ;; (if (display-graphic-p) 
 ;;     (enable-theme 'solarized) 
@@ -389,9 +391,11 @@ There are two things you can do about this warning:
   :ensure t)
 
 ;; magit
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
+(unless (version< emacs-version "25.1")
+  (use-package magit
+    :ensure t
+    :bind (("C-x g" . magit-status)))
+  )
 
 ;; doom-modeline
 (use-package doom-modeline
