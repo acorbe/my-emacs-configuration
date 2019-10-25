@@ -397,23 +397,24 @@ There are two things you can do about this warning:
     :bind (("C-x g" . magit-status)))
   )
 
-;; doom-modeline
-(use-package doom-modeline
-  :ensure t
-  ;; :disabled
-  :hook (after-init . doom-modeline-mode)
-  ;;:defer 2
-  :config
-  (progn
-    (setq doom-modeline-height 25)
-    ;; Whether display icons in mode-line or not.
-    (setq doom-modeline-icon (display-graphic-p))
-    ;; Whether display the icon for major mode. It respects `doom-modeline-icon'.
-    (setq doom-modeline-major-mode-icon t)
-    ;; If non-nil, a word count will be added to the selection-info modeline segment.
-    (setq doom-modeline-enable-word-count t)
-    ))
-
+(unless (version< emacs-version "25.1")
+  ;; doom-modeline
+  (use-package doom-modeline
+    :ensure t
+    ;; :disabled
+    :hook (after-init . doom-modeline-mode)
+    ;;:defer 2
+    :config
+    (progn
+      (setq doom-modeline-height 25)
+      ;; Whether display icons in mode-line or not.
+      (setq doom-modeline-icon (display-graphic-p))
+      ;; Whether display the icon for major mode. It respects `doom-modeline-icon'.
+      (setq doom-modeline-major-mode-icon t)
+      ;; If non-nil, a word count will be added to the selection-info modeline segment.
+      (setq doom-modeline-enable-word-count t)
+      ))
+)
 
 ;; disables the traditional toolbar
 (tool-bar-mode -1) 
