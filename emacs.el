@@ -642,14 +642,17 @@ There are two things you can do about this warning:
 ;;   :init
 ;;   (elpy-enable))
 
+(unless (version< emacs-version "24.4")
 ;; trying deferred elpy
 ;; https://emacs.stackexchange.com/a/50757/8641
-(use-package elpy
-  :ensure t
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
+  (use-package elpy
+    :ensure t
+    :defer t
+    :init
+    (advice-add 'python-mode :before 'elpy-enable))
+)
 
+  
 (use-package yasnippet-snippets         ; Collection of snippets
   :defer 5
   :ensure t)
