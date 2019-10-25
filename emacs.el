@@ -144,7 +144,7 @@ There are two things you can do about this warning:
 ;; (add-to-list 'company-backends #'company-tabnine)
 
 
-(unless (version< emacs-version "25.1")
+(unless (version< emacs-version "25.2")
   ;; only from emacs 25.2 onwards
   (use-package treemacs
     :ensure t
