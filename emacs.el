@@ -534,14 +534,16 @@ There are two things you can do about this warning:
          ("\\.eslintrc\\'" . json-mode))
   :config (setq-default js-indent-level 4))
 
-(use-package json-navigator
-  :ensure t
-  )
 
-(use-package tree-mode
-  :ensure t
-  )
+(unless (version< emacs-version "25.1")
+  (use-package json-navigator
+    :ensure t
+    )
 
+  (use-package tree-mode
+    :ensure t
+    )
+)
 
 (use-package toml-mode
   :ensure t
