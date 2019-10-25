@@ -527,18 +527,28 @@ There are two things you can do about this warning:
 	 )
   )
 
-(use-package markdown-mode
-  :ensure t
-  :defer t
-  :mode ("\\.md\\'" "\\.MD\\'")
-  )
+(unless (version< emacs-version "24.4")
+  (use-package markdown-mode
+    :ensure t
+    :defer t
+    :mode ("\\.md\\'" "\\.MD\\'")
+    )
 
-(use-package json-mode
+  (use-package json-mode
+    :ensure t
+    :mode (("\\.json\\'" . json-mode)
+	   ("\\.tmpl\\'" . json-mode)
+	   ("\\.eslintrc\\'" . json-mode))
+    :config (setq-default js-indent-level 4))
+  (use-package toml-mode
   :ensure t
-  :mode (("\\.json\\'" . json-mode)
-         ("\\.tmpl\\'" . json-mode)
-         ("\\.eslintrc\\'" . json-mode))
-  :config (setq-default js-indent-level 4))
+  :mode ("\\.toml\\'" . toml-mode))
+
+  (use-package dockerfile-mode
+  :ensure t
+  :mode ("Dockerfile\\'" . dockerfile-mode))
+
+)
 
 
 (unless (version< emacs-version "25.1")
@@ -551,13 +561,6 @@ There are two things you can do about this warning:
     )
 )
 
-(use-package toml-mode
-  :ensure t
-  :mode ("\\.toml\\'" . toml-mode))
-
-(use-package dockerfile-mode
-  :ensure t
-  :mode ("Dockerfile\\'" . dockerfile-mode))
 
 ;; CEDET
 ;; Load CEDET.
