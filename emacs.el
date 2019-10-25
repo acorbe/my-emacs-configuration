@@ -984,8 +984,10 @@ _~_: modified
     (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")
     )) 
 
-(use-package esup
-  :ensure t)
+(unless (version< emacs-version "24.4")
+  (use-package esup
+    :ensure t)
+  )
 
 ;; (use-package flycheck
 ;;   :ensure t
