@@ -24,6 +24,9 @@ install:
 script:
   ./test-startup.sh
 
+allow_failures:
+  - env: EMACS_CI=emacs-24-3
+
 # Local Variables:
 # indent-tabs-mode: nil
 # coding: utf-8
