@@ -351,19 +351,25 @@ There are two things you can do about this warning:
 ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
 ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
 
-(use-package ivy-posframe
-  :ensure t
-  :config
-  (progn
-    ;; Different command can use different display function.
-    (setq ivy-posframe-display-functions-alist
-      '((swiper          . nil)
-        (complete-symbol . ivy-posframe-display-at-point)
-        (counsel-M-x     . ivy-posframe-display-at-point)
-        (t               . nil)))
-    (ivy-posframe-mode 1)    
-    )
-  )
+
+(unless (version< emacs-version "26.0")  
+   (use-package ivy-posframe
+     :ensure t
+     :config
+     (progn
+       ;; Different command can use different display function.
+       (setq ivy-posframe-display-functions-alist
+	     '((swiper          . nil)
+	       (complete-symbol . ivy-posframe-display-at-point)
+	       (counsel-M-x     . ivy-posframe-display-at-point)
+	       (t               . nil)))
+       (ivy-posframe-mode 1)    
+       )
+     )
+   )
+  
+
+
 
 ;; avy
 (use-package avy
