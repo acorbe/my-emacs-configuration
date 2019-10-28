@@ -2,9 +2,9 @@
 
 This is my current emacs configuration, updated as it goes. I use emacs for nearly everything in my  work as a [reasearcher, which entails a lot of software development :).](http://corbetta.phys.tue.nl) 
 
-Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook.org/index.php/2019/02/install-gnu-emacs-26-1-ubuntu-18-04-16-04-18-10/),  [macos](https://emacs.stackexchange.com/questions/37240/how-install-emacs-26-or-whatever-latest-ver-on-mac)).
+Tested in CI to run on all emacs versions between 24.4 and 26.3 (how to install latest emacs: [linux](http://ubuntuhandbook.org/index.php/2019/02/install-gnu-emacs-26-1-ubuntu-18-04-16-04-18-10/),  [macos](https://emacs.stackexchange.com/questions/37240/how-install-emacs-26-or-whatever-latest-ver-on-mac)).
 
-![tests](https://travis-ci.org/acorbe/my-emacs-configuration.svg?branch=master) [travis](https://travis-ci.org/acorbe/my-emacs-configuration)
+[![tests](https://travis-ci.org/acorbe/my-emacs-configuration.svg?branch=master)](https://travis-ci.org/acorbe/my-emacs-configuration)
 
 
 ## Installation
@@ -23,7 +23,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + IDE: treemacs, icons, centaur tabs (all enabled by default in display-graphic)
 + default themes: gui/display-graphic: `doom-one`, terminal: `zenburn`
 + modeline: doom 
-+ company, company-tabnine
++ company, (company-tabnine)
 + swiper for anything + avy-posframe 
 + avy
 + Editing: autopair, undo-tree, highlight-parentheses
@@ -39,7 +39,7 @@ Tested on emacs 26.2 (how to install latest emacs: [linux](http://ubuntuhandbook
 + <kbd>f7</kbd>/<kbd>C-f7</kbd>: `winner-undo`/`winner-redo`
 + <kbd>C-S-arrows</kbd>: resize window
 + <kbd>C-x t</kbd>: opens or moves to terminal
-+ <kbd>M-'</kbd>: `avy-goto-char-2`
++ <kbd>M-"</kbd>: `avy-goto-char-2`
 + <kbd>f8</kbd>: `treemacs`
 + <kbd>S-f8</kbd>: `centaur-tabs`
 + <kbd>C-=</kbd>/<kbd>C-M-=</kbd>: `previous-multiframe-window` (cycles between both frames and windows)
