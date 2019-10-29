@@ -1139,6 +1139,48 @@ If BUFFER is displayed in an existing window, select that window instead."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
+;;; more functions for personal use to be deployed to packages
+(defun AC-auto-count-words ()
+  "doc"
+  (interactive)
+  (save-excursion
+    (search-backward "% AUTOCOUNT-START" )
+    (forward-line)
+    ;; (message (point))
+    (let  ((rstart (point)))
+      ;; (setq rstart (point))
+      ;; (message "easy message")
+      ;; (message "starting point: %d" rstart )
+      (search-forward "% AUTOCOUNT-END")
+      (forward-line -1)
+      (end-of-line)
+      (let ((rend (point)))
+	;; (message "ending point: %d" rend )
+	(let ((loc-word-count   (count-words rstart rend) ))
+	  (message "word count: %d" loc-word-count )
+	  (goto-char rstart)
+	  (forward-line -1)
+	  (kill-line)
+	  (insert "% AUTOCOUNT-START wc: " (number-to-string loc-word-count))
+	  )	
+	)
+      )
+    )
+  )
+
+(defun AC-wrap-with-autocount ()
+  (interactive)
+  (save-excursion
+    (goto-char (region-end))
+    (insert "\n% AUTOCOUNT-END")
+    (goto-char (region-beginning))
+    (insert "% AUTOCOUNT-START\n")
+    (end-of-line)
+    (AC-auto-count-words)
+    )
+  )
+
+
 (message ".emacs. load: %s s; half: %s s; first  %s s."
 	 (mapconcat 'int-to-string (rest (time-since *start-time*)) "." )
 	 (mapconcat 'int-to-string (rest (time-since *start-time-after-half-block*)) "." )
