@@ -1141,7 +1141,7 @@ If BUFFER is displayed in an existing window, select that window instead."
 
 ;;; more functions for personal use to be deployed to packages
 (defun AC-auto-count-words (&optional message-wc)
-  "Auto count words between the tags '% AUTOCOUNT-START' and '% AUTOCOUNT-END'.
+"Auto count words between the tags '% AUTOCOUNT-START' and '% AUTOCOUNT-END'
 MESSAGE-WC=1 defines whether the wordcount is printed."  
   (interactive)
   (unless message-wc
@@ -1275,6 +1275,17 @@ MESSAGE-WC=1 defines whether the wordcount is printed."
     )
   )
 
+(defun AC-count-periodic-refresh ()
+  "Enable autorefresh of the word count."
+  (interactive)
+  (save-excursion
+    (run-with-idle-timer 4 t
+			 (lambda () 
+			   (AC-count-at-barriers)		       
+			   )
+			 )
+    )
+  )
 
 (message ".emacs. load: %s s; half: %s s; first  %s s."
 	 (mapconcat 'int-to-string (rest (time-since *start-time*)) "." )
