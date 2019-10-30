@@ -35,7 +35,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1140,24 +1140,24 @@ If BUFFER is displayed in an existing window, select that window instead."
 (put 'downcase-region 'disabled nil)
 
 ;;; more functions for personal use to be deployed to packages
-(defun AC-auto-count-words ()
-  "doc"
+(defun AC-auto-count-words (&optional message-wc)
+  "Auto count words between the tags '% AUTOCOUNT-START' and '% AUTOCOUNT-END'.
+MESSAGE-WC=1 defines whether the wordcount is printed."  
   (interactive)
+  (unless message-wc
+    (setq message-wc 1))  
   (save-excursion
     (search-backward "% AUTOCOUNT-START" )
     (forward-line)
-    ;; (message (point))
     (let  ((rstart (point)))
-      ;; (setq rstart (point))
-      ;; (message "easy message")
-      ;; (message "starting point: %d" rstart )
       (search-forward "% AUTOCOUNT-END")
       (forward-line -1)
       (end-of-line)
       (let ((rend (point)))
-	;; (message "ending point: %d" rend )
 	(let ((loc-word-count   (count-words rstart rend) ))
-	  (message "word count: %d" loc-word-count )
+	  (if (= message-wc 1)
+	      (message "word count: %d" loc-word-count )
+	      )
 	  (goto-char rstart)
 	  (forward-line -1)
 	  (kill-line)
@@ -1169,6 +1169,7 @@ If BUFFER is displayed in an existing window, select that window instead."
   )
 
 (defun AC-wrap-with-autocount ()
+  "Wraps the current selection with the autocount."
   (interactive)
   (save-excursion
     (goto-char (region-end))
@@ -1180,10 +1181,103 @@ If BUFFER is displayed in an existing window, select that window instead."
     )
   )
 
+(defun AC-count-autocount-words (&optional message-wc)
+  "Perform a reduce-sum of all the autocounted sections."
+  (interactive)
+  (unless message-wc
+    (setq message-wc 1))  
+  (save-excursion
+    ;;(beginning-of-buffer)
+    (goto-char (point-min))
+    (setq AC-count-partials '())
+    (while (search-forward "% AUTOCOUNT-START" nil t)
+      (let ((just-after-autocount-tag (point)))
+	(forward-line)
+	(AC-auto-count-words -1)
+	(goto-char just-after-autocount-tag)
+	)
+      (beginning-of-line)
+      (let (( cur-line (thing-at-point 'line t)  ))
+	
+	(string-match ".*wc: \\([0-9]+\\)\n" cur-line)	
+	
+	(setq current-wc-region
+	      (string-to-number (match-string 1 cur-line))
+	      )
+	
+	(add-to-list 'AC-count-partials current-wc-region t)
+	(when (= message-wc 1)
+	  (message "autocount words current count: %d (%d)" current-wc-region
+		   (apply '+ AC-count-partials))
+	  )
+	)
+      (forward-line)
+      )
+    (when (= message-wc 1)
+      (message "autocount words total count: %d" (apply '+ AC-count-partials))
+      )
+    )
+  )
+
+(defun AC-count-at-barriers ()
+  "Partial reductions at barriers."
+  (interactive)
+  (save-excursion
+    (AC-count-autocount-words -1)
+    (goto-char (point-min))
+    (setq AC-count-partials '())
+    (setq AC-count-partials-barriers '())
+    (setq AC-count-autocount-report-points '())
+    (while (re-search-forward "% AUTOCOUNT-START\\|% AUTOCOUNT-BARRIER\\|% AUTOCOUNT-REPORT" nil t)
+      (beginning-of-line)
+      (let (( cur-line (thing-at-point 'line t)  ))
+	(cond
+	 ((string-match-p "% AUTOCOUNT-START" cur-line)
+	  (progn 
+	    (string-match ".*wc: \\([0-9]+\\)\n" cur-line)
+	    (add-to-list 'AC-count-partials
+			 (string-to-number (match-string 1 cur-line))
+			 t
+			 )	      
+	    )
+	  )
+	 ( (string-match-p "% AUTOCOUNT-BARRIER" cur-line)	  
+	   (progn ;; we are in the barrier
+	     (setq AC-partial-sum (apply '+ AC-count-partials))
+	     (add-to-list 'AC-count-partials-barriers AC-partial-sum t)
+	     (message "partial sum: %d" AC-partial-sum)
+	     (beginning-of-line)
+	     (kill-line)
+	     (insert "% AUTOCOUNT-BARRIER wc: "  (number-to-string AC-partial-sum) )
+	     (setq AC-count-partials '())
+	     )
+	   )
+	 ( (string-match-p "% AUTOCOUNT-REPORT" cur-line)
+	   (progn
+	     (beginning-of-line)
+	     (add-to-list 'AC-count-autocount-report-points (point) t)
+	     )
+	   )
+	 )
+	)
+      (forward-line)
+      )
+    (dolist (loc-pt AC-count-autocount-report-points)
+      (goto-char loc-pt)
+      (beginning-of-line)
+      (kill-line)      
+      (insert "% AUTOCOUNT-REPORT wc-at-barriers: " (mapconcat 'number-to-string AC-count-partials-barriers ", ") )
+      )
+    (message
+     "barrier counts: %s"
+     (mapconcat 'number-to-string AC-count-partials-barriers ", ")
+     )
+    )
+  )
+
 
 (message ".emacs. load: %s s; half: %s s; first  %s s."
 	 (mapconcat 'int-to-string (rest (time-since *start-time*)) "." )
 	 (mapconcat 'int-to-string (rest (time-since *start-time-after-half-block*)) "." )
 	 (mapconcat 'int-to-string (rest (time-since *start-time-after-first-block*)) "." )
 	 )
-	 
