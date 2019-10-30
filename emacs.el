@@ -1275,17 +1275,33 @@ MESSAGE-WC=1 defines whether the wordcount is printed."
     )
   )
 
+(defvar-local AC-count-timer nil "Buffer-local timer.")
+(defun AC-count-periodic-refresh-callback-for (buf)
+  (when (buffer-live-p buf)
+    (with-current-buffer buf
+      (AC-count-at-barriers)
+      )
+    )
+  )
+
+
 (defun AC-count-periodic-refresh ()
   "Enable autorefresh of the word count."
   (interactive)
   (save-excursion
-    (run-with-idle-timer 4 t
-			 (lambda () 
-			   (AC-count-at-barriers)		       
-			   )
-			 )
-    )
+    (setq AC-count-timer
+	  (run-with-idle-timer 5 t 'AC-count-periodic-refresh-callback-for (current-buffer)))
+    (add-hook 'kill-buffer-hook
+          (lambda () 
+            (when (timerp AC-count-timer) 
+              (cancel-timer my-local-timer))))
+   )
   )
+
+
+
+
+
 
 (message ".emacs. load: %s s; half: %s s; first  %s s."
 	 (mapconcat 'int-to-string (rest (time-since *start-time*)) "." )
