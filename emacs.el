@@ -5,6 +5,10 @@
 ;;; Code:
 (defconst *start-time* (current-time)) ;; record start time to time .emacs load time
 
+(when (version= "26.2" emacs-version)
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
+
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -35,7 +39,7 @@ There are two things you can do about this warning:
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (synosaurus dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -666,7 +670,13 @@ There are two things you can do about this warning:
 	     python-shell-completion-native-try-output-timeout))
 	(python-shell-completion-native-get-completions
 	 (get-buffer-process (current-buffer))
-	 nil "_"))))  
+	 nil "_"))))
+
+  (use-package python-docstring
+    :ensure t)
+  
+  (use-package sphinx-doc
+    :ensure t)
 )
 
   
