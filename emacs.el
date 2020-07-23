@@ -554,6 +554,10 @@ There are two things you can do about this warning:
 
 )
 
+;; (use-package hippie-expand)
+
+(global-set-key (kbd "C-`") #'hippie-expand)
+
 
 (unless (version< emacs-version "25.1")
   (use-package json-navigator
