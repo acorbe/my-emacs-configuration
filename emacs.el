@@ -34,12 +34,12 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default)))
+    ("f56eb33cd9f1e49c5df0080a3e8a292e83890a61a89bceeaa481a5f183e8e3ef" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default)))
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/workspace/my-org-mode/my-org.org")))
  '(package-selected-packages
    (quote
-    (markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
+    (company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -147,6 +147,10 @@ There are two things you can do about this warning:
 ;; (require 'company-tabnine)
 ;; (add-to-list 'company-backends #'company-tabnine)
 
+;; With use-package:
+;; (use-package company-box
+;;   :ensure t
+;;   :hook (company-mode . company-box-mode))
 
 (unless (version< emacs-version "25.2")
   ;; only from emacs 25.2 onwards
@@ -637,6 +641,7 @@ There are two things you can do about this warning:
 (add-hook 'c++-mode-hook #'my-behavior-custom-company-cpp-mode)
 (add-hook 'c-mode-hook #'my-behavior-custom-company-cpp-mode)
 
+;; (use-package company-capf)
 
 
 
@@ -655,33 +660,104 @@ There are two things you can do about this warning:
 ;;   :init
 ;;   (elpy-enable))
 
-(unless (version< emacs-version "24.4")
-;; trying deferred elpy
-;; https://emacs.stackexchange.com/a/50757/8641
-  (use-package elpy
-    :ensure t
-    :defer t
-    :init
-    (advice-add 'python-mode :before 'elpy-enable))
+;; (unless (version< emacs-version "24.4")
+;; ;; trying deferred elpy
+;; ;; https://emacs.stackexchange.com/a/50757/8641
+;;   (use-package elpy
+;;     :ensure t
+;;     :defer t
+;;     :init
+;;     (advice-add 'python-mode :before 'elpy-enable))
 
-  ;; removes python native completion warnings
-  ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
-  (with-eval-after-load 'python
-    (defun python-shell-completion-native-try ()
-      "Return non-nil if can trigger native completion."
-      (let ((python-shell-completion-native-enable t)
-	    (python-shell-completion-native-output-timeout
-	     python-shell-completion-native-try-output-timeout))
-	(python-shell-completion-native-get-completions
-	 (get-buffer-process (current-buffer))
-	 nil "_"))))
+;;   ;; removes python native completion warnings
+;;   ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+;;   (with-eval-after-load 'python
+;;     (defun python-shell-completion-native-try ()
+;;       "Return non-nil if can trigger native completion."
+;;       (let ((python-shell-completion-native-enable t)
+;; 	    (python-shell-completion-native-output-timeout
+;; 	     python-shell-completion-native-try-output-timeout))
+;; 	(python-shell-completion-native-get-completions
+;; 	 (get-buffer-process (current-buffer))
+;; 	 nil "_"))))
 
-  (use-package python-docstring
-    :ensure t)
+;;   (use-package python-docstring
+;;     :ensure t)
   
-  (use-package sphinx-doc
-    :ensure t)
-)
+;;   (use-package sphinx-doc
+;;     :ensure t)
+;; )
+
+
+;; lsp-mode
+
+;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+(setq lsp-keymap-prefix "C-l")
+
+(use-package lsp-mode
+    :ensure t
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	   (pyls-mode . lsp)
+	   ;;(latex-mode . lsp)
+            ;; if you want which-key integration
+            (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+
+(add-hook 'LaTeX-mode-hook 'lsp)
+
+;; optionally
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-sideline-ignore-duplicate t)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+;; if you are helm user
+;; (use-package helm-lsp :commands helm-lsp-workspace-symbol) ;
+;; if you are ivy user
+(use-package lsp-ivy
+  :ensure t
+  :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs
+  :ensure t
+  :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+(use-package dap-mode
+  :ensure t)
+;; (use-package dap-python
+;;   :ensure t) ;; to load the dap adapter for your language
+
+;; optional if you want which-key integration
+(use-package which-key
+  :ensure t
+  :config
+    (which-key-mode))
+
+(use-package jedi
+  :ensure t
+  :hook (python-mode))
+
+;; gives error when opening
+;; (use-package py-yapf
+;;   :ensure t
+;;   :hook (python-mode))
+
+
+;; (add-to-list 'load-path "/home/acorbe/Downloads/texlab-x86_64-linux/")
+;; (use-package lsp-latex
+;;   :ensure t
+
+;;   )
+;; (with-eval-after-load "tex-mode"
+;;   (add-hook 'tex-mode-hook 'lsp)
+;;   (add-hook 'latex-mode-hook 'lsp))
+
+;; ;; For bibtex
+;; (with-eval-after-load "bibtex"
+;;   (add-hook 'bibtex-mode-hook 'lsp))
+
+;; end lsp-mode
 
   
 (use-package yasnippet-snippets         ; Collection of snippets
@@ -866,6 +942,10 @@ _~_: modified
   (setq langtool-default-language "en-US")
   )
 
+(use-package company-auctex
+  :ensure t
+  :hook latex-mode)
+
 (use-package wc-mode
   :ensure t)
 
@@ -887,6 +967,8 @@ _~_: modified
     (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
     )
   )
+
+
 
 ;;cmake
 
