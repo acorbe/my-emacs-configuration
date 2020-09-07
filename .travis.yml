@@ -26,6 +26,8 @@ script:
 
 allow_failures:
   - env: EMACS_CI=emacs-24-3
+  - env: EMACS_CI=emacs-24-4
+  - env: EMACS_CI=emacs-24-5
 
 # Local Variables:
 # indent-tabs-mode: nil
