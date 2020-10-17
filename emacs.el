@@ -749,6 +749,7 @@ There are two things you can do about this warning:
       ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
       :config
       (setq lsp-ui-peek-enable t)
+      (setq lsp-ui-peek-always-show t)
       (setq lsp-ui-sideline-show-diagnostics t)
       (setq lsp-ui-doc-enable t)
       (setq lsp-ui-doc-delay 2)
