@@ -552,7 +552,7 @@ There are two things you can do about this warning:
 	 )
   )
 
-(unless (version< emacs-version "24.4")
+(unless (version< emacs-version "25.1")
   (use-package markdown-mode
     :ensure t
     :defer t
