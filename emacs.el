@@ -33,11 +33,11 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("f56eb33cd9f1e49c5df0080a3e8a292e83890a61a89bceeaa481a5f183e8e3ef" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default))
+   '("76bfa9318742342233d8b0b42e824130b3a50dcc732866ff8e47366aed69de11" "bb38670847b79d986a2cd21dfe1895a07d78fc67f16cb780253e23f1b40bdbd5" "f56eb33cd9f1e49c5df0080a3e8a292e83890a61a89bceeaa481a5f183e8e3ef" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default))
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/workspace/my-org-mode/my-org.org"))
  '(package-selected-packages
-   '(company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
+   '(projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -49,37 +49,7 @@ There are two things you can do about this warning:
 ;; deals internally with package list
 
 (setq package-list '(
-		     ;; doom-modeline - moved below
-		     ;; doom-themes
 		     use-package
-		     ;; all-the-icons-gnus
-		     ;; all-the-icons-dired ;; moved below
-		     ;; all-the-icons-ivy ;; moved below
-		     ;; treemacs-icons-dired
-		     ;; treemacs
-		     ;; centaur-tabs
-		     ;; company-tabnine ;; removed
-		     ;; company ;; moved below
-		     ;; helm ;; moved below
-		     ;; undo-tree ;; moved below
-		     ;; autopair ;; removed
-		     ;; gnuplot-mode ;; moved below
-		     ;; markdown-mode ;; moved below
-		     ;; auctex ;; moved below
-		     ;; latex-preview-pane ;; disabled below
-		     ;; yaml-mode ;; moved below
-		     ;; elpy ;; moved below
-		     ;; highlight-parentheses ;; moved below
-		     ;; magit ;; moved below
-		     ;; company-box
-		     ;; ein
-		     ;; framemove
-		     ;; gscholar-bibtex ;; set below
-		     ;; zenburn-theme ;; moved below
-		     ;; cmake-mode cmake-font-lock
-		     ;; swiper ;; moved below
-		     ;; ivy
-		     ;; counsel
 		     ))
 (defconst *start-time-after-half-block* (current-time)) 
 
@@ -264,7 +234,7 @@ There are two things you can do about this warning:
 
 (defun my-behavior-enable-doom-theme ()
   (use-package doom-themes
-    :ensure t
+    :ensure t    
     :defer
     :init
     (progn 
@@ -277,7 +247,7 @@ There are two things you can do about this warning:
       ;; may have their own settings.
       ;; (load-theme 'doom-opera-light t)  
       ;; (load-theme 'doom-opera-light t)
-      (load-theme 'doom-one t)
+      (load-theme 'doom-dark+ t)
       ;; Enable flashing mode-line on errors
       (doom-themes-visual-bell-config)
       ;; Enable custom neotree theme (all-the-icons must be installed!)
@@ -289,6 +259,10 @@ There are two things you can do about this warning:
       (doom-themes-org-config)
       )
     )
+  ;; (use-package vscode-dark-plus-theme
+  ;;   :ensure t
+  ;;   :disabled t 
+  ;;   )
   )
 
 
@@ -426,6 +400,8 @@ There are two things you can do about this warning:
   (use-package magit
     :ensure t
     :bind (("C-x g" . magit-status)))
+  (use-package projectile
+    :ensure t)
   )
 
 (unless (version< emacs-version "25.1")
@@ -681,7 +657,7 @@ There are two things you can do about this warning:
 
 
 (defvar use-elpy-python nil)
-(if use-elpy-python
+(if (or use-elpy-python (version< emacs-version "26.1"))
     (progn
       ;; elpy
       ;; (use-package elpy
@@ -739,10 +715,14 @@ There are two things you can do about this warning:
 	      (lambda ()
 		(local-set-key (kbd "M-q") 'lsp-format-buffer )))
 
+    
+
     ;; optionally
     (use-package lsp-ui
       :ensure t
       :commands lsp-ui-mode
+
+
       
       ;; :config
       ;; (setq lsp-ui-sideline-ignore-duplicate 0) ;;t
@@ -754,6 +734,10 @@ There are two things you can do about this warning:
       (setq lsp-ui-doc-enable t)
       (setq lsp-ui-doc-delay 2)
       (setq lsp-ui-doc-position 'bottom)
+      (setq lsp-ui-imenu-enable nil)
+      ;;(lsp-ui-imenu-mode)
+      ;;(add-hook 'lsp-mode-hook 'lsp-ui-imenu)
+      
       )
     ;; if you are helm user
     ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol) ;
@@ -764,7 +748,6 @@ There are two things you can do about this warning:
       :commands lsp-ivy-workspace-symbol)
     (use-package lsp-treemacs
       :ensure t
-      :disabled t
       :commands lsp-treemacs-errors-list)
 
     ;; optionally if you want to use debugger
@@ -791,8 +774,6 @@ There are two things you can do about this warning:
 
     )
   )
-
-
 
 
 
@@ -1014,6 +995,7 @@ _~_: modified
 (use-package cmake-font-lock
   :ensure t
   :hook cmake-mode
+  :disabled t 
   :init
   (progn
     (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
