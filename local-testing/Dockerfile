@@ -10,5 +10,7 @@ RUN nix-channel --update
 RUN nix-env -iA cachix -f https://cachix.org/api/v1/install
 RUN cachix use emacs-ci
 
-ADD test-startup.sh /root/test-startup.sh
 RUN nix-env -iA $EMACS_CI -f https://github.com/purcell/nix-emacs-ci/archive/master.tar.gz
+ADD initialize-docker.sh /root/initialize-docker.sh
+#test-startup.sh /root/test-startup.sh
+ENV TRAVIS 1
