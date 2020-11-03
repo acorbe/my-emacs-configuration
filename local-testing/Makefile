@@ -17,3 +17,6 @@ test-%: emacs-% ../emacs.el
 	echo "running emacs-$*"
 	docker run --rm -it -v ${ROOT_DIR}/..:/root/repo:ro emacs-testing:emacs-$* /bin/sh -c "cd /root; ./initialize-docker.sh" > $@
 #2>&1 | tee $@
+
+clean:
+	rm test-??-?
