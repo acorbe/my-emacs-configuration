@@ -37,7 +37,7 @@ There are two things you can do about this warning:
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/workspace/my-org-mode/my-org.org"))
  '(package-selected-packages
-   '(web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
+   '(auto-package-update auto-update-package auto-update-packages web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -428,6 +428,9 @@ There are two things you can do about this warning:
 
 ;; howdoi
 (use-package howdoi
+  :ensure t)
+
+(use-package auto-package-update
   :ensure t)
 
 
@@ -964,6 +967,7 @@ _~_: modified
   :config  
   (progn
     (setq gscholar-bibtex-default-source "Google Scholar")
+    (defalias 'gbib 'gscholar-bibtex)
     )
   )
 
