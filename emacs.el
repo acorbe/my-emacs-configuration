@@ -37,7 +37,7 @@ There are two things you can do about this warning:
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/workspace/my-org-mode/my-org.org"))
  '(package-selected-packages
-   '(auto-package-update auto-update-package auto-update-packages web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
+   '(dashboard julia-mode importmagic vterm auto-package-update auto-update-package auto-update-packages web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -154,6 +154,24 @@ There are two things you can do about this warning:
 ;; remove welcome screen
 (setq inhibit-startup-screen t)
 
+
+(use-package dashboard
+    :ensure t
+    :diminish dashboard-mode
+    :config
+    ;; (setq dashboard-banner-logo-title "your custom text")
+    ;; (setq dashboard-startup-banner "/path/to/image")
+    (setq dashboard-items '((recents  . 10)
+			    ;; (projects  . 5)
+                            ;; (bookmarks . 5)
+			    ))
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-navigator t)
+    (setq dashboard-set-footer nil)
+    (dashboard-setup-startup-hook))
+
+
 (use-package fira-code-mode
   :ensure t
   :disabled t
@@ -166,6 +184,9 @@ There are two things you can do about this warning:
   (use-package ein
     :ensure t
     :commands (ein:notebooklist-open))
+
+  (use-package vterm
+    :ensure t)
   )
 
 (unless (version< emacs-version "24.4")
@@ -540,6 +561,13 @@ There are two things you can do about this warning:
     :mode ("\\.md\\'" "\\.MD\\'")
     )
 
+  (use-package julia-mode
+    :ensure t
+    :defer t
+    :mode ("\\.jl\\'")
+    )
+
+  
   (use-package json-mode
     :ensure t
     :mode (("\\.json\\'" . json-mode)
@@ -697,7 +725,12 @@ There are two things you can do about this warning:
 	(use-package sphinx-doc
 	  :ensure t)
 	)
-      )
+        (use-package importmagic
+	  :ensure t
+	  :config
+	  (add-hook 'python-mode-hook 'importmagic-mode))
+      
+	)
   (progn
     ;; lsp-mode
 
@@ -981,7 +1014,7 @@ _~_: modified
   :ensure t
   :hook latex-mode
   :init  
-  (setq langtool-language-tool-jar "/home/acorbe/Downloads/LanguageTool-5.0/languagetool-commandline.jar")  
+  (setq langtool-language-tool-jar "/home/acorbe/workspace/my-emacs-configuration/LanguageTool-5.2/languagetool-commandline.jar")  
   (setq langtool-default-language "en-US")
   )
 
