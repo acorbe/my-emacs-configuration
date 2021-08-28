@@ -186,6 +186,7 @@ There are two things you can do about this warning:
     :commands (ein:notebooklist-open))
 
   (use-package vterm
+    :disabled t
     :ensure t)
   )
 
