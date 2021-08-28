@@ -816,18 +816,18 @@ There are two things you can do about this warning:
 
 
 
-;; (add-to-list 'load-path "/home/acorbe/Downloads/texlab-x86_64-linux/")
+(add-to-list 'load-path "/home/acorbe/Downloads/texlab-x86_64-linux/")
 ;; (use-package lsp-latex
 ;;   :ensure t
 
 ;;   )
-;; (with-eval-after-load "tex-mode"
-;;   (add-hook 'tex-mode-hook 'lsp)
-;;   (add-hook 'latex-mode-hook 'lsp))
+(with-eval-after-load "tex-mode"
+  (add-hook 'tex-mode-hook 'lsp)
+  (add-hook 'latex-mode-hook 'lsp))
 
-;; ;; For bibtex
-;; (with-eval-after-load "bibtex"
-;;   (add-hook 'bibtex-mode-hook 'lsp))
+;; For bibtex
+(with-eval-after-load "bibtex"
+  (add-hook 'bibtex-mode-hook 'lsp))
 
 ;; end lsp-mode
 
@@ -1191,7 +1191,30 @@ _~_: modified
 	    org-mode
 	    text-mode))
   (add-to-list 'flycheck-checkers 'proselint)
+  
+  (flycheck-define-checker tex-textidote
+    "A LaTeX grammar/spelling checker using textidote.
+
+    See https://github.com/sylvainhalle/textidote
+    https://github.com/sylvainhalle/textidote/issues/121#issuecomment-689069819
+    "
+    :modes (latex-mode plain-text-mode)
+    :command ("java" "-jar" (eval (expand-file-name "~/workspace/my-emacs-configuration/textidote/textidote.jar")) "--read-all"
+              "--check" (eval (if ispell-current-dictionary (substring ispell-current-dictionary 0 2) "en"))
+              "--no-color" source-inplace)
+    :error-patterns (
+                     (warning line-start "* L" line "C" column "-" (one-or-more alphanumeric) " "
+                              (message (one-or-more (not (any "]"))) "]")))
+    )
+  
+
+  (add-to-list 'flycheck-checkers   'tex-textidote)
+
+
+  
   )
+
+
 
 ;; (use-package flycheck-inline
 ;;   :demand t
