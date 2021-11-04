@@ -747,6 +747,10 @@ There are two things you can do about this warning:
              (lsp-mode . lsp-enable-which-key-integration))
       :commands lsp)
 
+    (setq gc-cons-threshold 100000000)
+    (setq read-process-output-max (* 1024 1024)) ;; 1mb
+    
+
     (add-hook 'LaTeX-mode-hook 'lsp)
     (add-hook 'python-mode-hook 'lsp)
     
@@ -831,6 +835,14 @@ There are two things you can do about this warning:
   :hook (text-mode . (lambda ()
                        (require 'lsp-ltex)
                        (lsp))))  ;; or lsp-deferred
+
+;; (use-package lsp-grammarly
+;;   :ensure t
+;;   :disabled t
+;;   :hook (text-mode . (lambda ()
+;;                        (require 'lsp-grammarly)
+;;                        (lsp))))  ; or lsp-deferred
+
 
 ;; For bibtex
 (with-eval-after-load "bibtex"
@@ -979,6 +991,14 @@ _~_: modified
     (when dir
       (concat dir "Makefile"))))
 
+
+(use-package cdlatex
+  :ensure t
+  :init
+  (progn
+    (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
+    ))
+  
 
 ;; auctex
 (use-package tex-mode
