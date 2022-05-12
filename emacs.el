@@ -37,7 +37,7 @@ There are two things you can do about this warning:
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/workspace/my-org-mode/my-org.org"))
  '(package-selected-packages
-   '(lsp-ltex dashboard julia-mode importmagic vterm auto-package-update auto-update-package auto-update-packages web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
+   '(org-roam lsp-ltex dashboard julia-mode importmagic vterm auto-package-update auto-update-package auto-update-packages web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -178,6 +178,37 @@ There are two things you can do about this warning:
   ;; :custom (fira-code-mode-disabled-ligatures '("[]" "x"))  ; ligatures you don't want
   :hook prog-mode) 
 
+(use-package org-roam
+  :ensure t)
+
+;; (make-directory "~/workspace/org-roam")
+;; (setq org-roam-directory (file-truename "~/workspace/org-roam"))
+;; (setq find-file-visit-truename t)
+;; (org-roam-db-autosync-mode)
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/workspace/org-roam/"))
+  ;; :hook (org-load . org-roam-mode)
+  ;;:hook (org-roam-backlinks-mode . visual-line-mode)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol)
+  
+  )
+;;('org-roam-mode-hook)
+;;(add-hook 'org-roam-mode-hook #'visual-line-mode)
 
 (unless (version< emacs-version "25.3")
   ;;only for emacs 25.3 and older
@@ -517,6 +548,26 @@ There are two things you can do about this warning:
   (global-highlight-parentheses-mode 1)
   )
 
+(use-package visual-fill-column
+  :ensure t
+  ;;:defer t
+  ;; :config
+  ;; (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+  ;;:hook visual-line-mode-hook
+  )
+
+
+
+(use-package adaptive-wrap
+  :ensure t
+  :defer t
+  )
+
+(add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+(add-hook 'visual-fill-column-mode-hook #'adaptive-wrap-prefix-mode)
+(add-hook 'org-mode-hook #'visual-line-mode)
+
+
 
 ;; tramp
 (setq tramp-default-method "ssh")
@@ -559,7 +610,7 @@ There are two things you can do about this warning:
   (use-package markdown-mode
     :ensure t
     :defer t
-    :mode ("\\.md\\'" "\\.MD\\'")
+    :mode ("\\.md\\'" "\\.MD\\'" "\\.md.template\\'")
     )
 
   (use-package julia-mode
@@ -1197,6 +1248,10 @@ _~_: modified
 ;; (use-package flycheck
 ;;   :ensure t
 ;;   :init (global-flycheck-mode))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
 
 (unless (version< emacs-version "24.4")
   (use-package flycheck
