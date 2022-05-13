@@ -210,6 +210,24 @@ There are two things you can do about this warning:
 ;;('org-roam-mode-hook)
 ;;(add-hook 'org-roam-mode-hook #'visual-line-mode)
 
+(use-package websocket
+    :ensure t
+    :after org-roam)
+
+(use-package org-roam-ui
+    :ensure t
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
+
 (unless (version< emacs-version "25.3")
   ;;only for emacs 25.3 and older
   (use-package ein
