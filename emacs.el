@@ -792,11 +792,12 @@ There are two things you can do about this warning:
 	       (get-buffer-process (current-buffer))
 	       nil "_"))))
 
-	(use-package python-docstring
-	  :ensure t)
 	
 	(use-package sphinx-doc
-	  :ensure t)
+	  :ensure t
+	  :config
+	  (add-hook 'python-mode-hook 'sphinx-doc-mode-hook))
+	  )
 	)
         (use-package importmagic
 	  :ensure t
