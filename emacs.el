@@ -33,7 +33,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76bfa9318742342233d8b0b42e824130b3a50dcc732866ff8e47366aed69de11" "bb38670847b79d986a2cd21dfe1895a07d78fc67f16cb780253e23f1b40bdbd5" "f56eb33cd9f1e49c5df0080a3e8a292e83890a61a89bceeaa481a5f183e8e3ef" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default))
+   '("2dc03dfb67fbcb7d9c487522c29b7582da20766c9998aaad5e5b63b5c27eec3f" "835868dcd17131ba8b9619d14c67c127aa18b90a82438c8613586331129dda63" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76bfa9318742342233d8b0b42e824130b3a50dcc732866ff8e47366aed69de11" "bb38670847b79d986a2cd21dfe1895a07d78fc67f16cb780253e23f1b40bdbd5" "f56eb33cd9f1e49c5df0080a3e8a292e83890a61a89bceeaa481a5f183e8e3ef" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "a7051d761a713aaf5b893c90eaba27463c791cd75d7257d3a8e66b0c8c346e77" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" "256bd513a9875cd855077162cdfee8d75b0ad7e18fe8b8cbc10412561fbef892" "1cfc3c062790a8d6f9ce677c50cf671609f45c32695778873b4a7619f1e749b5" "a6e3dec0d16222cc5747743c87ef7da79186f7282e2ec4ff74c7f08ed7fe28d2" "955426466aa729d7d32483d3b2408cf474a1332550ad364848d1dfe9eecc8a16" default))
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/workspace/my-org-mode/my-org.org"))
  '(package-selected-packages
@@ -209,6 +209,27 @@ There are two things you can do about this warning:
   )
 ;;('org-roam-mode-hook)
 ;;(add-hook 'org-roam-mode-hook #'visual-line-mode)
+(use-package minimap
+  :ensure t)
+
+
+(use-package websocket
+    :ensure t
+    :after org-roam)
+
+(use-package org-roam-ui
+    :ensure t
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
 
 (unless (version< emacs-version "25.3")
   ;;only for emacs 25.3 and older
@@ -771,11 +792,12 @@ There are two things you can do about this warning:
 	       (get-buffer-process (current-buffer))
 	       nil "_"))))
 
-	(use-package python-docstring
-	  :ensure t)
 	
 	(use-package sphinx-doc
-	  :ensure t)
+	  :ensure t
+	  :config
+	  (add-hook 'python-mode-hook 'sphinx-doc-mode-hook))
+	  )
 	)
         (use-package importmagic
 	  :ensure t
@@ -788,6 +810,17 @@ There are two things you can do about this warning:
 
     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
     (setq lsp-keymap-prefix "C-l")
+
+    (use-package python-docstring
+      :ensure t)
+    
+    (use-package sphinx-doc
+      :ensure t)
+    )
+    (use-package importmagic
+      :ensure t
+      :config
+      (add-hook 'python-mode-hook 'importmagic-mode))
 
     (use-package lsp-mode
       :ensure t
