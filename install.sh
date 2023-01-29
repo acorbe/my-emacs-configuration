@@ -1,7 +1,10 @@
 THIS_DIR=$(pwd)
 cd
-ln -s $THIS_DIR/literate_version_setup/emacs.el .emacs
+#mv .emacs .emacs.prior_install
+rm .emacs
+ln -s $THIS_DIR/literate-version-setup/emacs.el .emacs
 mkdir -p .emacs.d
 cd .emacs.d
-ln -s $THIS_DIR/literate_version_setup/early-init.el
+rm early-init.el
+ln -s $THIS_DIR/literate-version-setup/early-init.el
 cd $THIS_DIR
