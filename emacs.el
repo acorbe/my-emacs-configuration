@@ -37,7 +37,7 @@ There are two things you can do about this warning:
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/workspace/my-org-mode/my-org.org"))
  '(package-selected-packages
-   '(flycheck esup importmagic auto-update-package auto-update-packages vscode-dark-plus-theme lsp-latex py-yapf dap-pyls dap-python company-auctex zzz-to-char synosaurus sphinx-doc python-docstring python-docstrinc toml-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock elpy say-what-im-doing gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown zenburn dired-rainbow shell-pop rainbow-mode ag howdoi gscholar-bibtex jedi all-the-icons-gnus all-the-icons-ivy centaur-tabs company-tabnine)))
+   '(adaptive-wrap visual-fill-column org-roam lsp-ltex dashboard julia-mode importmagic vterm auto-package-update auto-update-package auto-update-packages web-mode projectile vscode-dark-plus-theme company-quickhelp rust-mode which-key company-box lsp-latex py-yapf dap-pyls dap-python dap-mode lsp-treemacs lsp-ivy lsp-ui lsp-mode company-auctex zzz-to-char markdown-mode synosaurus sphinx-doc python-docstring python-docstrinc dockerfile-mode toml-mode json-mode tree-mode json-navigator ejson-mode gnuplot-mode cmake-font-lock cmake-mode auctex elpy yaml-mode undo-tree highlight-parentheses magit counsel ivy-rich cdlatex say-what-im-doing latex-extra gitlab-ci-mode-flycheck gitlab-ci-mode encourage-mode wc-mode langtool wttrin ivy-posframe ivy-postframe poly-markdown flycheck zenburn esup dired-rainbow shell-pop rainbow-delimiters rainbow-mode ag howdoi yasnippet-snippets pdf-tools gscholar-bibtex jedi ein doom-modeline doom-themes all-the-icons-gnus all-the-icons-dired all-the-icons-ivy treemacs-icons-dired treemacs centaur-tabs use-package company-tabnine company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -462,7 +462,7 @@ There are two things you can do about this warning:
   :ensure t
   :config
   (progn
-    (global-set-key (kbd "C-\"") 'avy-goto-char-2)
+    (global-set-key (kbd "C-<") 'avy-goto-char-2)
     (setq avy-all-windows 'all-frames)
     ) ;;-timer  
   )		       
