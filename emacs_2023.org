@@ -74,7 +74,8 @@
 #+END_SRC
 
 
-Behavior of buffer switch and shell opening
+*** Behavior of buffer switch and shell opening
+I'd like to switch to an open shell if exists
 #+BEGIN_SRC emacs-lisp
   ;; https://emacs.stackexchange.com/a/21154/8641
   (defun my-switch-to-buffer (buffer)
@@ -105,6 +106,38 @@ Behavior of buffer switch and shell opening
        )   
     )
 #+END_SRC
+
+*** Makefile interactions and compilation behavior
+Close the compilatio window if compilation suceeded
+#+BEGIN_SRC emacs-lisp
+;; autocloses the compilation window after successful compilation
+(defun compile-autoclose (buffer string)
+  (cond ((string-match "finished" string)
+	 (bury-buffer "*compilation*")
+	 (winner-undo)
+	 (message "Build successful."))
+	(t
+	 (message "Compilation exited abnormally: %s" string))))
+(setq compilation-finish-functions 'compile-autoclose)
+
+#+END_SRC
+
+
+Use the makefile in this folder or above (disabled)
+#+BEGIN_SRC % emacs-lisp
+  ;; currently using the default behavior
+  ;; bind compiling with get-above-makefile to f5
+  ;; (global-set-key [f5] (lambda () (interactive) (compile (format
+  ;; 	   "make -f %s" (get-above-makefile)))))
+
+    ;; compile hacks -- makefile in current dir or upstaris. To be improved
+    (defun get-above-makefile ()
+      (let ((dir (locate-dominating-file "." "Makefile")))
+	(when dir
+	  (concat dir "Makefile"))))
+
+#+END_SRC
+
 
 ** icons setup
 #+BEGIN_SRC emacs-lisp
@@ -152,6 +185,30 @@ Behavior of buffer switch and shell opening
   (use-package magit
     :straight t
     :bind (("C-x g" . magit-status)))
+#+END_SRC
+
+** Visual line and adaptive wrap
+#+BEGIN_SRC emacs-lisp
+
+(use-package visual-fill-column
+  :straight t
+  ;;:defer t
+  ;; :config
+  ;; (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+  ;;:hook visual-line-mode-hook
+  )
+
+
+
+(use-package adaptive-wrap
+  :straight t
+  :defer t
+  )
+
+(add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+(add-hook 'visual-fill-column-mode-hook #'adaptive-wrap-prefix-mode)
+
+
 #+END_SRC
 
 * Themes
@@ -322,6 +379,28 @@ https://github.com/minad/vertico
     (setq completion-styles '(orderless basic)
 	  completion-category-defaults nil
 	  completion-category-overrides '((file (styles partial-completion)))))
+#+END_SRC
+
+** consult
+#+BEGIN_SRC emacs-lisp
+  (defun dw/get-project-root ()
+    (when (fboundp 'projectile-project-root)
+      (projectile-project-root)))
+
+  (use-package consult
+    :straight t
+    :demand t
+    :bind (("C-s" . consult-line)
+	   ("C-M-l" . consult-imenu)
+	   ("C-M-j" . persp-switch-to-buffer*)
+	   :map minibuffer-local-map
+	   ("C-r" . consult-history))
+    :custom
+    ;; (consult-project-root-function #'dw/get-project-root)
+    (completion-in-region-function #'consult-completion-in-region)
+    ;; :config
+    ;; (consult-preview-mode)
+    )
 #+END_SRC
 
 ** avy
@@ -674,6 +753,11 @@ https://github.com/minad/vertico
   ;; 	 "\\.pdf\\'"
   ;; 	 )
   )
+#+END_SRC
+* ORG
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook #'visual-line-mode)
+
 #+END_SRC
 
 * Keybindings
