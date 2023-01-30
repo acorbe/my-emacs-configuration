@@ -1,16 +1,33 @@
 
 #!/usr/bin/env bash
 
-# THIS_DIR=$(pwd)
 # https://stackoverflow.com/a/246128/1714661
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+echo "script dir: $SCRIPT_DIR"
 
 cd
 #mv .emacs .emacs.prior_install
-rm .emacs
-ln -s $SCRIPT_DIR/literate-version-setup/emacs.el .emacs
+
+
+echo "The new .emacs file will be:"
+echo "-----"
+sed "s|GIT_REPO_DIR|$SCRIPT_DIR|g" $SCRIPT_DIR/literate-version-setup/emacs.el
+echo "-----"
+
+echo "trying to remove .emacs if exists"
+rm .emacs || true
+
+echo "writing custom .emacs"
+sed "s|GIT_REPO_DIR|$SCRIPT_DIR|g" $SCRIPT_DIR/literate-version-setup/emacs.el > .emacs
+#ln -s $SCRIPT_DIR/literate-version-setup/emacs.el .emacs
+
+echo "removing .emacs.d if exists"
+rm -Rf .emacs.d || true
+
+echo "making new .emacs.d and linking early-init.el"
 mkdir -p .emacs.d
 cd .emacs.d
-rm early-init.el
+rm early-init.el || true
+
 ln -s $SCRIPT_DIR/literate-version-setup/early-init.el
 cd $SCRIPT_DIR
