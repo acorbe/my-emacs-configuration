@@ -393,6 +393,7 @@ https://github.com/minad/vertico
     :bind (("C-s" . consult-line)
 	   ("C-M-l" . consult-imenu)
 	   ("C-M-j" . persp-switch-to-buffer*)
+	   ("C-x b" . consult-buffer)   
 	   :map minibuffer-local-map
 	   ("C-r" . consult-history))
     :custom
@@ -593,6 +594,18 @@ https://github.com/minad/vertico
 	      (local-set-key (kbd "M-q") 'lsp-format-buffer )))
 #+END_SRC
 
+** UI
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-ui
+  :straight t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-sideline-show-hover nil)
+  (setq lsp-ui-doc-position 'bottom)
+  (lsp-ui-doc-show))
+#+END_SRC
+
 
 * File modes
 #+BEGIN_SRC emacs-lisp
@@ -665,11 +678,11 @@ https://github.com/minad/vertico
 
 * PYTHON
 #+BEGIN_SRC emacs-lisp
-    (use-package sphinx-doc
-      :straight t
-      :config
-      (add-hook 'python-mode-hook 'sphinx-doc-mode-hook)
-      )
+  (use-package sphinx-doc
+    :straight t
+    ;; :config
+    ;; (add-hook 'python-mode-hook 'sphinx-doc-mode-hook)
+    )
 #+END_SRC
 
 * LATEX
