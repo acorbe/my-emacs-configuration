@@ -24,10 +24,12 @@ sed "s|GIT_REPO_DIR|$SCRIPT_DIR|g" $SCRIPT_DIR/literate-version-setup/emacs.el >
 echo "removing .emacs.d if exists"
 rm -Rf .emacs.d || true
 
-echo "making new .emacs.d and linking early-init.el"
+echo "making new .emacs.d"
 mkdir -p .emacs.d
 cd .emacs.d
+echo "removing early-init.el if necessary"
 rm early-init.el || true
 
+echo "linking early-init.el"
 ln -s $SCRIPT_DIR/literate-version-setup/early-init.el
 cd $SCRIPT_DIR
