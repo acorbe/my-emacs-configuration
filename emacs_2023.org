@@ -596,14 +596,24 @@ https://github.com/minad/vertico
 
 ** UI
 #+BEGIN_SRC emacs-lisp
-(use-package lsp-ui
-  :straight t
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-sideline-enable t)
-  (setq lsp-ui-sideline-show-hover nil)
-  (setq lsp-ui-doc-position 'bottom)
-  (lsp-ui-doc-show))
+  (use-package lsp-ui
+    :straight t
+    :hook (lsp-mode . lsp-ui-mode)
+    :config
+    (setq lsp-ui-sideline-enable t)
+    (setq lsp-ui-sideline-show-diagnostics t)
+    (setq lsp-ui-sideline-show-hover t)
+    ;; (setq lsp-ui-sideline-show-code-actions t)   
+
+    (setq lsp-ui-peek-enable t)
+    (setq lsp-ui-peek-always-show t)
+
+    (setq lsp-ui-doc-enable t)
+    ;; (setq lsp-ui-doc-delay 2)
+
+    (setq lsp-ui-doc-position 'bottom)
+    (setq lsp-ui-imenu-enable nil)
+    (lsp-ui-doc-show))
 #+END_SRC
 
 
@@ -772,6 +782,17 @@ https://github.com/minad/vertico
 (add-hook 'org-mode-hook #'visual-line-mode)
 
 #+END_SRC
+
+* FLYMAKE
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :straight t
+  :defer t
+  :hook (lsp-mode . flycheck-mode)
+)
+#+END_SRC
+
+
 
 * Keybindings
 #+BEGIN_SRC emacs-lisp
