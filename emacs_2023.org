@@ -421,6 +421,32 @@ https://github.com/minad/vertico
     )
 #+END_SRC
 
+** embark
+#+BEGIN_SRC emacs-lisp
+(use-package embark
+  :straight t
+  :bind (("C-S-a" . embark-act)
+         :map minibuffer-local-map
+         ("C-d" . embark-act))
+  :config
+
+  ;; Show Embark actions via which-key
+  (setq embark-action-indicator
+        (lambda (map)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator))
+
+;; (use-package embark-consult
+;;   :straight '(embark-consult :host github
+;;                              :repo "oantolin/embark"
+;;                              :files ("embark-consult.el"))
+;;   :after (embark consult)
+;;   :demand t
+;;   :hook
+;;   (embark-collect-mode . embark-consult-preview-minor-mode))
+#+END_SRC
+
 ** avy
 #+BEGIN_SRC emacs-lisp
 (use-package avy
@@ -525,7 +551,7 @@ https://github.com/minad/vertico
     :init
     (global-corfu-mode))
 
-  
+
   ;; Use Dabbrev with Corfu!
   (use-package dabbrev
   ;; Swap M-/ and C-M-/
@@ -534,7 +560,57 @@ https://github.com/minad/vertico
   ;; Other useful Dabbrev configurations.
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+
+  (use-package kind-icon
+    :straight t
+    :after corfu
+    :custom
+    (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
+  ;; Add extensions
+  (use-package cape
+    :straight t
+    :custom
+    (cape-line-buffer-function #'current-buffer)
+    ;; Bind dedicated completion commands
+    ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+    :bind (("C-c e p" . completion-at-point) ;; capf
+	   ("C-c e t" . complete-tag)        ;; etags
+	   ("C-c e d" . cape-dabbrev)        ;; or dabbrev-completion
+	   ("C-c e h" . cape-history)
+	   ("C-c e f" . cape-file)
+	   ("C-c e k" . cape-keyword)
+	   ("C-c e s" . cape-symbol)
+	   ("C-c e a" . cape-abbrev)
+	   ("C-c e i" . cape-ispell)
+	   ("C-c e l" . cape-line)
+	   ("C-c e w" . cape-dict)
+	   ("C-c e \\" . cape-tex)
+	   ("C-c e _" . cape-tex)
+	   ("C-c e ^" . cape-tex)
+	   ("C-c e &" . cape-sgml)
+	   ("C-c e r" . cape-rfc1345))
+    :init
+    ;; Add `completion-at-point-functions', used by `completion-at-point'.
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-history)
+    (add-to-list 'completion-at-point-functions #'cape-keyword)
+    (add-to-list 'completion-at-point-functions #'cape-tex)
+    (add-to-list 'completion-at-point-functions #'cape-sgml)
+    (add-to-list 'completion-at-point-functions #'cape-rfc1345)
+    (add-to-list 'completion-at-point-functions #'cape-abbrev)
+    ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
+    ;; (add-to-list 'completion-at-point-functions #'cape-dict)
+    ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+    ;; (add-to-list 'completion-at-point-functions #'cape-line)
+    )
+#+END_SRC 
 
 * emacs package all togheter
 
@@ -840,11 +916,17 @@ https://github.com/minad/org-modern
 
 * FLYMAKE
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :straight t
-  :defer t
-  :hook (lsp-mode . flycheck-mode)
-)
+  (use-package flycheck
+    :straight t
+    :defer t
+    :hook (lsp-mode . flycheck-mode)
+  )
+
+  (use-package consult-flycheck
+    :straight t
+    :defer t
+    ;; :hook (flycheck-mode . consult-flycheck-mode)
+    )
 #+END_SRC
 
 
