@@ -255,7 +255,7 @@ Use the makefile in this folder or above (disabled)
 
   (defun my-behavior-without-graphic ()
     (use-package zenburn-theme
-      :ensure t
+      :straight t
       :config
       (progn
 	(load-theme 'zenburn)
@@ -416,6 +416,9 @@ https://github.com/minad/vertico
     :custom
     ;; (consult-project-root-function #'dw/get-project-root)
     (completion-in-region-function #'consult-completion-in-region)
+
+    ;; starts the search from the top
+    (setq consult-line-start-from-top 't)
     ;; :config
     ;; (consult-preview-mode)
     )
@@ -571,7 +574,7 @@ https://github.com/minad/vertico
 #+END_SRC
 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC 
   ;; Add extensions
   (use-package cape
     :straight t
@@ -601,7 +604,7 @@ https://github.com/minad/vertico
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-history)
     (add-to-list 'completion-at-point-functions #'cape-keyword)
-    (add-to-list 'completion-at-point-functions #'cape-tex)
+    ;; (add-to-list 'completion-at-point-functions #'cape-tex)
     (add-to-list 'completion-at-point-functions #'cape-sgml)
     (add-to-list 'completion-at-point-functions #'cape-rfc1345)
     (add-to-list 'completion-at-point-functions #'cape-abbrev)
