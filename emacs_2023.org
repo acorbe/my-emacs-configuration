@@ -1,7 +1,7 @@
 
 * Personal info
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Alessandro Corbetta")
+  (setq user-full-name "Alessandro Corbetta")
 #+END_SRC
 
 * Straight setup
@@ -336,51 +336,66 @@ https://github.com/minad/marginalia
 https://github.com/minad/vertico
 
 #+BEGIN_SRC emacs-lisp
-    ;; Enable vertico
-  (use-package vertico
-    ;; :straight t
-    ;; Special recipe to load extensions conveniently
-    :straight (vertico :files (:defaults "extensions/*")
-		     :includes ( ;;vertico-indexed
-				;;vertico-flat
-				;;vertico-grid
-				;;vertico-mouse
-				;;vertico-quick
-				vertico-buffer
-				;;vertico-repeat
-				;;vertico-reverse
-				vertico-directory
-				;;vertico-multiform
-				;;vertico-unobtrusive
-				))
+      ;; Enable vertico
+    (use-package vertico
+      ;; :straight t
+      ;; Special recipe to load extensions conveniently
+      :straight (vertico :files (:defaults "extensions/*")
+		       :includes ( ;;vertico-indexed
+				  ;;vertico-flat
+				  ;;vertico-grid
+				  ;;vertico-mouse
+				  ;;vertico-quick
+				  vertico-buffer
+				  ;;vertico-repeat
+				  ;;vertico-reverse
+				  vertico-directory
+				  ;;vertico-multiform
+				  ;;vertico-unobtrusive
+				  ))
 
-    :init
-    :custom
-    (vertico-count 7)                    ; Number of candidates to display
-    (vertico-resize t)
-    (vertico-cycle nil) ; Go from last to first candidate and first to last (cycle)
+      :init
+      :custom
+      (vertico-count 7)                    ; Number of candidates to display
+      (vertico-resize t)
+      (vertico-cycle nil) ; Go from last to first candidate and first to last (cycle)
 
-    :config
-    (vertico-mode)
+      :config
+      (vertico-mode)
 
-    ;; Different scroll margin
-    ;; (setq vertico-scroll-margin 0)
+      ;; Different scroll margin
+      ;; (setq vertico-scroll-margin 0)
 
-    ;; Show more candidates
-    ;; (setq vertico-count 20)
+      ;; Show more candidates
+      ;; (setq vertico-count 20)
 
-    ;; Grow and shrink the Vertico minibuffer
-    ;; (setq vertico-resize t)
+      ;; Grow and shrink the Vertico minibuffer
+      ;; (setq vertico-resize t)
 
-    ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-    ;; (setq vertico-cycle t)
-    )
+      ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+      ;; (setq vertico-cycle t)
+      )
 
-  ;; Persist history over Emacs restarts. Vertico sorts by history position.
-  (use-package savehist
+
+  ;; Configure directory extension.
+  (use-package vertico-directory
+    :after vertico
     :straight t
-    :init
-    (savehist-mode))
+    ;;:demand
+    ;; More convenient directory navigation commands
+    :bind (:map vertico-map
+		("RET"   . vertico-directory-enter)
+		("DEL"   . vertico-directory-delete-char)
+		("M-DEL" . vertico-directory-delete-word))
+    ;; Tidy shadowed file names
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+
+    ;; Persist history over Emacs restarts. Vertico sorts by history position.
+    (use-package savehist
+      :straight t
+      :init
+      (savehist-mode))
 
 #+END_SRC
 
@@ -410,9 +425,11 @@ https://github.com/minad/vertico
     :bind (("C-s" . consult-line)
 	   ("C-M-l" . consult-imenu)
 	   ("C-M-j" . persp-switch-to-buffer*)
-	   ("C-x b" . consult-buffer)   
+	   ("C-x b" . consult-buffer)
+	   ("M-g g" . consult-goto-line)
 	   :map minibuffer-local-map
-	   ("C-r" . consult-history))
+	   ("C-r" . consult-history)
+	   )
     :custom
     ;; (consult-project-root-function #'dw/get-project-root)
     (completion-in-region-function #'consult-completion-in-region)
@@ -421,6 +438,11 @@ https://github.com/minad/vertico
     (setq consult-line-start-from-top 't)
     ;; :config
     ;; (consult-preview-mode)
+    )
+
+  (use-package consult-lsp
+    :straight t
+    :demand t
     )
 #+END_SRC
 
@@ -450,8 +472,50 @@ https://github.com/minad/vertico
 ;;   (embark-collect-mode . embark-consult-preview-minor-mode))
 #+END_SRC
 
+** Tempel
+#+BEGIN_SRC emacs-lisp
+    ;; Configure Tempel
+    (use-package tempel
+      ;; Require trigger prefix before template name when completing.
+      ;; :custom
+      ;; (tempel-trigger-prefix "<")
+      :straight t
+      :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+	     ("M-*" . tempel-insert))
+
+      :init
+
+      ;; Setup completion at point
+      (defun tempel-setup-capf ()
+	;; Add the Tempel Capf to `completion-at-point-functions'.
+	;; `tempel-expand' only triggers on exact matches. Alternatively use
+	;; `tempel-complete' if you want to see all matches, but then you
+	;; should also configure `tempel-trigger-prefix', such that Tempel
+	;; does not trigger too often when you don't expect it. NOTE: We add
+	;; `tempel-expand' *before* the main programming mode Capf, such
+	;; that it will be tried first.
+	(setq-local completion-at-point-functions
+		    (cons #'tempel-expand
+			  completion-at-point-functions)))
+
+      (add-hook 'prog-mode-hook 'tempel-setup-capf)
+      (add-hook 'text-mode-hook 'tempel-setup-capf)
+
+      ;; Optionally make the Tempel templates available to Abbrev,
+      ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+      ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+      ;; (global-tempel-abbrev-mode)
+    )
+
+    ;; Optional: Add tempel-collection.
+    ;; The package is young and doesn't have comprehensive coverage.
+    (use-package tempel-collection
+      :straight t)
+#+END_SRC
+
 ** avy
 #+BEGIN_SRC emacs-lisp
+
 (use-package avy
   :straight t
   :config
@@ -528,7 +592,7 @@ https://github.com/minad/vertico
 
 * Completion
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC #emacs-lisp
   (use-package corfu
     :straight t
     ;; Optional customizations
