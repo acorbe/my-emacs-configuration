@@ -592,12 +592,12 @@ https://github.com/minad/vertico
 
 * Completion
 
-#+BEGIN_SRC #emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package corfu
     :straight t
     ;; Optional customizations
     :custom
-    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+     (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
     (corfu-auto t)                 ;; Enable auto completion
     (corfu-separator ?\s)          ;; Orderless field separator
     ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
@@ -622,6 +622,7 @@ https://github.com/minad/vertico
   ;; Use Dabbrev with Corfu!
   (use-package dabbrev
   ;; Swap M-/ and C-M-/
+    :straight t
   :bind (("M-/" . dabbrev-completion)
 	 ("C-M-/" . dabbrev-expand))
   ;; Other useful Dabbrev configurations.
@@ -638,7 +639,7 @@ https://github.com/minad/vertico
 #+END_SRC
 
 
-#+BEGIN_SRC 
+#+BEGIN_SRC emacs-lisp
   ;; Add extensions
   (use-package cape
     :straight t
