@@ -423,6 +423,7 @@ https://github.com/minad/vertico
     :straight t
     :demand t
     :bind (("C-s" . consult-line)
+	   ("C-S-s" . consult-line-multi)
 	   ("C-M-l" . consult-imenu)
 	   ("C-M-j" . persp-switch-to-buffer*)
 	   ("C-x b" . consult-buffer)
@@ -473,7 +474,7 @@ https://github.com/minad/vertico
 #+END_SRC
 
 ** Tempel
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC #emacs-lisp
     ;; Configure Tempel
     (use-package tempel
       ;; Require trigger prefix before template name when completing.
@@ -512,7 +513,25 @@ https://github.com/minad/vertico
     (use-package tempel-collection
       :straight t)
 #+END_SRC
+** Yas
+#+BEGIN_SRC emacs-lisp
+    (use-package yasnippet-snippets         ; Collection of snippets
+    :defer 5
+    :straight t)
 
+  ;; anyway loaded by elpy.
+  (use-package yasnippet
+    :straight t
+    :defer 3
+    :hook ('LaTeX-mode-hook 'yas-minor-mode)
+    )
+    ;; :config
+    ;; (progn
+    ;;   ;; (yas-global-mode 1)
+    ;;   ;; (with-eval-after-load 'yasnippet
+    ;;   ;;   (validate-setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+    ;;   ))
+#+END_SRC
 ** avy
 #+BEGIN_SRC emacs-lisp
 
@@ -731,28 +750,57 @@ https://github.com/minad/vertico
 
 * LSP
 #+BEGIN_SRC emacs-lisp
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-l")
-
-  (use-package lsp-mode
-    :straight t
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	   (pyls-mode . lsp)
-	   ;;(latex-mode . lsp)
-	   ;; if you want which-key integration
-	   (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
-
-  (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 
 
-  (add-hook 'LaTeX-mode-hook 'lsp)
-  (add-hook 'python-mode-hook 'lsp)
+   (use-package lsp-mode
+     :init (setq lsp-keymap-prefix "C-l")
+     :config (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+     :straight t   
 
-  (add-hook 'pyls-mode-hook
-	    (lambda ()
-	      (local-set-key (kbd "M-q") 'lsp-format-buffer )))
+     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	    (pyls-mode . lsp)
+	    ;;(latex-mode . lsp)
+	    ;; if you want which-key integration
+	    (lsp-mode . lsp-enable-which-key-integration))
+     :commands lsp)
+
+   (setq gc-cons-threshold 100000000)
+   (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+
+   (add-hook 'LaTeX-mode-hook 'lsp)
+
+   (add-hook 'python-mode-hook 'lsp)
+   (add-hook 'pyls-mode-hook
+	     (lambda ()
+	       (local-set-key (kbd "M-q") 'lsp-format-buffer )))
+
+   ;; pyright?
+   ;; (use-package lsp-pyright
+   ;; :straight t
+   ;; :hook (python-mode . (lambda ()
+   ;;                         (require 'lsp-pyright)
+   ;;                         (lsp))))  ; or lsp-deferred
+
+
+  (use-package dap-mode
+    :straight t)
+  ;; (use-package dap-mode
+  ;;   :after lsp-mode
+  ;;   :commands dap-debug
+  ;;   :hook ((python-mode . dap-ui-mode)
+  ;; 	 (python-mode . dap-mode))
+  ;;   :config
+  ;;   (eval-when-compile
+  ;;     (require 'cl))
+  ;;   (require 'dap-python)
+  ;;   (require 'dap-lldb)
+
+  ;;   ;; Temporal fix
+  ;;   (defun dap-python--pyenv-executable-find (command)
+  ;;     (with-venv (executable-find "python")))
+  ;;   )
 #+END_SRC
 
 ** UI
@@ -891,10 +939,10 @@ https://github.com/minad/vertico
 
   (use-package lsp-ltex
   :straight t
-  :hook (text-mode . (lambda ()
-		       (require 'lsp-ltex)
-		       (lsp))
-		   )  ; or lsp-deferred
+  ;; :hook (text-mode . (lambda ()
+  ;; 		     (require 'lsp-ltex)
+  ;; 		     (lsp))
+  ;; 		 )  ; or lsp-deferred
   :init
   (setq lsp-ltex-version "15.2.0")  ; make sure you have set this, see below
   )
