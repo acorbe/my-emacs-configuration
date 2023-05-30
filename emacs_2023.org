@@ -140,6 +140,7 @@ Use the makefile in this folder or above (disabled)
 
 
 ** icons setup
+Ref: https://kristofferbalintona.me/posts/202202211546/
 #+BEGIN_SRC emacs-lisp
 
   (use-package all-the-icons
@@ -173,11 +174,33 @@ Use the makefile in this folder or above (disabled)
 			    ;; (projects  . 5)
 			    ;; (bookmarks . 5)
 			    ))
-    (setq dashboard-set-heading-icons t)
+    (setq dashboard-icon-type 'all-the-icons)
+    (setq dashboard-set-heading-icons nil)
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-navigator t)
-    (setq dashboard-set-footer nil)
+    (setq dashboard-set-footer t)
     (dashboard-setup-startup-hook))
+#+END_SRC
+#+BEGIN_SRC # emacs-lisp
+  (use-package dashboard
+    :straight t
+  :config
+  (dashboard-setup-startup-hook)
+  :init
+  (setq dashboard-items '((recents  . 10)
+			  ;;(bookmarks . 5)
+			  ;; (projects . 5)
+			  ;; (agenda . 5)
+			  (registers . 5)))
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-icon-type 'all-the-icons)
+  (setq dashboard-heading-icons '((recents   . "history")
+				  (bookmarks . "bookmark")
+				  (agenda    . "calendar")
+				  (projects  . "rocket")
+				  (registers . "database"))))  
+
 #+END_SRC
 
 ** Git
@@ -449,28 +472,33 @@ https://github.com/minad/vertico
 
 ** embark
 #+BEGIN_SRC emacs-lisp
-(use-package embark
-  :straight t
-  :bind (("C-S-a" . embark-act)
-         :map minibuffer-local-map
-         ("C-d" . embark-act))
-  :config
+  (use-package embark
+    :straight t
+    :bind (("C-S-a" . embark-act)
+	   :map minibuffer-local-map
+	   ("C-d" . embark-act))
+    :config
 
-  ;; Show Embark actions via which-key
-  (setq embark-action-indicator
-        (lambda (map)
-          (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator))
+    ;; Show Embark actions via which-key
+    (setq embark-action-indicator
+	  (lambda (map)
+	    (which-key--show-keymap "Embark" map nil nil 'no-paging)
+	    #'which-key--hide-popup-ignore-command)
+	  embark-become-indicator embark-action-indicator)) 
 
-;; (use-package embark-consult
-;;   :straight '(embark-consult :host github
-;;                              :repo "oantolin/embark"
-;;                              :files ("embark-consult.el"))
-;;   :after (embark consult)
-;;   :demand t
-;;   :hook
-;;   (embark-collect-mode . embark-consult-preview-minor-mode))
+  ;; (use-package embark-consult
+  ;;   :straight '(embark-consult :host github
+  ;;                              :repo "oantolin/embark"
+  ;;                              :files ("embark-consult.el"))
+  ;;   :after (embark consult)
+  ;;   :demand t
+  ;;   :hook
+  ;;   (embark-collect-mode . embark-consult-preview-minor-mode))
+
+  (use-package embark-consult
+    :straight t
+    :hook
+    (embark-collect-mode . embark-consult-preview-minor-mode))
 #+END_SRC
 
 ** Tempel
@@ -610,51 +638,132 @@ https://github.com/minad/vertico
 #+END_SRC
 
 * Completion
-
+Corfu config: https://kristofferbalintona.me/posts/202202270056/
 #+BEGIN_SRC emacs-lisp
-  (use-package corfu
-    :straight t
-    ;; Optional customizations
+    ;; (use-package corfu
+    ;;   :straight t
+    ;;   ;; Optional customizations
+    ;;   :custom
+    ;;    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+    ;;   (corfu-auto t)                 ;; Enable auto completion
+    ;;   (corfu-separator ?\s)          ;; Orderless field separator
+    ;;   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    ;;   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+    ;;   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+    ;;   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+    ;;   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+    ;;   ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+    ;;   ;; Enable Corfu only for certain modes.
+    ;;   ;; :hook ((prog-mode . corfu-mode)
+    ;;   ;;        (shell-mode . corfu-mode)
+    ;;   ;;        (eshell-mode . corfu-mode))
+
+    ;;   ;; Recommended: Enable Corfu globally.
+    ;;   ;; This is recommended since Dabbrev can be used globally (M-/).
+    ;;   ;; See also `corfu-excluded-modes'.
+    ;;   :init
+    ;;   (global-corfu-mode))
+
+
+    (use-package corfu
+      :straight t
+    :hook (lsp-completion-mode . kb/corfu-setup-lsp) ; Use corfu for lsp completion
+    ;; :general
+    ;; (:keymaps 'corfu-map
+    ;;  :states 'insert
+    ;;  "C-n" #'corfu-next
+    ;;  "C-p" #'corfu-previous
+    ;;  "<escape>" #'corfu-quit
+    ;;  "<return>" #'corfu-insert
+    ;;  "H-SPC" #'corfu-insert-separator
+    ;;  ;; "SPC" #'corfu-insert-separator ; Use when `corfu-quit-at-boundary' is non-nil
+    ;;  "M-d" #'corfu-show-documentation
+    ;;  "C-g" #'corfu-quit
+    ;;  "M-l" #'corfu-show-location)
     :custom
-     (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
-    (corfu-separator ?\s)          ;; Orderless field separator
-    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-    ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+    ;; Works with `indent-for-tab-command'. Make sure tab doesn't indent when you
+    ;; want to perform completion
+    (tab-always-indent 'complete)
+    (completion-cycle-threshold nil)      ; Always show candidates in menu
 
-    ;; Enable Corfu only for certain modes.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
+    (corfu-auto t)
+    (corfu-auto-prefix 2)
+    (corfu-auto-delay 0.25)
 
-    ;; Recommended: Enable Corfu globally.
-    ;; This is recommended since Dabbrev can be used globally (M-/).
-    ;; See also `corfu-excluded-modes'.
+    (corfu-min-width 80)
+    (corfu-max-width corfu-min-width)     ; Always have the same width
+    (corfu-count 14)
+    (corfu-scroll-margin 4)
+    (corfu-cycle t)
+
+    ;; `nil' means to ignore `corfu-separator' behavior, that is, use the older
+    ;; `corfu-quit-at-boundary' = nil behavior. Set this to separator if using
+    ;; `corfu-auto' = `t' workflow (in that case, make sure you also set up
+    ;; `corfu-separator' and a keybind for `corfu-insert-separator', which my
+    ;; configuration already has pre-prepared). Necessary for manual corfu usage with
+    ;; orderless, otherwise first component is ignored, unless `corfu-separator'
+    ;; is inserted.
+    (corfu-quit-at-boundary nil)
+    (corfu-separator ?\s)            ; Use space
+    (corfu-quit-no-match 'separator) ; Don't quit if there is `corfu-separator' inserted
+    (corfu-preview-current 'insert)  ; Preview first candidate. Insert on input if only one
+    (corfu-preselect-first t)        ; Preselect first candidate?
+
+    ;; Other
+    (corfu-echo-documentation nil)        ; Already use corfu-doc
+    (lsp-completion-provider :none)       ; Use corfu instead for lsp completions
     :init
-    (global-corfu-mode))
-
-
-  ;; Use Dabbrev with Corfu!
-  (use-package dabbrev
-  ;; Swap M-/ and C-M-/
-    :straight t
-  :bind (("M-/" . dabbrev-completion)
-	 ("C-M-/" . dabbrev-expand))
-  ;; Other useful Dabbrev configurations.
-  :custom
-  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
-
-  (use-package kind-icon
-    :straight t
-    :after corfu
-    :custom
-    (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+    (global-corfu-mode)
     :config
-    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+    ;; NOTE 2022-03-01: This allows for a more evil-esque way to have
+    ;; `corfu-insert-separator' work with space in insert mode without resorting to
+    ;; overriding keybindings with `general-override-mode-map'. See
+    ;; https://github.com/minad/corfu/issues/12#issuecomment-869037519
+    ;; Alternatively, add advice without `general.el':
+    ;; (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
+    ;; (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
+    ;; (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
+    ;; (evil-make-overriding-map corfu-map)
+
+    ;; Enable Corfu more generally for every minibuffer, as long as no other
+    ;; completion UI is active. If you use Mct or Vertico as your main minibuffer
+    ;; completion UI. From
+    ;; https://github.com/minad/corfu#completing-with-corfu-in-the-minibuffer
+    (defun corfu-enable-always-in-minibuffer ()
+      "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+      (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
+		  (bound-and-true-p vertico--input))
+	(setq-local corfu-auto nil)       ; Ensure auto completion is disabled
+	(corfu-mode 1)))
+    (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
+
+    ;; Setup lsp to use corfu for lsp completion
+    (defun kb/corfu-setup-lsp ()
+      "Use orderless completion style with lsp-capf instead of the
+  default lsp-passthrough."
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+	    '(orderless))))
+
+
+    ;; Use Dabbrev with Corfu!
+    (use-package dabbrev
+    ;; Swap M-/ and C-M-/
+      :straight t
+    :bind (("M-/" . dabbrev-completion)
+	   ("C-M-/" . dabbrev-expand))
+    ;; Other useful Dabbrev configurations.
+    :custom
+    (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+
+    (use-package kind-icon
+      :straight t
+      :after corfu
+      :custom
+      (kind-icon-use-icons t)
+      (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+      :config
+      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+END_SRC
 
 
@@ -684,18 +793,21 @@ https://github.com/minad/vertico
 	   ("C-c e r" . cape-rfc1345))
     :init
     ;; Add `completion-at-point-functions', used by `completion-at-point'.
-    (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-    (add-to-list 'completion-at-point-functions #'cape-history)
-    (add-to-list 'completion-at-point-functions #'cape-keyword)
-    ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-    (add-to-list 'completion-at-point-functions #'cape-sgml)
-    (add-to-list 'completion-at-point-functions #'cape-rfc1345)
-    (add-to-list 'completion-at-point-functions #'cape-abbrev)
-    ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
-    ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-    ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-    ;; (add-to-list 'completion-at-point-functions #'cape-line)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    ;; (add-to-list 'completion-at-point-functions #'cape-file)
+    ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    ;; (add-to-list 'completion-at-point-functions #'cape-history)
+    ;; (add-to-list 'completion-at-point-functions #'cape-keyword)
+    ;; ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+    ;; (add-to-list 'completion-at-point-functions #'cape-sgml)
+    ;; (add-to-list 'completion-at-point-functions #'cape-rfc1345)
+    ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+    ;; ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
+    ;; ;; (add-to-list 'completion-at-point-functions #'cape-dict)
+    ;; ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+    ;; ;; (add-to-list 'completion-at-point-functions #'cape-line)
     )
 #+END_SRC 
 
@@ -749,6 +861,8 @@ https://github.com/minad/vertico
 #+END_SRC
 
 * LSP
+
+About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 #+BEGIN_SRC emacs-lisp
    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 
@@ -785,6 +899,7 @@ https://github.com/minad/vertico
 
 
   (use-package dap-mode
+    :after lsp-mode
     :straight t)
   ;; (use-package dap-mode
   ;;   :after lsp-mode
