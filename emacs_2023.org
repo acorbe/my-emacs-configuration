@@ -470,6 +470,17 @@ https://github.com/minad/vertico
     )
 #+END_SRC
 
+** Projectile
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :straight t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map              
+              ("C-c p" . projectile-command-map)))
+#+END_SRC
+
 ** embark
 #+BEGIN_SRC emacs-lisp
   (use-package embark
