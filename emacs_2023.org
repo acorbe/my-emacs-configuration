@@ -281,7 +281,7 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
       :straight t
       :config
       (progn
-	(load-theme 'zenburn)
+	(load-theme 'zenburn t)
 	)
       )  
     )
