@@ -578,7 +578,7 @@ https://github.com/minad/vertico
   :straight t
   :config
   (progn
-    (global-set-key (kbd "M-p") 'avy-goto-char-2)
+    (global-set-key (kbd "C-S-q") 'avy-goto-char-2)
     (setq avy-all-windows 'all-frames)
     ) ;;-timer  
   )		       
