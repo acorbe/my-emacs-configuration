@@ -248,8 +248,18 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
   ;; (add-hook 'prog-mode-hook
   ;; 	  (lambda () (local-set-key (kbd "C-c C-<tab>") 'hs-toggle-hiding)))
   ;; ;; (global-set-key (kbd "C-c C-<tab>") 'hs-toggle-hiding)
-  
 
+  (use-package origami
+    :straight t
+    :hook (prog-mode . origami-mode)
+    :bind (("C-c C-<tab>" . origami-toggle-node)
+	   ))
+
+  (use-package lsp-origami
+    :straight t
+    :config (add-hook 'lsp-after-open-hook #'lsp-origami-try-enable)
+
+    )
 #+end_src
 
 * Themes
