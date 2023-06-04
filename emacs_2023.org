@@ -452,7 +452,8 @@ https://github.com/minad/vertico
 	   ("C-x b" . consult-buffer)
 	   ("M-g g" . consult-goto-line)
 	   ("M-y" . consult-yank-from-kill-ring)
-	   ;; ("C-u C-SPC" . consult-global-mark)
+	   ("C-x m" . consult-mark)
+	   ("C-S-x m" . consult-global-mark)
 	   :map minibuffer-local-map
 	   ("C-r" . consult-history)
 	   )
