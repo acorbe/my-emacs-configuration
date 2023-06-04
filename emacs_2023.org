@@ -234,6 +234,24 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 
 #+END_SRC
 
+** Folding / Hideshow and visual guide
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :straight t
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :config
+    (setq highlight-indent-guides-method 'bitmap)
+    )
+
+  ;; hs (hideshow) native mode is really bad in python
+  ;; (add-hook 'prog-mode-hook #'hs-minor-mode)
+  ;; (add-hook 'prog-mode-hook
+  ;; 	  (lambda () (local-set-key (kbd "C-c C-<tab>") 'hs-toggle-hiding)))
+  ;; ;; (global-set-key (kbd "C-c C-<tab>") 'hs-toggle-hiding)
+  
+
+#+end_src
+
 * Themes
 #+BEGIN_SRC emacs-lisp
     (defun my-behavior-enable-doom-theme ()
