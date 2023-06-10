@@ -311,7 +311,12 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
       (progn
 	(load-theme 'zenburn t)
 	)
-      )  
+      )
+    (use-package corfu-terminal
+      :straight t
+      :config
+      (corfu-terminal-mode)
+      )
     )
 
 
@@ -321,7 +326,7 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
     (my-behavior-without-graphic)
     )
 
-  
+
 #+END_SRC
 
 ** modeline
