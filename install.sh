@@ -33,3 +33,7 @@ rm early-init.el || true
 echo "linking early-init.el"
 ln -s $SCRIPT_DIR/literate-version-setup/early-init.el
 cd $SCRIPT_DIR
+
+echo "starting emacs to install packages..."
+emacs --eval install-all-the-icons-fonts
+echo "done!"

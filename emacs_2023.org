@@ -598,7 +598,7 @@ https://github.com/minad/vertico
   (use-package yasnippet
     :straight t
     :defer 3
-    :hook ('LaTeX-mode-hook 'yas-minor-mode)
+    ;; :hook ('LaTeX-mode-hook 'yas-minor-mode)
     )
     ;; :config
     ;; (progn
@@ -1115,20 +1115,27 @@ About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 
 ** gscholar and extras
 #+BEGIN_SRC emacs-lisp
-  (use-package gscholar-bibtex
-    :straight t
-    :hook latex-mode 
-    :config  
-    (progn
-      (setq gscholar-bibtex-default-source "Google Scholar")
-      (defalias 'gbib 'gscholar-bibtex)
+    (use-package gscholar-bibtex
+      :straight t
+      :hook latex-mode 
+      :config  
+      (progn
+	(setq gscholar-bibtex-default-source "Google Scholar")
+	(defalias 'gbib 'gscholar-bibtex)
+	)
       )
-    )
 
-  (use-package latex-extra
-    :straight t
-    :hook (LaTeX-mode . latex-extra-mode))
 #+END_SRC
+
+**** Latex extra
+note: latex extra changes some default auctex shortcuts, so for the moment the hook is disabled
+#+begin_src emacs-lisp
+
+  ;; (use-package latex-extra
+  ;; :straight t
+  ;; ;; :hook (LaTeX-mode . latex-extra-mode)
+  ;; )
+#+end_src
 
 ** pdf-tools
 #+BEGIN_SRC emacs-lisp
