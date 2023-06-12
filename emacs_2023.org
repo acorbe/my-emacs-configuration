@@ -1068,29 +1068,51 @@ About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 
 * LATEX
 ** auctex
+
+config of pdftools: https://emacs.stackexchange.com/q/51283/8641
+
 #+BEGIN_SRC emacs-lisp
-(use-package tex-mode
-  :straight auctex
-  ;; :defer t
-  :init
-  (progn
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-    (setq-default TeX-master nil)
+  (use-package tex-mode
+    :straight auctex
+    ;; :defer t
+    :init
+    (progn
+      (setq TeX-auto-save t)
+      (setq TeX-parse-self t)
+      (setq-default TeX-master nil)
 
-    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+      ;; getting pdftools to Preview-LaTeX
 
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-    (setq reftex-plug-into-AUCTeX t)
-    )
-    ;; :mode (
-    ;; 	   "\\.tex\\'"
-    ;; 	   "\\.TEX\\'"
-    ;; 	   "\\.bib\\'"	 
-    ;; 	 )
-    )
+      (setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
+      ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+
+      ;; Use pdf-tools to open PDF files
+      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-source-correlate-start-server t)
+
+      ;; Update PDF buffers after successful LaTeX runs
+      (add-hook 'TeX-after-compilation-finished-functions
+	   #'TeX-revert-document-buffer)
+
+      ;; makefile support
+      (eval-after-load "tex" '(add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t)))
+
+
+
+
+      (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+      (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+      (setq reftex-plug-into-AUCTeX t)
+      )
+      ;; :mode (
+      ;; 	   "\\.tex\\'"
+      ;; 	   "\\.TEX\\'"
+      ;; 	   "\\.bib\\'"	 
+      ;; 	 )
+      )
 #+END_SRC
 
 ** LSP and latex
