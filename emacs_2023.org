@@ -1071,18 +1071,25 @@ About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 
 config of pdftools: https://emacs.stackexchange.com/q/51283/8641
 
+Some folding: https://staff.fnwi.uva.nl/p.vanormondt/blog/2021-02-13-emacs-init-file.html
 #+BEGIN_SRC emacs-lisp
   (use-package tex-mode
     :straight auctex
     ;; :defer t
     :init
     (progn
-      (setq TeX-auto-save t)
-      (setq TeX-parse-self t)
+      (setq TeX-auto-save t) ; Enable parse on save.
+      (setq TeX-parse-self t) ; Enable parse on load.
       (setq-default TeX-master nil)
 
-      ;; getting pdftools to Preview-LaTeX
+      ;; To compile documents to PDF by default
+      ;; (setq TeX-PDF-mode t)
 
+       ;; Activate folding mode
+      (add-hook `TeX-mode-hook (lambda ()
+			    (TeX-fold-mode 1)))
+
+      ;; getting pdftools to Preview-LaTeX
       (setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
       ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
 
@@ -1099,13 +1106,19 @@ config of pdftools: https://emacs.stackexchange.com/q/51283/8641
 
 
 
-
+           
+      (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
       (add-hook 'LaTeX-mode-hook 'visual-line-mode)
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
       (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
       (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
       (setq reftex-plug-into-AUCTeX t)
+
+      (setq reftex-enable-partial-scans t)
+      (setq reftex-save-parse-info t)
+      (setq reftex-use-multiple-selection-buffers t)
+      (setq bib-cite-use-reftex-view-crossref t)
       )
       ;; :mode (
       ;; 	   "\\.tex\\'"
