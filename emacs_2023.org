@@ -920,7 +920,7 @@ About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
      :straight t   
 
      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	    (pyls-mode . lsp)
+	    ;; (pyls-mode . lsp)
 	    ;;(latex-mode . lsp)
 	    ;; if you want which-key integration
 	    (lsp-mode . lsp-enable-which-key-integration))
@@ -938,11 +938,11 @@ About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 	       (local-set-key (kbd "M-q") 'lsp-format-buffer )))
 
    ;; pyright?
-   ;; (use-package lsp-pyright
-   ;; :straight t
-   ;; :hook (python-mode . (lambda ()
-   ;;                         (require 'lsp-pyright)
-   ;;                         (lsp))))  ; or lsp-deferred
+   (use-package lsp-pyright
+   :straight t
+   :hook (python-mode . (lambda ()
+			   (require 'lsp-pyright)
+			   (lsp))))  ; or lsp-deferred
 
 
   (use-package dap-mode
@@ -1106,7 +1106,7 @@ Some folding: https://staff.fnwi.uva.nl/p.vanormondt/blog/2021-02-13-emacs-init-
 
 
 
-           
+
       (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
       (add-hook 'LaTeX-mode-hook 'visual-line-mode)
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -1114,6 +1114,9 @@ Some folding: https://staff.fnwi.uva.nl/p.vanormondt/blog/2021-02-13-emacs-init-
 
       (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
       (setq reftex-plug-into-AUCTeX t)
+
+      (setq LaTeX-includegraphics-read-file 'LaTeX-includegraphics-read-file-relative)
+
 
       (setq reftex-enable-partial-scans t)
       (setq reftex-save-parse-info t)
