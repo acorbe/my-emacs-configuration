@@ -17,8 +17,7 @@
 	(bootstrap-version 6))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-	  (url-retrieve-synchronously
-	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	  (url-retrieve-synchronously 	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
 	   'silent 'inhibit-cookies)
 	(goto-char (point-max))
 	(eval-print-last-sexp)))
@@ -26,8 +25,20 @@
 #+END_SRC
 ** use-package
 #+BEGIN_SRC emacs-lisp
+
   (straight-use-package 'use-package)  
 #+END_SRC
+
+Need to figure out the clash between the org-mode version provided with emacs and that one needed by emacs.
+
+The next line gets org to work, but fails in things like org-roam-ui
+
+#+begin_src emacs-lisp
+
+  ;; (use-package org :straight (:type built-in)) 
+  ;; (straight-use-package 'org)
+#+end_src
+
 
 * Overall setup
 #+BEGIN_SRC emacs-lisp
@@ -202,6 +213,28 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 				  (registers . "database"))))  
 
 #+END_SRC
+
+** Tree sitter
+#+BEGIN_SRC emacs-lisp
+(setq treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+#+END_SRC
+
 
 ** Git
 #+BEGIN_SRC emacs-lisp
@@ -1236,6 +1269,47 @@ https://github.com/minad/org-modern
   (add-hook 'org-mode-hook #'visual-line-mode)
 
 #+END_SRC
+
+**** Org Roam
+
+can't get it to work with a single file yet
+#+begin_src emacs-lisp 
+
+  (use-package org-roam
+    :straight t
+    :custom
+    (org-roam-directory (file-truename "~/workspace/org-roam/"))
+    ;; :hook (org-load . org-roam-mode)
+    ;;:hook (org-roam-backlinks-mode . visual-line-mode)
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+	   ("C-c n f" . org-roam-node-find)
+	   ("C-c n g" . org-roam-graph)
+	   ("C-c n i" . org-roam-node-insert)
+	   ("C-c n c" . org-roam-capture)
+	   ;; Dailies
+	   ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    ;; If you're using a vertical completion framework, you might want a more informative completion interface
+    (setq org-roam-node-display-template (concat "${title:*} " (propertized-buffer-identification "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode)
+    ;; If using org-roam-protocol
+    (require 'org-roam-protocol)
+
+  )
+
+  (use-package org-roam-ui
+    :straight t
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+#+end_src
 
 * FLYMAKE
 #+BEGIN_SRC emacs-lisp
