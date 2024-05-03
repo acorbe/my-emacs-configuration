@@ -272,8 +272,8 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
   (use-package highlight-indent-guides
     :straight t
     :hook (prog-mode . highlight-indent-guides-mode)
-    :config
-    (setq highlight-indent-guides-method 'bitmap)
+    ;; :config
+    ;; (setq highlight-indent-guides-method 'bitmap)
     )
 
   ;; hs (hideshow) native mode is really bad in python
@@ -944,58 +944,64 @@ Corfu config: https://kristofferbalintona.me/posts/202202270056/
 
 About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 #+BEGIN_SRC emacs-lisp
-   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 
 
-   (use-package lsp-mode
-     :init (setq lsp-keymap-prefix "C-l")
-     :config (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
-     :straight t   
+     (use-package lsp-mode
+       :init (setq lsp-keymap-prefix "C-l")
+       :config (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+       :straight t   
 
-     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	    ;; (pyls-mode . lsp)
-	    ;;(latex-mode . lsp)
-	    ;; if you want which-key integration
-	    (lsp-mode . lsp-enable-which-key-integration))
-     :commands lsp)
+       :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+    	    ;; (pyls-mode . lsp)
+    	    ;;(latex-mode . lsp)
+    	    ;; if you want which-key integration
+    	    (lsp-mode . lsp-enable-which-key-integration))
+       :commands lsp)
 
-   (setq gc-cons-threshold 100000000)
-   (setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-
-   (add-hook 'LaTeX-mode-hook 'lsp)
-
-   (add-hook 'python-mode-hook 'lsp)
-   (add-hook 'pyls-mode-hook
-	     (lambda ()
-	       (local-set-key (kbd "M-q") 'lsp-format-buffer )))
-
-   ;; pyright?
-   (use-package lsp-pyright
-   :straight t
-   :hook (python-mode . (lambda ()
-			   (require 'lsp-pyright)
-			   (lsp))))  ; or lsp-deferred
+     (setq gc-cons-threshold 100000000)
+     (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 
-  (use-package dap-mode
-    :after lsp-mode
-    :straight t)
-  ;; (use-package dap-mode
-  ;;   :after lsp-mode
-  ;;   :commands dap-debug
-  ;;   :hook ((python-mode . dap-ui-mode)
-  ;; 	 (python-mode . dap-mode))
-  ;;   :config
-  ;;   (eval-when-compile
-  ;;     (require 'cl))
-  ;;   (require 'dap-python)
-  ;;   (require 'dap-lldb)
+     (add-hook 'LaTeX-mode-hook 'lsp)
 
-  ;;   ;; Temporal fix
-  ;;   (defun dap-python--pyenv-executable-find (command)
-  ;;     (with-venv (executable-find "python")))
-  ;;   )
+     (add-hook 'python-mode-hook 'lsp)
+     (add-hook 'pyls-mode-hook
+    	     (lambda ()
+    	       (local-set-key (kbd "M-q") 'lsp-format-buffer )))
+
+     ;; pyright?
+     (use-package lsp-pyright
+     :straight t
+     :hook (python-mode . (lambda ()
+    			   (require 'lsp-pyright)
+    			   (lsp))))  ; or lsp-deferred
+
+
+    (use-package python-black
+      :straight t
+      :after python
+      ;; :hook (python-mode . python-black-on-save-mode-enable-dwim)
+      )
+
+    (use-package dap-mode
+      :after lsp-mode
+      :straight t)
+    ;; (use-package dap-mode
+    ;;   :after lsp-mode
+    ;;   :commands dap-debug
+    ;;   :hook ((python-mode . dap-ui-mode)
+    ;; 	 (python-mode . dap-mode))
+    ;;   :config
+    ;;   (eval-when-compile
+    ;;     (require 'cl))
+    ;;   (require 'dap-python)
+    ;;   (require 'dap-lldb)
+
+    ;;   ;; Temporal fix
+    ;;   (defun dap-python--pyenv-executable-find (command)
+    ;;     (with-venv (executable-find "python")))
+    ;;   )
 #+END_SRC
 
 ** UI
