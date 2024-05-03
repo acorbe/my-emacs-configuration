@@ -11,4 +11,4 @@ apt install  -y  libgccjit-12-dev
 
 # ./configure --with-native-compilation=aot --with-libtree-sitter
 echo "emacs configure command"
-echo "./configure --with-native-compilation=aot --with-libtree-sitter"
+echo "./configure --with-native-compilation=aot --with-ltree-sitter"
