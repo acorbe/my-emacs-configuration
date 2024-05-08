@@ -943,6 +943,8 @@ Corfu config: https://kristofferbalintona.me/posts/202202270056/
 * LSP
 
 About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
+
+About integrating with formatting in python: https://slinkp.com/python-emacs-lsp-20231229.html
 #+BEGIN_SRC emacs-lisp
    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 
@@ -1195,7 +1197,7 @@ Some folding: https://staff.fnwi.uva.nl/p.vanormondt/blog/2021-02-13-emacs-init-
 #+BEGIN_SRC emacs-lisp
     (use-package gscholar-bibtex
       :straight t
-      :hook latex-mode 
+      ;; :hook latex-mode 
       :config  
       (progn
 	(setq gscholar-bibtex-default-source "Google Scholar")
