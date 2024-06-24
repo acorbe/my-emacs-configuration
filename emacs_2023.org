@@ -517,7 +517,7 @@ https://github.com/minad/vertico
 	   ("C-M-j" . persp-switch-to-buffer*)
 	   ("C-x b" . consult-buffer)
 	   ("M-g g" . consult-goto-line)
-	   ("M-y" . consult-yank-from-kill-ring)
+	   ("M-y" . consult-yank-replace)
 	   ("C-x m" . consult-mark)
 	   ("C-S-x m" . consult-global-mark)
 	   :map minibuffer-local-map
@@ -623,17 +623,25 @@ https://github.com/minad/vertico
 #+END_SRC
 ** Yas
 #+BEGIN_SRC emacs-lisp
-    (use-package yasnippet-snippets         ; Collection of snippets
-    :defer 5
-    :straight t)
+  ;;   (use-package yasnippet-snippets         ; Collection of snippets
+  ;;   ;; :defer 5
+  ;;   :straight t)
 
-  ;; anyway loaded by elpy.
+  ;; ;; an
+  ;; yway loaded by elpy.
   (use-package yasnippet
     :straight t
-    :defer 3
+    ;; :defer 3
     ;; :hook ('LaTeX-mode-hook 'yas-minor-mode)
+    ;; :hook ('python-mode-hook 'yas-minor-mode)
     )
-    ;; :config
+    :config
+    (use-package yasnippet-snippets         ; Collection of snippets
+    ;; :defer 5
+    :straight t)
+    (yas-global-mode t)
+    (yas-reload-all)
+
     ;; (progn
     ;;   ;; (yas-global-mode 1)
     ;;   ;; (with-eval-after-load 'yasnippet
@@ -966,7 +974,7 @@ About integrating with formatting in python: https://slinkp.com/python-emacs-lsp
 
 
    (add-hook 'LaTeX-mode-hook 'lsp)
-
+   
    (add-hook 'python-mode-hook 'lsp)
    (add-hook 'pyls-mode-hook
   	     (lambda ()
