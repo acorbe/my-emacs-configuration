@@ -1181,6 +1181,22 @@ Some folding: https://staff.fnwi.uva.nl/p.vanormondt/blog/2021-02-13-emacs-init-
       )
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package auctex-label-numbers
+  ;;     :straight t
+  ;;     :after latex
+  ;;     :config
+  ;;     (auctex-label-numbers-mode 1))
+
+  ;; (use-package auctex-cont-latexmk
+  ;;   :after latex
+  ;;   :straight t
+  ;;   :bind
+  ;;   (:map LaTeX-mode-map
+  ;;   ("C-c k" . auctex-cont-latexmk-toggle)))
+#+END_SRC
+
+
 ** LSP and latex
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load "tex-mode"
