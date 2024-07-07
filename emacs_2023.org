@@ -70,6 +70,9 @@ The next line gets org to work, but fails in things like org-roam-ui
   (global-set-key (kbd "<f7>") 'winner-undo)
   (global-set-key (kbd "C-<f7>") 'winner-redo)
 
+  ;; setting treemacs
+  (global-set-key (kbd "<f8>") 'treemacs)
+
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
 
@@ -81,6 +84,18 @@ The next line gets org to work, but fails in things like org-roam-ui
 
   ;; increases doc-view-resolution to match higher screen resolution
   (setq doc-view-resolution 192)
+
+#+END_SRC
+
+*** Ace window
+#+BEGIN_SRC emacs-lisp
+
+   ;; (use-package ace-window 
+   ;;   :straight t
+   ;;   :if (display-graphic-p)
+
+   ;;   )
+  (global-set-key (kbd "M-o") 'ace-window)
 
 #+END_SRC
 
