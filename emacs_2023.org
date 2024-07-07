@@ -299,31 +299,31 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 #+BEGIN_SRC emacs-lisp
     (defun my-behavior-enable-doom-theme ()
       (use-package doom-themes
-	:straight t    
-	:defer
-	:init
-	(progn 
-	  ;; Global settings (defaults)
-	  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-		doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  	:straight t    
+  	:defer
+  	:init
+  	(progn 
+  	  ;; Global settings (defaults)
+  	  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+  		doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
 
-	  ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-	  ;; may have their own settings.
-	  ;; (load-theme 'doom-opera-light t)  
-	  ;; (load-theme 'doom-opera-light t)
-	  (load-theme 'doom-dark+ t)
-	  ;; Enable flashing mode-line on errors
-	  (doom-themes-visual-bell-config)
-	  ;; Enable custom neotree theme (all-the-icons must be installed!)
-	  ;; (doom-themes-neotree-config)
-	  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-	  ;; or for treemacs users
-	  (doom-themes-treemacs-config)
-	  ;; Corrects (and improves) org-mode's native fontification.
-	  (doom-themes-org-config)
-	  )
-	)
+  	  ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+  	  ;; may have their own settings.
+  	  ;; (load-theme 'doom-opera-light t)  
+  	  ;; (load-theme 'doom-opera-light t)
+  	  (load-theme 'doom-dark+ t)
+  	  ;; Enable flashing mode-line on errors
+  	  (doom-themes-visual-bell-config)
+  	  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  	  ;; (doom-themes-neotree-config)
+  	  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  	  ;; or for treemacs users
+  	  (doom-themes-treemacs-config)
+  	  ;; Corrects (and improves) org-mode's native fontification.
+  	  (doom-themes-org-config)
+  	  )
+  	)
       ;; (use-package vscode-dark-plus-theme
       ;;   :ensure t
       ;;   :disabled t 
@@ -336,14 +336,21 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
     ;;(treemacs)
     )
 
+  (defun my-behavior-use-nano-emacs ()
+    (straight-use-package
+     '(nano :type git :host github :repo "rougier/nano-emacs"))
+    (setq nano-font-family-proportional nil)
+    (setq nano-font-size 11)
+    (require 'nano)
+  )
 
   (defun my-behavior-without-graphic ()
     (use-package zenburn-theme
       :straight t
       :config
       (progn
-	(load-theme 'zenburn t)
-	)
+  	(load-theme 'zenburn t)
+  	)
       )
     (use-package corfu-terminal
       :straight t
@@ -356,6 +363,7 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
   ;; tweaks the theme in dependence on whether terminal or not.
   (if (display-graphic-p) 
       (my-behavior-with-graphic)
+      ;; (my-behavior-use-nano-emacs)
     (my-behavior-without-graphic)
     )
 
