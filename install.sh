@@ -35,5 +35,5 @@ ln -s $SCRIPT_DIR/literate-version-setup/early-init.el
 cd $SCRIPT_DIR
 
 echo "starting emacs to install packages..."
-emacs --eval "(progn install-all-the-icons-fonts nerd-icons-install-fonts pdf-tools-install)"
+emacs --eval '(progn install-all-the-icons-fonts nerd-icons-install-fonts pdf-tools-install)'
 echo "done!"
