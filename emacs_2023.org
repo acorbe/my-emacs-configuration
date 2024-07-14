@@ -977,65 +977,66 @@ About the keymap: https://github.com/emacs-lsp/lsp-mode/issues/1672
 
 About integrating with formatting in python: https://slinkp.com/python-emacs-lsp-20231229.html
 #+BEGIN_SRC emacs-lisp
-   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 
 
-   (use-package lsp-mode
-     :init (setq lsp-keymap-prefix "C-l")
-     :config (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
-     :straight t   
+     (use-package lsp-mode
+       :init (setq lsp-keymap-prefix "C-l")
+       :config (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+       :straight t   
 
-     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-  	    ;; (pyls-mode . lsp)
-  	    ;;(latex-mode . lsp)
-  	    ;; if you want which-key integration
-  	    (lsp-mode . lsp-enable-which-key-integration))
-     :commands lsp)
+       :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+    	    ;; (pyls-mode . lsp)
+    	    ;;(latex-mode . lsp)
+    	    ;; if you want which-key integration
+    	    (lsp-mode . lsp-enable-which-key-integration))
+       :commands lsp)
 
-   (setq gc-cons-threshold 100000000)
-   (setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-
-   (add-hook 'LaTeX-mode-hook 'lsp)
-   
-   (add-hook 'python-mode-hook 'lsp)
-   (add-hook 'pyls-mode-hook
-  	     (lambda ()
-  	       (local-set-key (kbd "M-q") 'lsp-format-buffer )))
-
-   ;; pyright?
-   (use-package lsp-pyright
-   :straight t
-   :hook (python-mode . (lambda ()
-  			   (require 'lsp-pyright)
-  			   (lsp))))  ; or lsp-deferred
+     (setq gc-cons-threshold 100000000)
+     (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 
-  (use-package python-black
-    :straight t
-    :after python    
-    ;; :hook (python-mode . python-black-on-save-mode-enable-dwim)
-    :bind (("C-c C-q" . python-black-buffer))
-    )
+     (add-hook 'LaTeX-mode-hook 'lsp)
+     
+     (add-hook 'python-mode-hook 'lsp)
+     (add-hook 'pyls-mode-hook
+    	     (lambda ()
+    	       (local-set-key (kbd "M-q") 'lsp-format-buffer )))
 
-  (use-package dap-mode
-    :after lsp-mode
-    :straight t)
-  ;; (use-package dap-mode
-  ;;   :after lsp-mode
-  ;;   :commands dap-debug
-  ;;   :hook ((python-mode . dap-ui-mode)
-  ;; 	 (python-mode . dap-mode))
-  ;;   :config
-  ;;   (eval-when-compile
-  ;;     (require 'cl))
-  ;;   (require 'dap-python)
-  ;;   (require 'dap-lldb)
+     ;; pyright?
+     (use-package lsp-pyright
+     :straight t
+     :hook (python-mode . (lambda ()
+    			   (require 'lsp-pyright)
+    			   (lsp))))  ; or lsp-deferred
 
-  ;;   ;; Temporal fix
-  ;;   (defun dap-python--pyenv-executable-find (command)
-  ;;     (with-venv (executable-find "python")))
-  ;;   )
+
+    (use-package python-black
+      :straight t
+      :after python    
+      ;; :hook (python-mode . python-black-on-save-mode-enable-dwim)
+      :bind (:map python-mode-map
+  	   ("C-c C-q" . python-black-buffer))
+      )
+
+    (use-package dap-mode
+      :after lsp-mode
+      :straight t)
+    ;; (use-package dap-mode
+    ;;   :after lsp-mode
+    ;;   :commands dap-debug
+    ;;   :hook ((python-mode . dap-ui-mode)
+    ;; 	 (python-mode . dap-mode))
+    ;;   :config
+    ;;   (eval-when-compile
+    ;;     (require 'cl))
+    ;;   (require 'dap-python)
+    ;;   (require 'dap-lldb)
+
+    ;;   ;; Temporal fix
+    ;;   (defun dap-python--pyenv-executable-find (command)
+    ;;     (with-venv (executable-find "python")))
+    ;;   )
 #+END_SRC
 
 ** UI
