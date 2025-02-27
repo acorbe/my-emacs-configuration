@@ -190,6 +190,12 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 
 ** General utilities
 #+BEGIN_SRC emacs-lisp
+
+  (use-package yascroll
+    :straight t
+    )
+    
+
   (use-package dashboard
     :straight t
     :diminish dashboard-mode
@@ -197,9 +203,9 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
     ;; (setq dashboard-banner-logo-title "your custom text")
     ;; (setq dashboard-startup-banner "/path/to/image")
     (setq dashboard-items '((recents  . 10)
-			    ;; (projects  . 5)
-			    ;; (bookmarks . 5)
-			    ))
+  			    ;; (projects  . 5)
+  			    ;; (bookmarks . 5)
+  			    ))
     (setq dashboard-icon-type 'all-the-icons)
     (setq dashboard-set-heading-icons nil)
     (setq dashboard-set-file-icons t)

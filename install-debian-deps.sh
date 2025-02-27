@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+x#!/usr/bin/env bash
 
 apt install  -y  build-essential texinfo libx11-dev libxpm-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgtk2.0-dev libncurses-dev gcc libpng-dev         libpoppler-dev libpoppler-glib-dev libz-dev make pkg-config
 
