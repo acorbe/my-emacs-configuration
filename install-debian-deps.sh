@@ -13,6 +13,9 @@ apt install  -y  libgccjit0
 apt install  -y  libgccjit-12-dev
 apt install  -y  texlive latexmk
 apt install  -y  libxaw7-dev
+apt install  -y  xaw3dg-dev 
+
+
 
 apt install -y fonts-roboto fonts-firacode # fonts e.g. for nano emacs
 
