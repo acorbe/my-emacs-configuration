@@ -15,6 +15,7 @@ apt install  -y  texlive latexmk
 apt install  -y  libxaw7-dev
 apt install  -y  xaw3dg-dev 
 
+apt install -y git autoconf make texinfo gnutls-bin libgccjit-12-dev gcc libgtk2.0-dev libgnutls28-dev libxpm-dev libgif-dev
 
 
 apt install -y fonts-roboto fonts-firacode # fonts e.g. for nano emacs
