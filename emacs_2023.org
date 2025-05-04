@@ -299,6 +299,14 @@ Moves blocks of text up and down with M-up/down
     ;; Note that you may have to restart Emacs for this to take effect!
     (combobulate-key-prefix "C-c o")
     :hook ((prog-mode . combobulate-mode))
+    ;; I prefer these commands to be bound to word movement than to splicing
+    :bind (:map combobulate-key-map
+  	      ("M-<left>" . nil)
+  	      ("M-<right>" . nil)
+  	      ("M-<up>" . nil)
+  	      ("M-<down>" . nil)
+  	      
+  	      )
     ;; Amend this to the directory where you keep Combobulate's source
     ;; code.
     ;; :load-path ("path-to-git-checkout-of-combobulate")
