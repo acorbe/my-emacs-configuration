@@ -235,7 +235,8 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 
 #+END_SRC
 
-* Moving text-mode
+** Moving text-mode
+Moves blocks of text up and down with M-up/down
 #+BEGIN_SRC emacs-lisp
 
   (use-package move-text
@@ -256,6 +257,17 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 
 #+END_SRC
 
+** Parentheses
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    ;; :ensure smartparens  ;; install the package
+    :straight t 
+    :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+    :config
+    ;; load default config
+    (require 'smartparens-config))
+#+END_SRC
 ** Tree sitter
 #+BEGIN_SRC emacs-lisp
 (setq treesit-language-source-alist
@@ -277,6 +289,21 @@ Ref: https://kristofferbalintona.me/posts/202202211546/
 
 #+END_SRC
 
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package combobulate
+    :straight t
+    :custom
+    ;; You can customize Combobulate's key prefix here.
+    ;; Note that you may have to restart Emacs for this to take effect!
+    (combobulate-key-prefix "C-c o")
+    :hook ((prog-mode . combobulate-mode))
+    ;; Amend this to the directory where you keep Combobulate's source
+    ;; code.
+    ;; :load-path ("path-to-git-checkout-of-combobulate")
+    )
+#+END_SRC
 
 ** Git
 #+BEGIN_SRC emacs-lisp
