@@ -38,4 +38,4 @@ echo "starting emacs to install packages..."
 emacs --eval '(kill-emacs)'
 echo "finalizing installation..."
 emacs --eval '(progn install-all-the-icons-fonts nerd-icons-install-fonts pdf-tools-install kill-emacs)'
-echo "done!"
+echo "done!"  
