@@ -291,15 +291,15 @@ Moves blocks of text up and down with M-up/down
 #+END_SRC
 
 
-
+This seems a very nice package but conflicts with magit when committing
 #+BEGIN_SRC emacs-lisp
   ;; (use-package combobulate
   ;;   :straight t
-  ;;   :custom
+  ;;   ;; :custom
   ;;   ;; You can customize Combobulate's key prefix here.
   ;;   ;; Note that you may have to restart Emacs for this to take effect!
-  ;;   (combobulate-key-prefix "C-c o")
-  ;;   :hook ((prog-mode . combobulate-mode))
+  ;;   ;; (combobulate-key-prefix nil)
+  ;;   ;; :hook ((prog-mode . combobulate-mode))
   ;;   ;; I prefer these commands to be bound to word movement than to splicing
   ;;   :bind (:map combobulate-key-map
   ;; 	      ("M-<left>" . nil)
