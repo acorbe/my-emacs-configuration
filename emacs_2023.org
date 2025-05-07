@@ -262,7 +262,8 @@ Moves blocks of text up and down with M-up/down
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
     ;; :ensure smartparens  ;; install the package
-    :straight t 
+    :straight t
+    ;; 
     :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
     :config
     ;; load default config
@@ -292,25 +293,25 @@ Moves blocks of text up and down with M-up/down
 
 
 #+BEGIN_SRC emacs-lisp
-  (use-package combobulate
-    :straight t
-    :custom
-    ;; You can customize Combobulate's key prefix here.
-    ;; Note that you may have to restart Emacs for this to take effect!
-    (combobulate-key-prefix "C-c o")
-    :hook ((prog-mode . combobulate-mode))
-    ;; I prefer these commands to be bound to word movement than to splicing
-    :bind (:map combobulate-key-map
-  	      ("M-<left>" . nil)
-  	      ("M-<right>" . nil)
-  	      ("M-<up>" . nil)
-  	      ("M-<down>" . nil)
+  ;; (use-package combobulate
+  ;;   :straight t
+  ;;   :custom
+  ;;   ;; You can customize Combobulate's key prefix here.
+  ;;   ;; Note that you may have to restart Emacs for this to take effect!
+  ;;   (combobulate-key-prefix "C-c o")
+  ;;   :hook ((prog-mode . combobulate-mode))
+  ;;   ;; I prefer these commands to be bound to word movement than to splicing
+  ;;   :bind (:map combobulate-key-map
+  ;; 	      ("M-<left>" . nil)
+  ;; 	      ("M-<right>" . nil)
+  ;; 	      ("M-<up>" . nil)
+  ;; 	      ("M-<down>" . nil)
   	      
-  	      )
-    ;; Amend this to the directory where you keep Combobulate's source
-    ;; code.
-    ;; :load-path ("path-to-git-checkout-of-combobulate")
-    )
+  ;; 	      )
+  ;;   ;; Amend this to the directory where you keep Combobulate's source
+  ;;   ;; code.
+  ;;   ;; :load-path ("path-to-git-checkout-of-combobulate")
+  ;;   )
 #+END_SRC
 
 ** Git
