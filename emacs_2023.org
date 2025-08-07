@@ -1235,141 +1235,162 @@ config of pdftools: https://emacs.stackexchange.com/q/51283/8641
 
 Some folding: https://staff.fnwi.uva.nl/p.vanormondt/blog/2021-02-13-emacs-init-file.html
 #+BEGIN_SRC emacs-lisp
-    (use-package tex-mode
-      :straight auctex
-      ;; :defer t
-      :init
-      (progn
-        (setq TeX-auto-save t) ; Enable parse on save.
-        (setq TeX-parse-self t) ; Enable parse on load.
-        (setq-default TeX-master nil)
+        (use-package tex-mode
+          :straight auctex
+          ;; :defer t
+          :init
+          (progn
+            (setq TeX-auto-save t) ; Enable parse on save.
+            (setq TeX-parse-self t) ; Enable parse on load.
+            (setq-default TeX-master nil)
 
-        ;; To compile documents to PDF by default
-        ;; (setq TeX-PDF-mode t)
+            ;; To compile documents to PDF by default
+            ;; (setq TeX-PDF-mode t)
 
-         ;; Activate folding mode
-        (add-hook `TeX-mode-hook (lambda ()
-    			    (TeX-fold-mode 1)))
+             ;; Activate folding mode
+            (add-hook `TeX-mode-hook (lambda ()
+        			    (TeX-fold-mode 1)))
 
-        ;; getting pdftools to Preview-LaTeX
-        (setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
-        ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+            ;; getting pdftools to Preview-LaTeX
+            (setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
+            ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
 
-        ;; Use pdf-tools to open PDF files
-        (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
+            ;; Use pdf-tools to open PDF files
+            (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+            TeX-source-correlate-start-server t)
 
-        ;; Update PDF buffers after successful LaTeX runs
-        (add-hook 'TeX-after-compilation-finished-functions
-    	   #'TeX-revert-document-buffer)
+            ;; Update PDF buffers after successful LaTeX runs
+            (add-hook 'TeX-after-compilation-finished-functions
+        	   #'TeX-revert-document-buffer)
 
-        ;; makefile support
-        (eval-after-load "tex" '(add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t)))
-
-
+            ;; makefile support
+            (eval-after-load "tex" '(add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t)))
 
 
-        (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-        (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-        (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-        (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-        (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-        (setq reftex-plug-into-AUCTeX t)
-
-        (setq LaTeX-includegraphics-read-file 'LaTeX-includegraphics-read-file-relative)
 
 
-        (setq reftex-enable-partial-scans t)
-        (setq reftex-save-parse-info t)
-        (setq reftex-use-multiple-selection-buffers t)
-        (setq bib-cite-use-reftex-view-crossref t)
-        )
-        ;; :mode (
-        ;; 	   "\\.tex\\'"
-        ;; 	   "\\.TEX\\'"
-        ;; 	   "\\.bib\\'"	 
-        ;; 	 )
-        )
+            (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+            (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+            (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+            (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+            (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+            (setq reftex-plug-into-AUCTeX t)
+
+            (setq LaTeX-includegraphics-read-file 'LaTeX-includegraphics-read-file-relative)
 
 
-  (defvar-local my/latex-image-dir nil
-    "Buffer-local directory to store pasted images for LaTeX documents.")
-
-  (defun my/paste-image-from-clipboard-to-tex ()
-    "Paste clipboard image into buffer-local image directory and insert LaTeX includegraphics line.
-  Prompts for image file name (default: timestamp). Prompts for image directory only once per buffer."
-    (interactive)
-    ;; Ask for image directory only once per buffer
-    (unless my/latex-image-dir
-      (setq my/latex-image-dir
-            (read-directory-name "Image directory for this document: " "./Figures/"))
-      (unless (file-directory-p my/latex-image-dir)
-        (make-directory my/latex-image-dir t)))
-
-    ;; Prompt for filename, defaulting to timestamp
-    (let* ((default-name (format-time-string "img_%Y%m%d_%H%M%S"))
-           (input-name (read-string (format "Image file name (default: %s): " default-name)))
-           (base-name (if (string-empty-p input-name) default-name input-name))
-           (file-name (concat base-name ".png"))
-           (image-path (expand-file-name file-name my/latex-image-dir))
-           (relative-path (file-relative-name image-path (file-name-directory (buffer-file-name)))))
-
-      ;; Capture clipboard image
-      (cond
-       ;; macOS
-       ((eq system-type 'darwin)
-        (call-process "pngpaste" nil nil nil image-path))
-       ;; Linux
-       ;; ((eq system-type 'gnu/linux)
-       ;;  (call-process-shell-command (format "xclip -selection clipboard -t image/png -o > %s" image-path)))
-
-       ((eq system-type 'gnu/linux)
-        (if (yes-or-no-p "Compress image before saving?")
-          ;; Use ImageMagick's convert
-          (call-process-shell-command
-           (format "xclip -selection clipboard -t image/png -o | convert png:- -strip -resize 70%% -quality 90 %s" image-path))
-        ;; Raw save
-        (call-process-shell-command
-         (format "xclip -selection clipboard -t image/png -o > %s" image-path))))
-       
-       ;; Windows
-       ((eq system-type 'windows-nt)
-        (call-process-shell-command
-         (format "powershell -command \"Add-Type -AssemblyName System.Windows.Forms; [Windows.Forms.Clipboard]::GetImage().Save('%s')\"" image-path))))
-
-      ;; Insert LaTeX includegraphics
-      (insert (format "\\includegraphics[width=\\linewidth]{%s}" relative-path))))
+            (setq reftex-enable-partial-scans t)
+            (setq reftex-save-parse-info t)
+            (setq reftex-use-multiple-selection-buffers t)
+            (setq bib-cite-use-reftex-view-crossref t)
+            )
+            ;; :mode (
+            ;; 	   "\\.tex\\'"
+            ;; 	   "\\.TEX\\'"
+            ;; 	   "\\.bib\\'"	 
+            ;; 	 )
+            )
 
 
-(defun my/insert-figure-from-file-to-tex ()
-  "Insert an existing image into LaTeX document by copying it into a buffer-local image directory.
-User is prompted to choose the image file and optionally rename it.
-Then \\includegraphics is inserted with relative path."
-  (interactive)
-  ;; Set image directory once per buffer
-  (unless my/latex-image-dir
-    (setq my/latex-image-dir
-          (read-directory-name "Image directory for this document: " "./Figures/"))
-    (unless (file-directory-p my/latex-image-dir)
-      (make-directory my/latex-image-dir t)))
+      (defvar-local my/latex-image-dir nil
+        "Buffer-local directory to store pasted images for LaTeX documents.")
 
-  ;; Ask for existing image file
-  (let* ((source-path (read-file-name "Select image file: "))
-         (ext (file-name-extension source-path))
-         (default-name (file-name-base source-path))
-         (input-name (read-string (format "New file name (default: %s): " default-name)))
-         (base-name (if (string-empty-p input-name) default-name input-name))
-         (target-filename (concat base-name "." ext))
-         (target-path (expand-file-name target-filename my/latex-image-dir))
-         (relative-path (file-relative-name target-path (file-name-directory (buffer-file-name)))))
+      (defun my/paste-image-from-clipboard-to-tex ()
+        "Paste clipboard image into buffer-local image directory and insert LaTeX includegraphics line.
+      Prompts for image file name (default: timestamp). Prompts for image directory only once per buffer."
+        (interactive)
+        ;; Ask for image directory only once per buffer
+        (unless my/latex-image-dir
+          (setq my/latex-image-dir
+                (read-directory-name "Image directory for this document: " "./Figures/"))
+          (unless (file-directory-p my/latex-image-dir)
+            (make-directory my/latex-image-dir t)))
 
-    ;; Copy file to local figure directory
-    (copy-file source-path target-path t) ;; t = overwrite without prompt
+        ;; Prompt for filename, defaulting to timestamp
+        (let* ((default-name (format-time-string "img_%Y%m%d_%H%M%S"))
+               (input-name (read-string (format "Image file name (default: %s): " default-name)))
+               (base-name (if (string-empty-p input-name) default-name input-name))
+               (file-name (concat base-name ".png"))
+               (image-path (expand-file-name file-name my/latex-image-dir))
+               (relative-path (file-relative-name image-path (file-name-directory (buffer-file-name)))))
 
-    ;; Insert LaTeX includegraphics line
-    (insert (format "\\includegraphics[width=\\linewidth]{%s}" relative-path))))
-  
+          ;; Capture clipboard image
+          (cond
+           ;; macOS
+           ((eq system-type 'darwin)
+            (call-process "pngpaste" nil nil nil image-path))
+           ;; Linux
+           ;; ((eq system-type 'gnu/linux)
+           ;;  (call-process-shell-command (for;; mat "xclip -selection clipboard -t image/png -o > %s" image-path)))
+
+           ;; ((eq system-type 'gnu/linux)
+           ;;  (if (yes-or-no-p "Compress image before saving?")
+           ;;    ;; Use ImageMagick's convert
+           ;;    (call-process-shell-command
+           ;;     (format "xclip -selection clipboard -t image/png -o | convert png:- -strip -resize 70%% -quality 90 %s" image-path))
+           ;;  ;; Raw save
+           ;;  (call-process-shell-command
+           ;;   (format "xclip -selection clipboard -t image/png -o > %s" image-path))))
+  	 ((eq system-type 'gnu/linux)
+  	  (if (not (executable-find "xclip"))
+  	      (error "xclip is not installed or not in PATH. Please install it to paste images.")
+  	    ;; If xclip is available, continue
+  	    (let* ((format-choice (completing-read "Save image as (png/jpg): " '("png" "jpg") nil t "png"))
+  		   (ext format-choice)
+  		   (image-path (expand-file-name (concat base-name "." ext) my/latex-image-dir))
+  		   (relative-path (file-relative-name image-path (file-name-directory (buffer-file-name)))))
+  	      (if (yes-or-no-p "Compress image before saving?")
+  		  ;; Use ImageMagick to convert and compress
+  		  (call-process-shell-command
+  		   (format "xclip -selection clipboard -t image/png -o | convert png:- -strip -resize 70%% -quality 90 %s" image-path))
+  		;; Raw PNG only
+  		(if (string= format-choice "png")
+  		    (call-process-shell-command
+  		     (format "xclip -selection clipboard -t image/png -o > %s" image-path))
+  		  ;; For JPG, xclip gives PNG → convert
+  		  (call-process-shell-command
+  		   (format "xclip -selection clipboard -t image/png -o | convert png:- %s" image-path))))
+  	      (insert (format "\\includegraphics[width=\\linewidth]{%s}" relative-path)))))
+           
+           ;; Windows
+           ((eq system-type 'windows-nt)
+            (call-process-shell-command
+             (format "powershell -command \"Add-Type -AssemblyName System.Windows.Forms; [Windows.Forms.Clipboard]::GetImage().Save('%s')\"" image-path))))
+
+          ;; Insert LaTeX includegraphics
+          (insert (format "\\includegraphics[width=\\linewidth]{%s}" relative-path))
+  	))
+
+
+    (defun my/insert-figure-from-file-to-tex ()
+      "Insert an existing image into LaTeX document by copying it into a buffer-local image directory.
+    User is prompted to choose the image file and optionally rename it.
+    Then \\includegraphics is inserted with relative path."
+      (interactive)
+      ;; Set image directory once per buffer
+      (unless my/latex-image-dir
+        (setq my/latex-image-dir
+              (read-directory-name "Image directory for this document: " "./Figures/"))
+        (unless (file-directory-p my/latex-image-dir)
+          (make-directory my/latex-image-dir t)))
+
+      ;; Ask for existing image file
+      (let* ((source-path (read-file-name "Select image file: "))
+             (ext (file-name-extension source-path))
+             (default-name (file-name-base source-path))
+             (input-name (read-string (format "New file name (default: %s): " default-name)))
+             (base-name (if (string-empty-p input-name) default-name input-name))
+             (target-filename (concat base-name "." ext))
+             (target-path (expand-file-name target-filename my/latex-image-dir))
+             (relative-path (file-relative-name target-path (file-name-directory (buffer-file-name)))))
+
+        ;; Copy file to local figure directory
+        (copy-file source-path target-path t) ;; t = overwrite without prompt
+
+        ;; Insert LaTeX includegraphics line
+        (insert (format "\\includegraphics[width=\\linewidth]{%s}" relative-path))))
+      
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
