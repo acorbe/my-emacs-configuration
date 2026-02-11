@@ -450,21 +450,34 @@ This seems a very nice package but conflicts with magit when committing
 
 ** modeline
 #+BEGIN_SRC emacs-lisp
+  ;; (use-package doom-modeline
+  ;;   :straight t
+  ;;   ;; :disabled
+  ;;   :hook (after-init . doom-modeline-mode)
+  ;;   ;;:defer 2
+  ;;   :config
+  ;;   (progn
+  ;;     (setq doom-modeline-height 25)
+  ;;     ;; Whether display icons in mode-line or not.
+  ;;     (setq doom-modeline-icon (display-graphic-p))
+  ;;     ;; Whether display the icon for major mode. It respects `doom-modeline-icon'.
+  ;;     (setq doom-modeline-major-mode-icon t)
+  ;;     ;; If non-nil, a word count will be added to the selection-info modeline segment.
+  ;;     (setq doom-modeline-enable-word-count t)
+  ;;     ))
+
   (use-package doom-modeline
-    :straight t
-    ;; :disabled
-    :hook (after-init . doom-modeline-mode)
-    ;;:defer 2
-    :config
-    (progn
-      (setq doom-modeline-height 25)
-      ;; Whether display icons in mode-line or not.
-      (setq doom-modeline-icon (display-graphic-p))
-      ;; Whether display the icon for major mode. It respects `doom-modeline-icon'.
-      (setq doom-modeline-major-mode-icon t)
-      ;; If non-nil, a word count will be added to the selection-info modeline segment.
-      (setq doom-modeline-enable-word-count t)
-      ))
+  :straight t
+  :hook (after-init . doom-modeline-mode)
+  :init
+  ;; Set variables early, before loading
+  (setq doom-modeline-height 25)
+  (setq doom-modeline-icon (display-graphic-p))
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-enable-word-count t)
+  :config
+  ;; Redundant but harmless here; package is fully loaded
+  (doom-modeline-mode 1))
 #+END_SRC
 
 * UI
